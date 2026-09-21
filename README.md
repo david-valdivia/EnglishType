@@ -13,13 +13,14 @@ as often as you like, and type what you hear — with hints that give you one wo
 at a time rather than the whole thing. When you have never met a word before,
 the hint uncovers it a letter at a time.
 
-**96 chapters, 960 entries**, grouped on the home screen: concrete vocabulary
+**120 chapters, 1,200 entries**, grouped on the home screen: concrete vocabulary
 (food, animals, the body, the world, everyday life), then **adjectives**,
 **verbs**, **phrasal verbs**, **idioms**, and a section for working in English —
 meetings, chat and email, presentations, and the language of software
 engineering: code, systems, and shipping. A **grammar** section covers the
 patterns rather than the words: intensifiers, both futures, `should have` and
-its relatives, the present perfect, comparatives, the -ing form, and the
+its relatives, the present perfect, comparatives, the -ing form, conditionals,
+question forms, quantifiers, both sets of prepositions, the passive, and the
 contractions English actually gets spoken in.
 
 Everything runs in the browser. There is no backend and no account: progress
@@ -69,7 +70,7 @@ them against the chapters, so a stale file fails the test run rather than
 quietly serving the wrong thing.
 
 ```
-initial          266 kB   (84 kB gzipped)
+initial          273 kB   (86 kB gzipped)
 each chapter    3-13 kB   on demand
 translations     39 kB    with the first exercise
 lexicon          24 kB    with the first exercise

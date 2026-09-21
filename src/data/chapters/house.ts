@@ -1,0 +1,55 @@
+import type { Chapter } from '../types'
+
+export const HOUSE_CHAPTERS: Omit<Chapter, 'group'>[] = [
+  {
+    id: 'living-room',
+    title: 'Living Room',
+    icon: 'couch-and-lamp',
+    words: [
+      { id: 'h-sofa-2', word: 'cushion', translation: 'cojín', sentence: 'Pass me that cushion.', icon: 'couch-and-lamp' },
+      { id: 'h-carpet', word: 'carpet', translation: 'alfombra', sentence: 'The carpet needs cleaning.', icon: 'broom' },
+      { id: 'h-curtain', word: 'curtain', translation: 'cortina', sentence: 'Close the curtain, please.', icon: 'window' },
+      { id: 'h-shelf-2', word: 'bookshelf', translation: 'estantería', sentence: 'The bookshelf is full.', icon: 'books' },
+      { id: 'h-remote', word: 'remote', translation: 'mando', meaning: 'the handset for the television', sentence: 'I cannot find the remote.', icon: 'television' },
+      { id: 'h-clock-2', word: 'wall clock', translation: 'reloj de pared', sentence: 'The wall clock stopped.', icon: 'mantelpiece-clock' },
+      { id: 'h-plant', word: 'houseplant', translation: 'planta de interior', sentence: 'That houseplant needs water.', icon: 'potted-plant' },
+      { id: 'h-fireplace', word: 'fireplace', translation: 'chimenea', sentence: 'We lit the fireplace.', icon: 'fire' },
+      { id: 'h-switch', word: 'light switch', translation: 'interruptor', sentence: 'The light switch is by the door.', icon: 'light-bulb' },
+      { id: 'h-ceiling', word: 'ceiling', translation: 'techo', sentence: 'There is a stain on the ceiling.', icon: 'house' },
+    ],
+  },
+  {
+    id: 'bedroom',
+    title: 'Bedroom',
+    icon: 'bed',
+    words: [
+      { id: 'h-pillow', word: 'pillow', translation: 'almohada', sentence: 'This pillow is too soft.', icon: 'bed' },
+      { id: 'h-blanket', word: 'blanket', translation: 'manta', sentence: 'Take an extra blanket.', icon: 'sleeping-face' },
+      { id: 'h-sheet', word: 'sheet', translation: 'sábana', sentence: 'The sheets are clean.', icon: 'page-facing-up' },
+      { id: 'h-wardrobe', word: 'wardrobe', translation: 'armario', sentence: 'Hang it in the wardrobe.', icon: 'coat' },
+      { id: 'h-drawer', word: 'drawer', translation: 'cajón', sentence: 'The socks are in the drawer.', icon: 'card-file-box' },
+      { id: 'h-hanger', word: 'hanger', translation: 'percha', sentence: 'There are no hangers left.', icon: 'coat' },
+      { id: 'h-alarm-2', word: 'alarm clock', translation: 'despertador', sentence: 'Set the alarm clock for six.', icon: 'alarm-clock' },
+      { id: 'h-nap', word: 'nap', translation: 'siesta', meaning: 'a short sleep during the day', sentence: 'He took a nap after lunch.', icon: 'sleeping-face' },
+      { id: 'h-slippers', word: 'slippers', translation: 'zapatillas', sentence: 'Where are my slippers?', icon: 'thong-sandal' },
+      { id: 'h-pyjamas', word: 'pyjamas', translation: 'pijama', sentence: 'He answered the door in pyjamas.', icon: 't-shirt' },
+    ],
+  },
+  {
+    id: 'cleaning',
+    title: 'Cleaning & Repairs',
+    icon: 'sponge',
+    words: [
+      { id: 'h-dust', word: 'dust', translation: 'polvo', sentence: 'There is dust on the shelf.', icon: 'wind-face' },
+      { id: 'h-stain', word: 'stain', translation: 'mancha', sentence: 'The stain will not come out.', icon: 'droplet' },
+      { id: 'h-rubbish', word: 'rubbish', translation: 'basura', sentence: 'Take the rubbish out, please.', icon: 'wastebasket' },
+      { id: 'h-laundry', word: 'laundry', translation: 'colada', meaning: 'clothes waiting to be washed', sentence: 'The laundry is piling up.', icon: 'jeans' },
+      { id: 'h-detergent', word: 'detergent', translation: 'detergente', sentence: 'We ran out of detergent.', icon: 'bubbles' },
+      { id: 'h-mop', word: 'mop', translation: 'fregona', sentence: 'The mop is in the cupboard.', icon: 'broom' },
+      { id: 'h-leak', word: 'leak', translation: 'fuga', meaning: 'water escaping where it should not', sentence: 'There is a leak under the sink.', icon: 'droplet' },
+      { id: 'h-plumber', word: 'plumber', translation: 'fontanero', meaning: 'someone who repairs pipes', sentence: 'The plumber comes tomorrow.', icon: 'wrench' },
+      { id: 'h-tidy', word: 'tidy', translation: 'ordenado', meaning: 'with everything in its place', sentence: 'His desk is always tidy.', icon: 'sparkles' },
+      { id: 'h-messy', word: 'messy', translation: 'desordenado', meaning: 'with nothing in its place', sentence: 'The kitchen is messy again.', icon: 'cyclone' },
+    ],
+  },
+]

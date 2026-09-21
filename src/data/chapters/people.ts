@@ -1,0 +1,55 @@
+import type { Chapter } from '../types'
+
+export const PEOPLE_CHAPTERS: Omit<Chapter, 'group'>[] = [
+  {
+    id: 'face',
+    title: 'The Face',
+    icon: 'eyes',
+    words: [
+      { id: 'p-hair', word: 'hair', translation: 'pelo', sentence: 'Her hair is very long.', icon: 'person-red-hair' },
+      { id: 'p-beard', word: 'beard', translation: 'barba', sentence: 'He grew a beard in winter.', icon: 'person-beard' },
+      { id: 'p-lips', word: 'lips', translation: 'labios', sentence: 'My lips are dry.', icon: 'mouth' },
+      { id: 'p-cheek', word: 'cheek', translation: 'mejilla', sentence: 'She kissed him on the cheek.', icon: 'kissing-face' },
+      { id: 'p-chin', word: 'chin', translation: 'barbilla', sentence: 'He rested his chin on his hand.', icon: 'thinking-face' },
+      { id: 'p-forehead', word: 'forehead', translation: 'frente', sentence: 'His forehead was hot.', icon: 'face-with-thermometer' },
+      { id: 'p-eyebrow', word: 'eyebrow', translation: 'ceja', sentence: 'She raised one eyebrow.', icon: 'face-with-raised-eyebrow' },
+      { id: 'p-neck', word: 'neck', translation: 'cuello', sentence: 'My neck hurts today.', icon: 'necktie' },
+      { id: 'p-smile', word: 'smile', translation: 'sonrisa', sentence: 'She has a warm smile.', icon: 'smiling-face-with-smiling-eyes' },
+      { id: 'p-voice', word: 'voice', translation: 'voz', sentence: 'I did not recognise his voice.', icon: 'speaking-head' },
+    ],
+  },
+  {
+    id: 'health',
+    title: 'Health',
+    icon: 'face-with-thermometer',
+    words: [
+      { id: 'p-fever', word: 'fever', translation: 'fiebre', meaning: 'a body temperature that is too high', sentence: 'The child has a fever.', icon: 'face-with-thermometer' },
+      { id: 'p-cough', word: 'cough', translation: 'tos', meaning: 'pushing air out of the throat', sentence: 'That cough sounds bad.', icon: 'face-with-medical-mask' },
+      { id: 'p-headache', word: 'headache', translation: 'dolor de cabeza', meaning: 'pain in the head', sentence: 'I have a terrible headache.', icon: 'face-with-head-bandage' },
+      { id: 'p-sneeze', word: 'sneeze', translation: 'estornudo', meaning: 'a sudden burst of air from the nose', sentence: 'That was a loud sneeze.', icon: 'sneezing-face' },
+      { id: 'p-medicine', word: 'medicine', translation: 'medicina', meaning: 'something you take to get better', sentence: 'Take the medicine after lunch.', icon: 'pill' },
+      { id: 'p-appointment', word: 'appointment', translation: 'cita', meaning: 'a time arranged to see someone', sentence: 'I have an appointment at four.', icon: 'spiral-calendar' },
+      { id: 'p-ambulance', word: 'ambulance', translation: 'ambulancia', meaning: 'the vehicle that carries the ill', sentence: 'Someone called an ambulance.', icon: 'ambulance' },
+      { id: 'p-injury', word: 'injury', translation: 'lesión', meaning: 'damage to the body', sentence: 'The injury kept him out all season.', icon: 'adhesive-bandage' },
+      { id: 'p-rest', word: 'rest', translation: 'descanso', meaning: 'stopping in order to recover', sentence: 'You need rest, not coffee.', icon: 'sleeping-face' },
+      { id: 'p-recover', word: 'recover', translation: 'recuperarse', meaning: 'to get well again', sentence: 'She recovered in a week.', icon: 'seedling' },
+    ],
+  },
+  {
+    id: 'describing-people',
+    title: 'Describing People',
+    icon: 'busts-in-silhouette',
+    words: [
+      { id: 'p-tall-person', word: 'tall', translation: 'alto', meaning: 'of more than average height', sentence: 'Her brother is very tall.', icon: 'giraffe' },
+      { id: 'p-slim', word: 'slim', translation: 'delgado', meaning: 'thin in a pleasant way', sentence: 'He stayed slim all his life.', icon: 'person-running' },
+      { id: 'p-curly', word: 'curly', translation: 'rizado', meaning: 'in curves rather than straight', sentence: 'She has curly hair.', icon: 'person-red-hair' },
+      { id: 'p-bald', word: 'bald', translation: 'calvo', meaning: 'with no hair on the head', sentence: 'My uncle went bald young.', icon: 'person-bald' },
+      { id: 'p-elderly', word: 'elderly', translation: 'mayor', meaning: 'a polite word for old', sentence: 'An elderly man asked for help.', icon: 'older-person' },
+      { id: 'p-cheerful', word: 'cheerful', translation: 'alegre', meaning: 'visibly happy most of the time', sentence: 'She is always cheerful.', icon: 'grinning-face' },
+      { id: 'p-serious-person', word: 'serious', translation: 'serio', meaning: 'not joking or light-hearted', sentence: 'He looked serious all morning.', icon: 'neutral-face' },
+      { id: 'p-generous', word: 'generous', translation: 'generoso', meaning: 'willing to give', sentence: 'That was a generous offer.', icon: 'wrapped-gift' },
+      { id: 'p-strict', word: 'strict', translation: 'estricto', meaning: 'demanding the rules be followed', sentence: 'Our teacher is strict but fair.', icon: 'straight-ruler' },
+      { id: 'p-quiet-person', word: 'quiet', translation: 'callado', meaning: 'not saying much', sentence: 'He is quiet in meetings.', icon: 'zipper-mouth-face' },
+    ],
+  },
+]

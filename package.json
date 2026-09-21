@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "icons": "node scripts/fetch-icons.mjs",
-    "index": "vite-node scripts/build-index.mjs"
+    "index": "npx vite-node scripts/build-index.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

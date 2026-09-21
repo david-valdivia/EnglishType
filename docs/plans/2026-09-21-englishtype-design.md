@@ -16,7 +16,7 @@ row of dashes, then types the example sentence the same way.
 | Storage | `localStorage` | No accounts in scope, so a backend would buy nothing. |
 | Native language | Spanish | The user is the first learner. |
 | Artwork | Microsoft Fluent Emoji (MIT) | Colourful flat illustrations, permissive licence, no per-icon attribution. Noto Emoji (Apache 2.0) is the fallback. |
-| Content | 96 chapters x 10 words | Enough for the app to feel real without a long content pass before anything is testable. |
+| Content | 120 chapters x 10 words | Enough for the app to feel real without a long content pass before anything is testable. |
 
 ### Artwork: what was rejected and why
 
@@ -202,7 +202,8 @@ after    266 kB   (84 kB gzipped), plus 3-13 kB per chapter
 ```
 
 The remaining 266 kB is mostly React. Further content now costs a chunk nobody
-downloads until they ask for it.
+downloads until they ask for it — and the very next pass proved it: 240 more
+entries, a quarter more content, cost 6 kB on first load instead of 55.
 
 ## Illustrations that do not arrive
 

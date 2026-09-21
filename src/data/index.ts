@@ -16,6 +16,13 @@ import { IDIOM_CHAPTERS } from './chapters/idioms'
 import { IDIOM_CHAPTERS_2 } from './chapters/idioms-2'
 import { WORK_CHAPTERS } from './chapters/work'
 import { GRAMMAR_CHAPTERS } from './chapters/grammar'
+import { GRAMMAR_CHAPTERS_2 } from './chapters/grammar-2'
+import { PEOPLE_CHAPTERS } from './chapters/people'
+import { WORLD_CHAPTERS_2 } from './chapters/world-2'
+import { HOUSE_CHAPTERS } from './chapters/house'
+import { LIFE_CHAPTERS_2 } from './chapters/life-2'
+import { WORK_CHAPTERS_2 } from './chapters/work-2'
+import { ADJECTIVE_CHAPTERS_2 } from './chapters/adjectives-2'
 
 export type { Chapter, Word } from './types'
 export { typingTarget, displayForms } from './types'
@@ -30,20 +37,27 @@ const inGroup = (group: string, chapters: Omit<Chapter, 'group'>[]): Chapter[] =
 
 export const CHAPTERS: Chapter[] = [
   ...inGroup('Home & Kitchen', HOME_CHAPTERS),
+  ...inGroup('Home & Kitchen', HOUSE_CHAPTERS),
   ...inGroup('Food & Drink', FOOD_CHAPTERS),
   ...inGroup('Animals', ANIMAL_CHAPTERS),
   ...inGroup('People & Body', BODY_CHAPTERS),
+  ...inGroup('People & Body', PEOPLE_CHAPTERS),
   ...inGroup('The World', WORLD_CHAPTERS),
+  ...inGroup('The World', WORLD_CHAPTERS_2),
   ...inGroup('Everyday Life', LIFE_CHAPTERS),
+  ...inGroup('Everyday Life', LIFE_CHAPTERS_2),
   ...inGroup('Basics', BASICS_CHAPTERS),
   ...inGroup('Adjectives', ADJECTIVE_CHAPTERS),
+  ...inGroup('Adjectives', ADJECTIVE_CHAPTERS_2),
   ...inGroup('Verbs', REGULAR_VERB_CHAPTERS),
   ...inGroup('Verbs', IRREGULAR_VERB_CHAPTERS),
   ...inGroup('Verbs', IRREGULAR_VERB_CHAPTERS_2),
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS),
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS_2),
   ...inGroup('Grammar', GRAMMAR_CHAPTERS),
+  ...inGroup('Grammar', GRAMMAR_CHAPTERS_2),
   ...inGroup('At Work', WORK_CHAPTERS),
+  ...inGroup('At Work', WORK_CHAPTERS_2),
   ...inGroup('Idioms', IDIOM_CHAPTERS),
   ...inGroup('Idioms', IDIOM_CHAPTERS_2),
 ]

@@ -10,34 +10,23 @@
 //
 // A test compares both against the chapters, so a stale file fails the run.
 
-import { writeFileSync } from 'node:fs'
+import { readdirSync, writeFileSync } from 'node:fs'
 import { CHAPTERS, ALL_WORDS } from '../src/data/index.ts'
 import { GLOSSARY } from '../src/data/glossary.ts'
 
 /** Which module each chapter lives in, so the loader can fetch just that one. */
-const MODULES = {
-  'adjectives': (await import('../src/data/chapters/adjectives.ts')).ADJECTIVE_CHAPTERS,
-  'animals': (await import('../src/data/chapters/animals.ts')).ANIMAL_CHAPTERS,
-  'basics': (await import('../src/data/chapters/basics.ts')).BASICS_CHAPTERS,
-  'body': (await import('../src/data/chapters/body.ts')).BODY_CHAPTERS,
-  'food': (await import('../src/data/chapters/food.ts')).FOOD_CHAPTERS,
-  'grammar': (await import('../src/data/chapters/grammar.ts')).GRAMMAR_CHAPTERS,
-  'home': (await import('../src/data/chapters/home.ts')).HOME_CHAPTERS,
-  'idioms': (await import('../src/data/chapters/idioms.ts')).IDIOM_CHAPTERS,
-  'idioms-2': (await import('../src/data/chapters/idioms-2.ts')).IDIOM_CHAPTERS_2,
-  'irregular-verbs': (await import('../src/data/chapters/irregular-verbs.ts')).IRREGULAR_VERB_CHAPTERS,
-  'irregular-verbs-2': (await import('../src/data/chapters/irregular-verbs-2.ts')).IRREGULAR_VERB_CHAPTERS_2,
-  'life': (await import('../src/data/chapters/life.ts')).LIFE_CHAPTERS,
-  'phrasal-verbs': (await import('../src/data/chapters/phrasal-verbs.ts')).PHRASAL_VERB_CHAPTERS,
-  'phrasal-verbs-2': (await import('../src/data/chapters/phrasal-verbs-2.ts')).PHRASAL_VERB_CHAPTERS_2,
-  'regular-verbs': (await import('../src/data/chapters/regular-verbs.ts')).REGULAR_VERB_CHAPTERS,
-  'work': (await import('../src/data/chapters/work.ts')).WORK_CHAPTERS,
-  'world': (await import('../src/data/chapters/world.ts')).WORLD_CHAPTERS,
-}
+const files = readdirSync('src/data/chapters')
+  .filter((name) => name.endsWith('.ts') && !name.endsWith('.test.ts'))
+  .map((name) => name.slice(0, -3))
+  .sort()
 
 const sourceOf = new Map()
-for (const [file, chapters] of Object.entries(MODULES)) {
-  for (const chapter of chapters) sourceOf.set(chapter.id, file)
+for (const file of files) {
+  const module = await import(`../src/data/chapters/${file}.ts`)
+  for (const exported of Object.values(module)) {
+    if (!Array.isArray(exported)) continue
+    for (const chapter of exported) sourceOf.set(chapter.id, file)
+  }
 }
 
 const quote = (text) => `'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`

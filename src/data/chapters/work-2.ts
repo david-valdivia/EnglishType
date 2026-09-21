@@ -1,0 +1,55 @@
+import type { Chapter } from '../types'
+
+export const WORK_CHAPTERS_2: Omit<Chapter, 'group'>[] = [
+  {
+    id: 'career',
+    title: 'Interviews & Career',
+    icon: 'briefcase',
+    words: [
+      { id: 'w2-cv', word: 'résumé', translation: 'currículum', meaning: 'the summary of your career', sentence: 'Attach your résumé to the form.', icon: 'page-facing-up' },
+      { id: 'w2-interview', word: 'interview', translation: 'entrevista', sentence: 'The interview lasted an hour.', icon: 'busts-in-silhouette' },
+      { id: 'w2-candidate', word: 'candidate', translation: 'candidato', meaning: 'someone applying for the job', sentence: 'We met four candidates.', icon: 'raised-hand' },
+      { id: 'w2-salary', word: 'salary', translation: 'sueldo', sentence: 'The salary was not discussed.', icon: 'money-bag' },
+      { id: 'w2-promotion', word: 'promotion', translation: 'ascenso', meaning: 'a move to a more senior job', sentence: 'She got a promotion in June.', icon: 'chart-increasing' },
+      { id: 'w2-notice', word: 'notice period', translation: 'preaviso', meaning: 'the time between resigning and leaving', sentence: 'My notice period is one month.', icon: 'spiral-calendar' },
+      { id: 'w2-onboarding', word: 'onboarding', translation: 'incorporación', meaning: 'settling a new person into the job', sentence: 'Onboarding takes about a week.', icon: 'door' },
+      { id: 'w2-mentor', word: 'mentor', translation: 'mentor', meaning: 'someone who guides your growth', sentence: 'My mentor reviewed the plan.', icon: 'older-person' },
+      { id: 'w2-workload', word: 'workload', translation: 'carga de trabajo', meaning: 'how much you have to do', sentence: 'The workload doubled this quarter.', icon: 'bar-chart' },
+      { id: 'w2-resign', word: 'resign', translation: 'dimitir', meaning: 'to leave a job by choice', sentence: 'He resigned without a word.', icon: 'white-flag' },
+    ],
+  },
+  {
+    id: 'support',
+    title: 'Customer Support',
+    icon: 'telephone-receiver',
+    words: [
+      { id: 'w2-customer', word: 'customer', translation: 'cliente', sentence: 'The customer is still waiting.', icon: 'busts-in-silhouette' },
+      { id: 'w2-complaint', word: 'complaint', translation: 'queja', meaning: 'a statement that something is wrong', sentence: 'We had three complaints today.', icon: 'angry-face' },
+      { id: 'w2-refund-2', word: 'refund', translation: 'reembolso', meaning: 'money returned to the customer', sentence: 'We processed the refund.', icon: 'credit-card' },
+      { id: 'w2-escalate', word: 'escalate', translation: 'escalar', meaning: 'to pass a problem to someone senior', sentence: 'Escalate it to the manager.', icon: 'chart-increasing' },
+      { id: 'w2-workaround', word: 'workaround', translation: 'solución temporal', meaning: 'a way round a problem, not a fix', sentence: 'There is a workaround for now.', icon: 'wrench' },
+      { id: 'w2-root-cause', word: 'root cause', translation: 'causa raíz', meaning: 'the real reason behind a problem', sentence: 'We found the root cause.', icon: 'herb' },
+      { id: 'w2-apologise', word: 'apologise', translation: 'disculparse', meaning: 'to say you are sorry', sentence: 'We apologised for the delay.', icon: 'folded-hands' },
+      { id: 'w2-follow-through', word: 'follow through', translation: 'llevar hasta el final', meaning: 'to finish what you promised', sentence: 'Always follow through on a promise.', icon: 'check-mark-button' },
+      { id: 'w2-satisfaction', word: 'satisfaction', translation: 'satisfacción', meaning: 'how pleased the customer is', sentence: 'Satisfaction went up this month.', icon: 'smiling-face-with-smiling-eyes' },
+      { id: 'w2-churn', word: 'churn', translation: 'pérdida de clientes', meaning: 'customers leaving for good', sentence: 'Churn is our biggest worry.', icon: 'chart-decreasing' },
+    ],
+  },
+  {
+    id: 'data-security',
+    title: 'Data & Security',
+    icon: 'locked-with-key',
+    words: [
+      { id: 'w2-password', word: 'password', translation: 'contraseña', sentence: 'Never share your password.', icon: 'locked-with-key' },
+      { id: 'w2-permission', word: 'permission', translation: 'permiso', meaning: 'the right to do something', sentence: 'You do not have permission.', icon: 'locked' },
+      { id: 'w2-encryption', word: 'encryption', translation: 'cifrado', meaning: 'scrambling data so others cannot read it', sentence: 'Encryption is on by default.', icon: 'shield' },
+      { id: 'w2-breach', word: 'breach', translation: 'brecha', meaning: 'when someone gets in who should not', sentence: 'They reported the breach at once.', icon: 'warning' },
+      { id: 'w2-audit', word: 'audit', translation: 'auditoría', meaning: 'a formal check of the records', sentence: 'The audit found nothing.', icon: 'magnifying-glass-tilted-left' },
+      { id: 'w2-dataset', word: 'dataset', translation: 'conjunto de datos', meaning: 'a collection of related data', sentence: 'The dataset is too small.', icon: 'card-index-dividers' },
+      { id: 'w2-metric', word: 'metric', translation: 'métrica', meaning: 'a number you track over time', sentence: 'That metric has not moved.', icon: 'bar-chart' },
+      { id: 'w2-threshold', word: 'threshold', translation: 'umbral', meaning: 'the point where something triggers', sentence: 'The alert threshold is too low.', icon: 'level-slider' },
+      { id: 'w2-dashboard', word: 'dashboard', translation: 'panel', meaning: 'one screen showing the key numbers', sentence: 'Check the dashboard first.', icon: 'chart-increasing' },
+      { id: 'w2-privacy', word: 'privacy', translation: 'privacidad', meaning: 'keeping personal data to yourself', sentence: 'Privacy comes before convenience.', icon: 'detective' },
+    ],
+  },
+]

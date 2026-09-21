@@ -1,0 +1,55 @@
+import type { Chapter } from '../types'
+
+export const WORLD_CHAPTERS_2: Omit<Chapter, 'group'>[] = [
+  {
+    id: 'countries',
+    title: 'Countries & Languages',
+    icon: 'globe-showing-europe-africa',
+    words: [
+      { id: 'w2-country', word: 'country', translation: 'país', sentence: 'Which country are you from?', icon: 'globe-showing-europe-africa' },
+      { id: 'w2-border', word: 'border', translation: 'frontera', meaning: 'the line between two countries', sentence: 'We crossed the border at dawn.', icon: 'passport-control' },
+      { id: 'w2-capital', word: 'capital', translation: 'capital', meaning: 'the city a country is governed from', sentence: 'Madrid is the capital of Spain.', icon: 'classical-building' },
+      { id: 'w2-language', word: 'language', translation: 'idioma', meaning: 'the words a people speak', sentence: 'She speaks four languages.', icon: 'speaking-head' },
+      { id: 'w2-accent', word: 'accent', translation: 'acento', meaning: 'how your origin sounds in your speech', sentence: 'His accent is hard to place.', icon: 'ear' },
+      { id: 'w2-abroad', word: 'abroad', translation: 'en el extranjero', meaning: 'in another country', sentence: 'They studied abroad for a year.', icon: 'airplane' },
+      { id: 'w2-flag', word: 'flag', translation: 'bandera', sentence: 'The flag was at half mast.', icon: 'triangular-flag' },
+      { id: 'w2-citizen', word: 'citizen', translation: 'ciudadano', meaning: 'someone who belongs to a country', sentence: 'She became a citizen last year.', icon: 'passport-control' },
+      { id: 'w2-tourist', word: 'tourist', translation: 'turista', meaning: 'someone visiting for pleasure', sentence: 'The square was full of tourists.', icon: 'camera' },
+      { id: 'w2-landmark', word: 'landmark', translation: 'monumento', meaning: 'a building everyone knows the place by', sentence: 'That tower is the city landmark.', icon: 'statue-of-liberty' },
+    ],
+  },
+  {
+    id: 'directions',
+    title: 'Directions',
+    icon: 'compass',
+    words: [
+      { id: 'w2-turn-left', word: 'turn left', translation: 'gira a la izquierda', sentence: 'Turn left after the bridge.', icon: 'left-arrow' },
+      { id: 'w2-turn-right', word: 'turn right', translation: 'gira a la derecha', sentence: 'Turn right at the lights.', icon: 'right-arrow' },
+      { id: 'w2-straight-on', word: 'straight on', translation: 'todo recto', meaning: 'without turning', sentence: 'Go straight on for two blocks.', icon: 'up-arrow' },
+      { id: 'w2-corner', word: 'corner', translation: 'esquina', sentence: 'Wait for me on the corner.', icon: 'round-pushpin' },
+      { id: 'w2-crossroads', word: 'crossroads', translation: 'cruce', meaning: 'where two roads meet', sentence: 'Stop at the crossroads.', icon: 'stop-sign' },
+      { id: 'w2-nearby', word: 'nearby', translation: 'cerca', meaning: 'a short distance away', sentence: 'Is there a bank nearby?', icon: 'bank' },
+      { id: 'w2-far-from', word: 'far from', translation: 'lejos de', meaning: 'a long distance away', sentence: 'The hotel is far from the centre.', icon: 'world-map' },
+      { id: 'w2-get-lost', word: 'get lost', translation: 'perderse', meaning: 'to stop knowing where you are', sentence: 'We got lost twice.', icon: 'compass' },
+      { id: 'w2-shortcut', word: 'shortcut', translation: 'atajo', meaning: 'a quicker way round', sentence: 'He knows a shortcut.', icon: 'high-voltage' },
+      { id: 'w2-signpost', word: 'signpost', translation: 'señal', meaning: 'a sign that points the way', sentence: 'Follow the signposts to the beach.', icon: 'triangular-flag' },
+    ],
+  },
+  {
+    id: 'seasons',
+    title: 'Seasons & Dates',
+    icon: 'maple-leaf',
+    words: [
+      { id: 'w2-spring', word: 'spring', translation: 'primavera', sentence: 'Everything grows in spring.', icon: 'cherry-blossom' },
+      { id: 'w2-summer', word: 'summer', translation: 'verano', sentence: 'We travel every summer.', icon: 'beach-with-umbrella' },
+      { id: 'w2-autumn', word: 'autumn', translation: 'otoño', sentence: 'The leaves turn in autumn.', icon: 'maple-leaf' },
+      { id: 'w2-winter', word: 'winter', translation: 'invierno', sentence: 'The lake freezes in winter.', icon: 'snowman' },
+      { id: 'w2-weekday', word: 'weekday', translation: 'día laborable', meaning: 'any day that is not the weekend', sentence: 'It is quieter on a weekday.', icon: 'spiral-calendar' },
+      { id: 'w2-fortnight', word: 'fortnight', translation: 'quincena', meaning: 'two weeks', sentence: 'We meet once a fortnight.', icon: 'calendar' },
+      { id: 'w2-holiday', word: 'holiday', translation: 'vacaciones', sentence: 'The office closes for the holiday.', icon: 'palm-tree' },
+      { id: 'w2-anniversary', word: 'anniversary', translation: 'aniversario', meaning: 'the same date each year', sentence: 'Today is our anniversary.', icon: 'heart-with-ribbon' },
+      { id: 'w2-deadline-date', word: 'due date', translation: 'fecha de entrega', meaning: 'the day something is expected', sentence: 'The due date is next Friday.', icon: 'alarm-clock' },
+      { id: 'w2-season', word: 'season', translation: 'temporada', meaning: 'a part of the year with its own character', sentence: 'This is the busy season.', icon: 'chart-increasing' },
+    ],
+  },
+]
