@@ -34,6 +34,18 @@ npm run dev
 | `npm test` | Run the unit tests |
 | `npm run icons` | Re-download the illustrations |
 
+## Keys
+
+| Key | What it does |
+| --- | --- |
+| Any letter | Types it, if it is the one the line wants |
+| `Shift` on its own | Replays the line you are writing |
+| `Tab` | Uncovers the next letter, or the next word in the dictation |
+| `Enter` | Continues, once the answer is right |
+
+`Shift` fires on release, and only when nothing else was pressed in between —
+otherwise it would speak every time you held it to type a capital.
+
 ## How it works
 
 **`src/engine/typing.ts`** is the heart of the app: a pure reducer that takes

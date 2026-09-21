@@ -39,6 +39,16 @@ export function Exercise({
   const [asked, setAsked] = useState<{ word: string; meaning: string } | null>(null)
   const catcher = useRef<HTMLInputElement>(null)
   const dictated = useRef(false)
+  /**
+   * Shift on its own replays the line being written. It is tracked across
+   * keydown and keyup because Shift is also held to type a capital — firing on
+   * keydown would speak every time the learner wrote "The" or "I".
+   */
+  const shiftAlone = useRef(false)
+
+  /** What Shift replays: whichever line is being written. */
+  const replayText =
+    state.phase === 'sentence' && task.sentence ? task.sentence : task.speech
 
   /**
    * Only a press decides whether audio works. Autoplay policy can refuse a
@@ -74,6 +84,13 @@ export function Exercise({
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Shift') {
+        if (!event.repeat) shiftAlone.current = true
+        return
+      }
+      // Any other key means Shift is being used as a modifier, not asked for.
+      shiftAlone.current = false
+
       if (event.metaKey || event.ctrlKey || event.altKey) return
 
       if (event.key === 'Enter') {
@@ -95,9 +112,20 @@ export function Exercise({
       setState((current) => keyPress(current, event.key))
     }
 
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.key !== 'Shift' || !shiftAlone.current) return
+      shiftAlone.current = false
+      speak(replayText, state.phase === 'sentence' ? 0.85 : undefined)
+    }
+
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [state.phase, state.usedHelp, onContinue])
+    window.addEventListener('keyup', onKeyUp)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.phase, state.usedHelp, onContinue, replayText])
 
   // Clear the shake so the same wrong key can flash again.
   useEffect(() => {
@@ -156,7 +184,12 @@ export function Exercise({
         </div>
 
         <div className="answer-row">
-          <button className="side" onClick={() => speak(task.speech)} aria-label={`Listen to ${task.speech}`}>
+          <button
+            className="side"
+            onClick={() => speak(task.speech)}
+            title="Listen — Shift"
+            aria-label={`Listen to ${task.speech}, shortcut Shift`}
+          >
             <SpeakerGlyph />
           </button>
 
@@ -195,6 +228,7 @@ export function Exercise({
             <button className="play" onClick={() => speak(task.sentence, 0.85)}>
               <SpeakerGlyph size={16} />
               Play the sentence
+              <kbd>Shift</kbd>
             </button>
 
             {showSentenceText && (
