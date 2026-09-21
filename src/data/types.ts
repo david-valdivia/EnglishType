@@ -13,11 +13,13 @@ export type Word = {
    */
   meaning?: string
   /**
-   * Past simple and past participle. Present on irregular verbs, where the
-   * three forms together are the thing worth memorising, so all three are
-   * typed: "go went gone".
+   * The other two forms of a three-part entry, typed along with the first:
+   * "go went gone" for a verb, "large larger largest" for an adjective. The
+   * triplet is the thing worth memorising, so the triplet is the answer.
    */
-  forms?: [past: string, participle: string]
+  forms?: [second: string, third: string]
+  /** What those forms are. Defaults to a verb's tenses. */
+  formKind?: 'verb' | 'degree'
 }
 
 export type Chapter = {

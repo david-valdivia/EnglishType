@@ -66,6 +66,12 @@ describe('taskFor, both directions', () => {
   })
 })
 
+const adjective: Word = {
+  id: 'g-large', word: 'large', forms: ['larger', 'largest'], formKind: 'degree',
+  translation: 'grande', meaning: 'big in size',
+  sentence: 'This room is larger.', icon: 'elephant',
+}
+
 describe('three-form verbs', () => {
   it('flags a verb so the interface can ask for all three forms', () => {
     expect(taskFor(verb, 'es-en').threeForms).toBe(true)
@@ -85,5 +91,18 @@ describe('three-form verbs', () => {
 
   it('gives a plain word no part labels', () => {
     expect(taskFor(noun, 'es-en').formLabels).toEqual([])
+  })
+
+  it('names an adjective its own three degrees', () => {
+    expect(taskFor(adjective, 'es-en').formLabels).toEqual([
+      'base',
+      'comparative',
+      'superlative',
+    ])
+  })
+
+  it('asks for all three degrees the same way', () => {
+    expect(taskFor(adjective, 'es-en').threeForms).toBe(true)
+    expect(taskFor(adjective, 'es-en').answer).toBe('large larger largest')
   })
 })

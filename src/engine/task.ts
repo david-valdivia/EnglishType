@@ -37,7 +37,10 @@ export type Task = {
   formLabels: string[]
 }
 
-const PART_LABELS = ['base', 'past', 'participle']
+const PART_LABELS: Record<NonNullable<Word['formKind']>, string[]> = {
+  verb: ['base', 'past', 'participle'],
+  degree: ['base', 'comparative', 'superlative'],
+}
 
 export function taskFor(word: Word, direction: Direction): Task {
   const english = typingTarget(word)
@@ -65,6 +68,6 @@ export function taskFor(word: Word, direction: Direction): Task {
     answer: english,
     sentence: word.sentence,
     threeForms: Boolean(word.forms),
-    formLabels: word.forms ? PART_LABELS : [],
+    formLabels: word.forms ? PART_LABELS[word.formKind ?? 'verb'] : [],
   }
 }

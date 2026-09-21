@@ -15,6 +15,7 @@ import { PHRASAL_VERB_CHAPTERS_2 } from './chapters/phrasal-verbs-2'
 import { IDIOM_CHAPTERS } from './chapters/idioms'
 import { IDIOM_CHAPTERS_2 } from './chapters/idioms-2'
 import { WORK_CHAPTERS } from './chapters/work'
+import { GRAMMAR_CHAPTERS } from './chapters/grammar'
 
 export type { Chapter, Word } from './types'
 export { typingTarget, displayForms } from './types'
@@ -41,6 +42,7 @@ export const CHAPTERS: Chapter[] = [
   ...inGroup('Verbs', IRREGULAR_VERB_CHAPTERS_2),
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS),
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS_2),
+  ...inGroup('Grammar', GRAMMAR_CHAPTERS),
   ...inGroup('At Work', WORK_CHAPTERS),
   ...inGroup('Idioms', IDIOM_CHAPTERS),
   ...inGroup('Idioms', IDIOM_CHAPTERS_2),

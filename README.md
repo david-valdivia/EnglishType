@@ -13,11 +13,14 @@ as often as you like, and type what you hear — with hints that give you one wo
 at a time rather than the whole thing. When you have never met a word before,
 the hint uncovers it a letter at a time.
 
-**88 chapters, 880 entries**, grouped on the home screen: concrete vocabulary
+**96 chapters, 960 entries**, grouped on the home screen: concrete vocabulary
 (food, animals, the body, the world, everyday life), then **adjectives**,
 **verbs**, **phrasal verbs**, **idioms**, and a section for working in English —
 meetings, chat and email, presentations, and the language of software
-engineering: code, systems, and shipping.
+engineering: code, systems, and shipping. A **grammar** section covers the
+patterns rather than the words: intensifiers, both futures, `should have` and
+its relatives, the present perfect, comparatives, the -ing form, and the
+contractions English actually gets spoken in.
 
 Everything runs in the browser. There is no backend and no account: progress
 lives in `localStorage`.
@@ -141,9 +144,10 @@ ice" on its own, so without the gloss the exercise is unanswerable.
   meaning: 'to stop trying', sentence: 'Do not give up now.', icon: 'white-flag' }
 ```
 
-Irregular and regular verbs carry `forms`, the past simple and past participle.
-That makes the typed answer all three parts, because the triplet is the thing
-worth memorising:
+Verbs and comparable adjectives carry `forms`, the other two parts of a triplet.
+That makes the typed answer all three, because the triplet is the thing worth
+memorising. `formKind` decides what the parts are called — a verb's
+base/past/participle, or an adjective's base/comparative/superlative:
 
 ```ts
 { id: 'v-go', word: 'go', forms: ['went', 'gone'], translation: 'ir',

@@ -16,7 +16,7 @@ row of dashes, then types the example sentence the same way.
 | Storage | `localStorage` | No accounts in scope, so a backend would buy nothing. |
 | Native language | Spanish | The user is the first learner. |
 | Artwork | Microsoft Fluent Emoji (MIT) | Colourful flat illustrations, permissive licence, no per-icon attribution. Noto Emoji (Apache 2.0) is the fallback. |
-| Content | 88 chapters x 10 words | Enough for the app to feel real without a long content pass before anything is testable. |
+| Content | 96 chapters x 10 words | Enough for the app to feel real without a long content pass before anything is testable. |
 
 ### Artwork: what was rejected and why
 
@@ -140,6 +140,17 @@ why.
 Typing Spanish brought accents with it, so letter comparison folds diacritics —
 `delfin` is accepted for `delfín`. `ñ` is excluded from the folding: it is a
 distinct letter in Spanish, not an accented `n`.
+
+## Grammar reuses the three-form mechanic
+
+`large larger largest` is the same exercise as `go went gone`, so comparatives
+reuse `forms` rather than getting a mechanic of their own. All it needed was
+`formKind`, so the labels under the box read base/comparative/superlative for an
+adjective and base/past/participle for a verb.
+
+The rest of the grammar section is patterns typed as phrases — `should have`,
+`going to rain`, `have not yet`. The engine already handled multi-word answers,
+so nothing there changed either.
 
 ## Spaces are typed
 

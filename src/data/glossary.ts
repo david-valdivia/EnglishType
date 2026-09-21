@@ -98,11 +98,11 @@ export const GLOSSARY: Record<string, string> = {
   wedding: 'boda', mark: 'marca', face: 'cara',
 
   // qualities
-  very: 'muy', too: 'demasiado', quite: 'bastante', almost: 'casi',
+  too: 'demasiado', almost: 'casi',
   just: 'solo, justo', only: 'solo', well: 'bien', badly: 'mal',
   hard: 'duro, mucho', high: 'alto', taller: 'más alto', smaller: 'más pequeño',
   oldest: 'más antiguo', huge: 'enorme', enormous: 'enorme', tight: 'apretado',
-  soft: 'blando', sweet: 'dulce', fresh: 'fresco', bright: 'brillante',
+  soft: 'blando', sweet: 'dulce', fresh: 'fresco',
   dark: 'oscuro', crooked: 'torcido', sterile: 'estéril', serious: 'serio',
   special: 'especial', different: 'diferente', favourite: 'favorito',
   beautiful_adv: 'bello', beautifully: 'maravillosamente', wonderful: 'maravilloso',
@@ -123,12 +123,12 @@ export const GLOSSARY: Record<string, string> = {
   forward: 'adelante', together: 'juntos', is: 'es, está', it: 'lo, ello',
   its: 'su', not: 'no', never: 'nunca', once: 'una vez', twice: 'dos veces',
   other: 'otro', same: 'mismo', best: 'mejor', better: 'mejor', last: 'último',
-  early: 'temprano', late: 'tarde', time: 'tiempo, vez', times: 'veces',
+  late: 'tarde', time: 'tiempo, vez', times: 'veces',
   day: 'día', room: 'habitación', rooms: 'habitaciones', part: 'parte',
   end: 'final', ends: 'termina', ended: 'acabamos', ending: 'final',
   lasts: 'dura', turn: 'girar, turno', turns: 'gira', turned: 'giró',
   has: 'tiene', extra: 'extra', quick: 'rápido', warm: 'caliente',
-  cool: 'fresco', perfect: 'perfecto', busy: 'ocupado', louder: 'más fuerte',
+  cool: 'fresco', perfect: 'perfecto', louder: 'más fuerte',
   greener: 'más verde', steep: 'empinado', rainy: 'lluvioso',
   missing: 'que falta', missed: 'perdimos', covered: 'cubierto',
   cover: 'portada', checked: 'comprobó', check: 'comprobar',
@@ -174,8 +174,14 @@ export const GLOSSARY: Record<string, string> = {
   module: 'módulo', title: 'título', board: 'tablero', circle: 'retomar',
   base: 'base', needle: 'aguja', ballpark: 'aproximado', figure: 'cifra',
   offline: 'aparte, sin conexión', dive: 'inmersión', deep: 'profundo',
-  low: 'bajo', real: 'de verdad', simple: 'sencillo', useful: 'útil',
+  low: 'bajo', real: 'de verdad', useful: 'útil',
   tomorrow: 'mañana', if: 'si', friday: 'viernes', thursday: 'jueves',
+
+  // grammar patterns
+  bigger: 'más grande', ever: 'alguna vez', yet: 'todavía', since: 'desde',
+  might: 'puede que', probably: 'probablemente', usually: 'normalmente',
+  instead: 'en vez de', happens: 'pasa', failed: 'ha fallado',
+  grab: 'coger, pillar', minute: 'minuto',
 
   // courtesy and connectives
   please: 'por favor', excuse: 'disculpa', without: 'sin', skiing: 'esquiando',
