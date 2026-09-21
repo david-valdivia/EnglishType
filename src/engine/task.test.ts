@@ -65,3 +65,25 @@ describe('taskFor, both directions', () => {
     }
   })
 })
+
+describe('three-form verbs', () => {
+  it('flags a verb so the interface can ask for all three forms', () => {
+    expect(taskFor(verb, 'es-en').threeForms).toBe(true)
+  })
+
+  it('does not flag a plain word', () => {
+    expect(taskFor(noun, 'es-en').threeForms).toBe(false)
+  })
+
+  it('does not flag the other direction, where the forms are given', () => {
+    expect(taskFor(verb, 'en-es').threeForms).toBe(false)
+  })
+
+  it('names the three parts in order', () => {
+    expect(taskFor(verb, 'es-en').formLabels).toEqual(['base', 'past', 'participle'])
+  })
+
+  it('gives a plain word no part labels', () => {
+    expect(taskFor(noun, 'es-en').formLabels).toEqual([])
+  })
+})

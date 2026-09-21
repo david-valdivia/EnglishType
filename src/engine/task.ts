@@ -27,7 +27,17 @@ export type Task = {
   speech: string
   /** Plain-English gloss, or empty. */
   meaning: string
+  /**
+   * True when the answer is a verb's three parts rather than a single word.
+   * Without saying so the learner types "go", nothing happens, and there is
+   * nothing on screen to explain why.
+   */
+  threeForms: boolean
+  /** Names of those parts, in order, or empty. */
+  formLabels: string[]
 }
+
+const PART_LABELS = ['base', 'past', 'participle']
 
 export function taskFor(word: Word, direction: Direction): Task {
   const english = typingTarget(word)
@@ -36,6 +46,9 @@ export function taskFor(word: Word, direction: Direction): Task {
   if (direction === 'en-es') {
     return {
       ...common,
+      // The forms are the prompt here, so there is nothing to warn about.
+      threeForms: false,
+      formLabels: [],
       prompt: displayForms(word),
       promptLanguage: 'en',
       answer: word.translation,
@@ -51,5 +64,7 @@ export function taskFor(word: Word, direction: Direction): Task {
     promptLanguage: 'es',
     answer: english,
     sentence: word.sentence,
+    threeForms: Boolean(word.forms),
+    formLabels: word.forms ? PART_LABELS : [],
   }
 }

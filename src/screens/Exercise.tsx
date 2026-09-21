@@ -117,8 +117,15 @@ export function Exercise({
 
   const done = state.phase === 'done'
   const onSentence = state.phase === 'sentence'
+  /** How many of a verb's parts are already written, to mark the current one. */
+  const filledParts = task.threeForms
+    ? state.word.filter((slot) => slot.filled && slot.char === ' ').length
+    : 0
   const progress = ((position - (done ? 0 : 1)) / total) * 100
   const askingFor = direction === 'es-en' ? 'English' : 'Spanish'
+  const instruction = task.threeForms
+    ? 'Write all three forms in English'
+    : `Write it in ${askingFor}`
   // Dictation only works if the browser actually speaks; otherwise it has to be
   // something to read.
   const showSentenceText = sentenceShown || !audioWorks || done
@@ -141,7 +148,7 @@ export function Exercise({
         <Icon name={word.icon} className="cue" />
 
         <div className="prompt">
-          <p className="ask">Write it in {askingFor}</p>
+          <p className="ask">{instruction}</p>
           <p className={`given ${task.promptLanguage}`} lang={task.promptLanguage}>
             {task.prompt}
           </p>
@@ -160,6 +167,15 @@ export function Exercise({
               cursor={wordCursor}
               onWord={state.phase === 'word' ? undefined : askMeaning}
             />
+            {task.threeForms && (
+              <ol className="parts" aria-label="The three parts to write">
+                {task.formLabels.map((label, index) => (
+                  <li key={label} className={index === filledParts ? 'now' : ''}>
+                    {label}
+                  </li>
+                ))}
+              </ol>
+            )}
           </div>
 
           <button
