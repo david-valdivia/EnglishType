@@ -39,6 +39,7 @@ npm run dev
 | Key | What it does |
 | --- | --- |
 | Any letter | Types it, if it is the one the line wants |
+| `Space` | Types the space between words — or skip it and type straight on |
 | `Shift` on its own | Replays the line you are writing |
 | `Tab` | Uncovers the next letter, or the next word in the dictation |
 | `Enter` | Continues, once the answer is right |
@@ -50,8 +51,9 @@ otherwise it would speak every time you held it to type a capital.
 
 **`src/engine/typing.ts`** is the heart of the app: a pure reducer that takes
 the current state and a key, and returns the next state. Letters and digits are
-typeable; spaces and punctuation fill themselves in when the cursor reaches
-them, so you never hunt for a comma. A wrong key does not advance — it just
+typeable, and so are the spaces between words — you type them, as you would
+anywhere else. Punctuation still fills itself in, so you never hunt for a comma.
+Typing straight through a space works too: nobody is punished either way. A wrong key does not advance — it just
 flashes. Finish the word and the cursor moves to the sentence; finish the
 sentence and the exercise is done.
 

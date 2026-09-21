@@ -53,8 +53,8 @@ tested without a DOM. The screens are thin: `App.tsx` is a three-state machine
 
 ### Typing rules, read off the recording
 
-- One slot per character. Letters and digits are typeable; spaces and
-  punctuation fill themselves in when the cursor reaches them.
+- One slot per character. Letters, digits and spaces are typeable; punctuation
+  fills itself in when the cursor reaches it.
 - Input is case-insensitive.
 - A wrong key does not advance — it flashes and waits.
 - Word first, then sentence. Finishing the sentence enables **Continue**.
@@ -140,6 +140,18 @@ why.
 Typing Spanish brought accents with it, so letter comparison folds diacritics —
 `delfin` is accepted for `delfín`. `ñ` is excluded from the folding: it is a
 distinct letter in Spanish, not an accented `n`.
+
+## Spaces are typed
+
+Auto-filling the spaces looked like a kindness and was a bug. By the time the
+learner pressed the space bar the cursor had already moved on to the next
+letter, so a correct keystroke was rejected and the box shook. Spaces are now
+ordinary typeable slots.
+
+Typing straight through a space is still accepted, because the old behaviour
+taught that habit and there is no reason to punish it. Hints carry a following
+space along with the letter they reveal, so a hint never leaves you sitting on a
+space bar you now have to press yourself.
 
 ## Seeing the meaning
 

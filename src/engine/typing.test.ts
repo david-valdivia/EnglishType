@@ -19,11 +19,11 @@ describe('createTypingState', () => {
     expect(s.usedHelp).toBe(false)
   })
 
-  it('marks letters as typeable and punctuation as automatic', () => {
+  it('marks letters and spaces as typeable, punctuation as automatic', () => {
     const s = createTypingState('cup', 'I have a cup.')
     expect(s.word.map((x) => x.typeable)).toEqual([true, true, true])
-    // "I have a cup." -> spaces and the period are filled in automatically
-    expect(s.sentence.filter((x) => !x.typeable).map((x) => x.char)).toEqual([' ', ' ', ' ', '.'])
+    // Only the full stop fills itself in; the spaces are typed.
+    expect(s.sentence.filter((x) => !x.typeable).map((x) => x.char)).toEqual(['.'])
   })
 })
 
@@ -65,9 +65,9 @@ describe('keyPress on the word', () => {
 describe('keyPress on the sentence', () => {
   const atSentence = () => 'cup'.split('').reduce(keyPress, start())
 
-  it('fills spaces automatically after a word ends', () => {
+  it('waits for the space bar after a word ends', () => {
     const s = keyPress(atSentence(), 'i')
-    expect(visibleText(s.sentence)).toBe('I ')
+    expect(visibleText(s.sentence)).toBe('I')
   })
 
   it('fills trailing punctuation automatically and finishes', () => {
@@ -98,11 +98,11 @@ describe('reveal', () => {
 })
 
 describe('multi-word targets', () => {
-  it('auto-fills the space inside the answer itself', () => {
+  it('takes the space inside the answer itself', () => {
     let s = createTypingState('wine glass', 'The wine glass is empty.')
     s = 'wine'.split('').reduce(keyPress, s)
-    expect(visibleText(s.word)).toBe('wine ')
-    s = 'glass'.split('').reduce(keyPress, s)
+    expect(visibleText(s.word)).toBe('wine')
+    s = ' glass'.split('').reduce(keyPress, s)
     expect(s.phase).toBe('sentence')
   })
 })
@@ -229,5 +229,44 @@ describe('revealRest', () => {
     expect(visibleText(s.word)).toBe('cup')
     expect(s.phase).toBe('sentence')
     expect(visibleText(s.sentence)).toBe('')
+  })
+})
+
+describe('spaces', () => {
+  const atSentence = () => 'cup'.split('').reduce(keyPress, start())
+
+  it('accepts the space bar where a space goes', () => {
+    const s = keyPress(keyPress(atSentence(), 'i'), ' ')
+    expect(visibleText(s.sentence)).toBe('I ')
+    expect(s.wrong).toBe(false)
+  })
+
+  it('does not flag the space bar as a mistake', () => {
+    // The whole point: a space belongs there, so pressing it is never wrong.
+    const s = keyPress(keyPress(atSentence(), 'i'), ' ')
+    expect(s.wrong).toBe(false)
+  })
+
+  it('still accepts the next letter for anyone who does not press space', () => {
+    const s = keyPress(keyPress(atSentence(), 'i'), 'h')
+    expect(visibleText(s.sentence)).toBe('I h')
+    expect(s.wrong).toBe(false)
+  })
+
+  it('types a multi-word answer with spaces', () => {
+    let s = createTypingState('wine glass', 'The wine glass is empty.')
+    s = 'wine glass'.split('').reduce(keyPress, s)
+    expect(visibleText(s.word)).toBe('wine glass')
+    expect(s.phase).toBe('sentence')
+  })
+
+  it('rejects a space where a letter goes', () => {
+    expect(keyPress(start(), ' ').wrong).toBe(true)
+  })
+
+  it('types a whole sentence with its spaces', () => {
+    const s = 'I have a cup'.split('').reduce(keyPress, atSentence())
+    expect(visibleText(s.sentence)).toBe('I have a cup.')
+    expect(s.phase).toBe('done')
   })
 })

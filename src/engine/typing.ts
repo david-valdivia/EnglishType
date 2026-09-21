@@ -25,7 +25,12 @@ export type TypingState = {
   usedHelp: boolean
 }
 
-const isTypeable = (char: string) => /[\p{Letter}\p{Number}]/u.test(char)
+/**
+ * Spaces are typed, not filled in. Auto-filling them meant the cursor had
+ * already moved past when the learner pressed the space bar, and a perfectly
+ * correct keystroke was flagged as a mistake. Punctuation stays automatic.
+ */
+const isTypeable = (char: string) => /[\p{Letter}\p{Number} ]/u.test(char)
 
 /**
  * Letters are compared without their accents, so someone on an English keyboard
@@ -87,12 +92,19 @@ export function keyPress(state: TypingState, key: string): TypingState {
   if (cursor === -1) return state
 
   const expected = active[cursor].char
-  if (fold(key) !== fold(expected)) {
+  const advanced = [...active]
+
+  if (fold(key) === fold(expected)) {
+    advanced[cursor] = { ...advanced[cursor], filled: true }
+  } else if (expected === ' ' && fold(key) === fold(active[cursor + 1]?.char ?? '')) {
+    // Typing straight through a space is fine too, so nobody is punished for
+    // the habit the old auto-spacing taught them.
+    advanced[cursor] = { ...advanced[cursor], filled: true }
+    advanced[cursor + 1] = { ...advanced[cursor + 1], filled: true }
+  } else {
     return { ...state, wrong: true }
   }
 
-  const advanced = [...active]
-  advanced[cursor] = { ...advanced[cursor], filled: true }
   const settled = skipAutomatic(advanced)
 
   if (state.phase === 'word') {
@@ -123,6 +135,11 @@ export function revealNext(state: TypingState): TypingState {
     if (cursor === -1) return slots
     const next = [...slots]
     next[cursor] = { ...next[cursor], filled: true }
+    // Carry any space that follows, so a hint never leaves the learner sitting
+    // on a space bar they now have to press themselves.
+    for (let i = cursor + 1; i < next.length && next[i].char === ' '; i++) {
+      next[i] = { ...next[i], filled: true }
+    }
     return next
   })
 }
@@ -170,9 +187,13 @@ export function revealWord(state: TypingState): TypingState {
     let reached = false
     for (let i = 0; i < next.length; i++) {
       if (next[i].filled) continue
-      if (reached && next[i].char === ' ') break
       next[i] = { ...next[i], filled: true }
-      if (next[i].char === ' ') break
+      // A word comes with the space that ends it; a space the cursor was
+      // already sitting on just leads into the word.
+      if (next[i].char === ' ') {
+        if (reached) break
+        continue
+      }
       reached = true
     }
     return next
