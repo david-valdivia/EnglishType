@@ -1,0 +1,55 @@
+import type { Chapter } from '../types'
+
+export const BODY_CHAPTERS: Omit<Chapter, 'group'>[] = [
+  {
+    id: 'body',
+    title: 'The Body',
+    icon: 'eye',
+    words: [
+      { id: 'eye', word: 'eye', translation: 'ojo', sentence: 'Something is in my eye.', icon: 'eye' },
+      { id: 'ear', word: 'ear', translation: 'oreja', sentence: 'My left ear hurts.', icon: 'ear' },
+      { id: 'nose', word: 'nose', translation: 'nariz', sentence: 'Her nose is red from the cold.', icon: 'nose' },
+      { id: 'mouth', word: 'mouth', translation: 'boca', sentence: 'Open your mouth, please.', icon: 'mouth' },
+      { id: 'tooth', word: 'tooth', translation: 'diente', sentence: 'The child lost a tooth.', icon: 'tooth' },
+      { id: 'tongue', word: 'tongue', translation: 'lengua', sentence: 'I burned my tongue.', icon: 'tongue' },
+      { id: 'hand', word: 'hand', translation: 'mano', sentence: 'Give me your hand.', icon: 'raised-hand' },
+      { id: 'foot', word: 'foot', translation: 'pie', sentence: 'My right foot is asleep.', icon: 'foot' },
+      { id: 'leg', word: 'leg', translation: 'pierna', sentence: 'He broke his leg skiing.', icon: 'leg' },
+      { id: 'bone', word: 'bone', translation: 'hueso', sentence: 'The dog buried a bone.', icon: 'bone' },
+    ],
+  },
+  {
+    id: 'clothes',
+    title: 'Clothes',
+    icon: 't-shirt',
+    words: [
+      { id: 'shirt', word: 'shirt', translation: 'camiseta', sentence: 'Your shirt is inside out.', icon: 't-shirt' },
+      { id: 'dress', word: 'dress', translation: 'vestido', sentence: 'She wore a blue dress.', icon: 'dress' },
+      { id: 'jeans', word: 'jeans', translation: 'vaqueros', sentence: 'These jeans are too tight.', icon: 'jeans' },
+      { id: 'shorts', word: 'shorts', translation: 'pantalones cortos', sentence: 'He packed two pairs of shorts.', icon: 'shorts' },
+      { id: 'coat', word: 'coat', translation: 'abrigo', sentence: 'Put on your coat.', icon: 'coat' },
+      { id: 'scarf', word: 'scarf', translation: 'bufanda', sentence: 'I knitted this scarf myself.', icon: 'scarf' },
+      { id: 'gloves', word: 'gloves', translation: 'guantes', sentence: 'I lost one of my gloves.', icon: 'gloves' },
+      { id: 'socks', word: 'socks', translation: 'calcetines', sentence: 'These socks do not match.', icon: 'socks' },
+      { id: 'hat', word: 'hat', translation: 'sombrero', sentence: 'That hat suits you.', icon: 'top-hat' },
+      { id: 'tie', word: 'tie', translation: 'corbata', sentence: 'He never wears a tie.', icon: 'necktie' },
+    ],
+  },
+  {
+    id: 'accessories',
+    title: 'Accessories',
+    icon: 'handbag',
+    words: [
+      { id: 'shoes', word: 'shoes', translation: 'zapatos', sentence: 'Take off your shoes, please.', icon: 'running-shoe' },
+      { id: 'boot', word: 'boot', translation: 'bota', sentence: 'There is a hole in my boot.', icon: 'hiking-boot' },
+      { id: 'bag', word: 'bag', translation: 'bolso', sentence: 'She left her bag on the train.', icon: 'handbag' },
+      { id: 'backpack', word: 'backpack', translation: 'mochila', sentence: 'My backpack is very heavy.', icon: 'backpack' },
+      { id: 'suitcase', word: 'suitcase', translation: 'maleta', sentence: 'The suitcase did not arrive.', icon: 'luggage' },
+      { id: 'glasses', word: 'glasses', translation: 'gafas', sentence: 'I cannot read without my glasses.', icon: 'glasses' },
+      { id: 'sunglasses', word: 'sunglasses', translation: 'gafas de sol', sentence: 'He wears sunglasses indoors.', icon: 'sunglasses' },
+      { id: 'watch', word: 'watch', translation: 'reloj', sentence: 'My watch has stopped.', icon: 'watch' },
+      { id: 'ring', word: 'ring', translation: 'anillo', sentence: 'The ring does not fit.', icon: 'ring' },
+      { id: 'umbrella', word: 'umbrella', translation: 'paraguas', sentence: 'Take an umbrella, it will rain.', icon: 'umbrella' },
+    ],
+  },
+]

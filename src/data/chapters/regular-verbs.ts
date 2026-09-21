@@ -1,0 +1,111 @@
+import type { Chapter } from '../types'
+
+/**
+ * Regular verbs carry `forms` too. The past and participle are identical and
+ * predictable, but typing "work worked worked" drills the -ed pattern and keeps
+ * every verb chapter behaving the same way.
+ */
+export const REGULAR_VERB_CHAPTERS: Omit<Chapter, 'group'>[] = [
+  {
+    id: 'regular-verbs-1',
+    title: 'Regular Verbs 1',
+    icon: 'memo',
+    words: [
+      { id: 'r-work', word: 'work', forms: ['worked', 'worked'], translation: 'trabajar', meaning: 'to do a job', sentence: 'She worked all weekend.', icon: 'briefcase' },
+      { id: 'r-play', word: 'play', forms: ['played', 'played'], translation: 'jugar', meaning: 'to take part in a game', sentence: 'They played until dark.', icon: 'video-game' },
+      { id: 'r-walk', word: 'walk', forms: ['walked', 'walked'], translation: 'caminar', meaning: 'to move on foot', sentence: 'We walked to the beach.', icon: 'footprints' },
+      { id: 'r-talk', word: 'talk', forms: ['talked', 'talked'], translation: 'hablar', meaning: 'to speak with someone', sentence: 'They talked for hours.', icon: 'speaking-head' },
+      { id: 'r-listen', word: 'listen', forms: ['listened', 'listened'], translation: 'escuchar', meaning: 'to pay attention to sound', sentence: 'He listened to the radio.', icon: 'ear' },
+      { id: 'r-watch', word: 'watch', forms: ['watched', 'watched'], translation: 'mirar', meaning: 'to look at for a while', sentence: 'We watched the sunset.', icon: 'eyes' },
+      { id: 'r-open', word: 'open', forms: ['opened', 'opened'], translation: 'abrir', meaning: 'to make something not closed', sentence: 'She opened the window.', icon: 'door' },
+      { id: 'r-close', word: 'close', forms: ['closed', 'closed'], translation: 'cerrar', meaning: 'to shut something', sentence: 'He closed the book.', icon: 'closed-book' },
+      { id: 'r-start', word: 'start', forms: ['started', 'started'], translation: 'empezar', meaning: 'to begin', sentence: 'The film started late.', icon: 'chequered-flag' },
+      { id: 'r-finish', word: 'finish', forms: ['finished', 'finished'], translation: 'terminar', meaning: 'to complete something', sentence: 'I finished the report.', icon: 'check-mark-button' },
+    ],
+  },
+  {
+    id: 'regular-verbs-2',
+    title: 'Regular Verbs 2',
+    icon: 'memo',
+    words: [
+      { id: 'r-cook', word: 'cook', forms: ['cooked', 'cooked'], translation: 'cocinar', meaning: 'to prepare food with heat', sentence: 'He cooked dinner for us.', icon: 'cooking' },
+      { id: 'r-clean', word: 'clean', forms: ['cleaned', 'cleaned'], translation: 'limpiar', meaning: 'to remove dirt', sentence: 'She cleaned the kitchen.', icon: 'soap' },
+      { id: 'r-wash', word: 'wash', forms: ['washed', 'washed'], translation: 'lavar', meaning: 'to clean with water', sentence: 'I washed the car.', icon: 'shower' },
+      { id: 'r-help', word: 'help', forms: ['helped', 'helped'], translation: 'ayudar', meaning: 'to make things easier for someone', sentence: 'They helped us move.', icon: 'handshake' },
+      { id: 'r-answer', word: 'answer', forms: ['answered', 'answered'], translation: 'responder', meaning: 'to reply to a question', sentence: 'Nobody answered the phone.', icon: 'telephone-receiver' },
+      { id: 'r-ask', word: 'ask', forms: ['asked', 'asked'], translation: 'preguntar', meaning: 'to put a question', sentence: 'She asked for directions.', icon: 'red-question-mark' },
+      { id: 'r-call', word: 'call', forms: ['called', 'called'], translation: 'llamar', meaning: 'to telephone someone', sentence: 'I called you twice.', icon: 'telephone' },
+      { id: 'r-wait', word: 'wait', forms: ['waited', 'waited'], translation: 'esperar', meaning: 'to stay until something happens', sentence: 'We waited in the rain.', icon: 'hourglass-not-done' },
+      { id: 'r-need', word: 'need', forms: ['needed', 'needed'], translation: 'necesitar', meaning: 'to require something', sentence: 'They needed more time.', icon: 'red-exclamation-mark' },
+      { id: 'r-want', word: 'want', forms: ['wanted', 'wanted'], translation: 'querer', meaning: 'to wish for something', sentence: 'He wanted a new bike.', icon: 'star-struck' },
+    ],
+  },
+  {
+    id: 'regular-verbs-3',
+    title: 'Regular Verbs 3',
+    icon: 'memo',
+    words: [
+      { id: 'r-learn', word: 'learn', forms: ['learned', 'learned'], translation: 'aprender', meaning: 'to gain knowledge', sentence: 'She learned Italian quickly.', icon: 'graduation-cap' },
+      { id: 'r-study', word: 'study', forms: ['studied', 'studied'], translation: 'estudiar', meaning: 'to spend time learning', sentence: 'He studied all night.', icon: 'books' },
+      { id: 'r-practise', word: 'practise', forms: ['practised', 'practised'], translation: 'practicar', meaning: 'to repeat to improve', sentence: 'They practised every day.', icon: 'musical-note' },
+      { id: 'r-repeat', word: 'repeat', forms: ['repeated', 'repeated'], translation: 'repetir', meaning: 'to say or do again', sentence: 'Could you repeat that?', icon: 'counterclockwise-arrows-button' },
+      { id: 'r-explain', word: 'explain', forms: ['explained', 'explained'], translation: 'explicar', meaning: 'to make something clear', sentence: 'She explained the rules.', icon: 'teacher' },
+      { id: 'r-remember', word: 'remember', forms: ['remembered', 'remembered'], translation: 'recordar', meaning: 'to keep in your memory', sentence: 'I remembered his face.', icon: 'brain' },
+      { id: 'r-decide', word: 'decide', forms: ['decided', 'decided'], translation: 'decidir', meaning: 'to make a choice', sentence: 'We decided to stay.', icon: 'thinking-face' },
+      { id: 'r-change', word: 'change', forms: ['changed', 'changed'], translation: 'cambiar', meaning: 'to make different', sentence: 'They changed the plan.', icon: 'clockwise-vertical-arrows' },
+      { id: 'r-try', word: 'try', forms: ['tried', 'tried'], translation: 'intentar', meaning: 'to make an attempt', sentence: 'He tried three times.', icon: 'flexed-biceps' },
+      { id: 'r-use', word: 'use', forms: ['used', 'used'], translation: 'usar', meaning: 'to employ for a purpose', sentence: 'She used my laptop.', icon: 'laptop' },
+    ],
+  },
+  {
+    id: 'regular-verbs-4',
+    title: 'Regular Verbs 4',
+    icon: 'memo',
+    words: [
+      { id: 'r-travel', word: 'travel', forms: ['travelled', 'travelled'], translation: 'viajar', meaning: 'to go from place to place', sentence: 'They travelled by train.', icon: 'luggage' },
+      { id: 'r-visit', word: 'visit', forms: ['visited', 'visited'], translation: 'visitar', meaning: 'to go to see someone', sentence: 'We visited my aunt.', icon: 'house-with-garden' },
+      { id: 'r-arrive', word: 'arrive', forms: ['arrived', 'arrived'], translation: 'llegar', meaning: 'to reach a place', sentence: 'The train arrived early.', icon: 'airplane-arrival' },
+      { id: 'r-stay', word: 'stay', forms: ['stayed', 'stayed'], translation: 'quedarse', meaning: 'to remain in a place', sentence: 'We stayed two nights.', icon: 'hotel' },
+      { id: 'r-book', word: 'book', forms: ['booked', 'booked'], translation: 'reservar', meaning: 'to reserve in advance', sentence: 'I booked a table.', icon: 'spiral-calendar' },
+      { id: 'r-carry', word: 'carry', forms: ['carried', 'carried'], translation: 'llevar', meaning: 'to hold and move something', sentence: 'He carried both bags.', icon: 'backpack' },
+      { id: 'r-climb', word: 'climb', forms: ['climbed', 'climbed'], translation: 'escalar', meaning: 'to go up something', sentence: 'They climbed the hill.', icon: 'snow-capped-mountain' },
+      { id: 'r-cross', word: 'cross', forms: ['crossed', 'crossed'], translation: 'cruzar', meaning: 'to go from one side to the other', sentence: 'We crossed the bridge.', icon: 'bridge-at-night' },
+      { id: 'r-follow', word: 'follow', forms: ['followed', 'followed'], translation: 'seguir', meaning: 'to go behind someone', sentence: 'The dog followed me home.', icon: 'footprints' },
+      { id: 'r-return', word: 'return', forms: ['returned', 'returned'], translation: 'volver', meaning: 'to come back', sentence: 'She returned on Monday.', icon: 'counterclockwise-arrows-button' },
+    ],
+  },
+  {
+    id: 'regular-verbs-5',
+    title: 'Regular Verbs 5',
+    icon: 'memo',
+    words: [
+      { id: 'r-love', word: 'love', forms: ['loved', 'loved'], translation: 'amar', meaning: 'to care about deeply', sentence: 'They loved that house.', icon: 'red-heart' },
+      { id: 'r-like', word: 'like', forms: ['liked', 'liked'], translation: 'gustar', meaning: 'to find pleasant', sentence: 'I liked the ending.', icon: 'thumbs-up' },
+      { id: 'r-hate', word: 'hate', forms: ['hated', 'hated'], translation: 'odiar', meaning: 'to dislike very strongly', sentence: 'He hated the noise.', icon: 'angry-face' },
+      { id: 'r-hope', word: 'hope', forms: ['hoped', 'hoped'], translation: 'esperar', meaning: 'to want something to happen', sentence: 'We hoped for good weather.', icon: 'crossed-fingers' },
+      { id: 'r-worry', word: 'worry', forms: ['worried', 'worried'], translation: 'preocuparse', meaning: 'to feel anxious', sentence: 'She worried about him.', icon: 'worried-face' },
+      { id: 'r-enjoy', word: 'enjoy', forms: ['enjoyed', 'enjoyed'], translation: 'disfrutar', meaning: 'to get pleasure from something', sentence: 'They enjoyed the concert.', icon: 'partying-face' },
+      { id: 'r-smile', word: 'smile', forms: ['smiled', 'smiled'], translation: 'sonreír', meaning: 'to make a happy face', sentence: 'The baby smiled at me.', icon: 'smiling-face-with-smiling-eyes' },
+      { id: 'r-laugh', word: 'laugh', forms: ['laughed', 'laughed'], translation: 'reír', meaning: 'to make sounds of amusement', sentence: 'Everyone laughed loudly.', icon: 'face-with-tears-of-joy' },
+      { id: 'r-cry', word: 'cry', forms: ['cried', 'cried'], translation: 'llorar', meaning: 'to produce tears', sentence: 'The child cried all night.', icon: 'crying-face' },
+      { id: 'r-thank', word: 'thank', forms: ['thanked', 'thanked'], translation: 'agradecer', meaning: 'to express gratitude', sentence: 'She thanked us warmly.', icon: 'folded-hands' },
+    ],
+  },
+  {
+    id: 'regular-verbs-6',
+    title: 'Regular Verbs 6',
+    icon: 'memo',
+    words: [
+      { id: 'r-add', word: 'add', forms: ['added', 'added'], translation: 'añadir', meaning: 'to put something with another', sentence: 'He added more salt.', icon: 'salt' },
+      { id: 'r-count', word: 'count', forms: ['counted', 'counted'], translation: 'contar', meaning: 'to say numbers in order', sentence: 'She counted the coins.', icon: 'abacus' },
+      { id: 'r-measure', word: 'measure', forms: ['measured', 'measured'], translation: 'medir', meaning: 'to find the size of something', sentence: 'We measured the room.', icon: 'straight-ruler' },
+      { id: 'r-fix', word: 'fix', forms: ['fixed', 'fixed'], translation: 'arreglar', meaning: 'to repair something', sentence: 'He fixed the tap.', icon: 'wrench' },
+      { id: 'r-paint', word: 'paint', forms: ['painted', 'painted'], translation: 'pintar', meaning: 'to cover with colour', sentence: 'They painted the door blue.', icon: 'artist-palette' },
+      { id: 'r-plant', word: 'plant', forms: ['planted', 'planted'], translation: 'plantar', meaning: 'to put into the ground to grow', sentence: 'We planted a tree.', icon: 'seedling' },
+      { id: 'r-order', word: 'order', forms: ['ordered', 'ordered'], translation: 'pedir', meaning: 'to request goods or food', sentence: 'I ordered a coffee.', icon: 'bellhop-bell' },
+      { id: 'r-deliver', word: 'deliver', forms: ['delivered', 'delivered'], translation: 'entregar', meaning: 'to bring to a place', sentence: 'They delivered it today.', icon: 'delivery-truck' },
+      { id: 'r-collect', word: 'collect', forms: ['collected', 'collected'], translation: 'coleccionar', meaning: 'to gather things together', sentence: 'He collected old stamps.', icon: 'postbox' },
+      { id: 'r-share', word: 'share', forms: ['shared', 'shared'], translation: 'compartir', meaning: 'to divide between people', sentence: 'They shared one umbrella.', icon: 'umbrella' },
+    ],
+  },
+]

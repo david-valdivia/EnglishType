@@ -1,0 +1,275 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { Word } from '../data'
+import { createTypingState, keyPress, revealNext, revealRest, revealWord } from '../engine/typing'
+import { taskFor, type Direction } from '../engine/task'
+import { Icon } from '../components/Icon'
+import { TypedLine } from '../components/TypedLine'
+import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
+import { say, speechProblem, speechSteps } from '../lib/speech'
+
+const cursorOf = (slots: { filled: boolean }[]) => slots.findIndex((slot) => !slot.filled)
+
+export function Exercise({
+  word,
+  direction,
+  position,
+  total,
+  marked,
+  onToggleMark,
+  onContinue,
+  onQuit,
+}: {
+  word: Word
+  direction: Direction
+  position: number
+  total: number
+  marked: boolean
+  onToggleMark: () => void
+  onContinue: (outcome: { usedHelp: boolean }) => void
+  onQuit: () => void
+}) {
+  const task = useMemo(() => taskFor(word, direction), [word, direction])
+  const [state, setState] = useState(() => createTypingState(task.answer, task.sentence))
+  const [audioWorks, setAudioWorks] = useState(true)
+  /** Set when the learner gives up on hearing it and asks to read it instead. */
+  const [sentenceShown, setSentenceShown] = useState(false)
+  const catcher = useRef<HTMLInputElement>(null)
+  const dictated = useRef(false)
+
+  /**
+   * Only a press decides whether audio works. Autoplay policy can refuse a
+   * speak that was not asked for, and treating that as a broken engine would
+   * give away the sentence in browsers that are perfectly capable of reading it.
+   */
+  const speak = (text: string, rate?: number) => {
+    void say(text, rate).then((outcome) => {
+      if (outcome !== 'superseded') setAudioWorks(outcome === 'spoken')
+    })
+  }
+
+  const speakUnprompted = (text: string, rate?: number) => {
+    void say(text, rate)
+  }
+
+  // Physical keyboards are handled on window; this focus is what makes a
+  // phone's on-screen keyboard appear.
+  const focusCatcher = () => catcher.current?.focus({ preventScroll: true })
+  useEffect(focusCatcher, [word])
+
+  // Reading the sentence out the moment it becomes the task is the whole point
+  // of dictation. The keystroke that finished the word is the gesture that
+  // permits it.
+  useEffect(() => {
+    if (state.phase !== 'sentence' || dictated.current) return
+    dictated.current = true
+    speakUnprompted(task.sentence, 0.85)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.phase])
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return
+
+      if (event.key === 'Enter') {
+        if (state.phase === 'done') {
+          event.preventDefault()
+          onContinue({ usedHelp: state.usedHelp })
+        }
+        return
+      }
+
+      if (event.key === 'Tab') {
+        event.preventDefault()
+        setState(state.phase === 'word' ? revealNext : revealWord)
+        return
+      }
+
+      if ([...event.key].length !== 1) return
+      event.preventDefault()
+      setState((current) => keyPress(current, event.key))
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [state.phase, state.usedHelp, onContinue])
+
+  // Clear the shake so the same wrong key can flash again.
+  useEffect(() => {
+    if (!state.wrong) return
+    const timer = setTimeout(() => setState((current) => ({ ...current, wrong: false })), 240)
+    return () => clearTimeout(timer)
+  }, [state.wrong])
+
+  const wordCursor = state.phase === 'word' ? cursorOf(state.word) : -1
+  const sentenceCursor = state.phase === 'sentence' ? cursorOf(state.sentence) : -1
+
+  const done = state.phase === 'done'
+  const onSentence = state.phase === 'sentence'
+  const progress = ((position - (done ? 0 : 1)) / total) * 100
+  const askingFor = direction === 'es-en' ? 'English' : 'Spanish'
+  // Dictation only works if the browser actually speaks; otherwise it has to be
+  // something to read.
+  const showSentenceText = sentenceShown || !audioWorks || done
+
+  return (
+    <div className="app">
+      <div className="shell topbar">
+        <button className="iconbtn" onClick={onQuit} aria-label="Back to chapters">
+          <BackGlyph />
+        </button>
+        <div className="track" role="progressbar" aria-valuenow={position} aria-valuemin={1} aria-valuemax={total}>
+          <i style={{ width: `${progress}%` }} />
+        </div>
+        <span className="count">
+          {position} / {total}
+        </span>
+      </div>
+
+      <div className="shell stage" onPointerDown={focusCatcher}>
+        <Icon name={word.icon} className="cue" />
+
+        <div className="prompt">
+          <p className="ask">Write it in {askingFor}</p>
+          <p className={`given ${task.promptLanguage}`} lang={task.promptLanguage}>
+            {task.prompt}
+          </p>
+          {task.meaning && <p className="gloss">{task.meaning}</p>}
+        </div>
+
+        <div className="answer-row">
+          <button className="side" onClick={() => speak(task.speech)} aria-label={`Listen to ${task.speech}`}>
+            <SpeakerGlyph />
+          </button>
+
+          <div className={`box word ${state.wrong && state.phase === 'word' ? 'shake' : ''}`}>
+            <TypedLine slots={state.word} size="lg" cursor={wordCursor} />
+          </div>
+
+          <button
+            className={`side ${marked ? 'on' : ''}`}
+            onClick={onToggleMark}
+            aria-pressed={marked}
+            aria-label={marked ? 'Remove from marked words' : 'Add to marked words'}
+          >
+            <StarGlyph filled={marked} />
+          </button>
+        </div>
+
+        {task.sentence && (
+          <div className="sentence-step">
+            <p className="ask">{onSentence ? 'Type what you hear' : 'Then a sentence, by ear'}</p>
+
+            <button className="play" onClick={() => speak(task.sentence, 0.85)}>
+              <SpeakerGlyph size={16} />
+              Play the sentence
+            </button>
+
+            {showSentenceText && (
+              <p className="model" lang="en">
+                {task.sentence}
+              </p>
+            )}
+
+            <div className={`box sentence ${state.wrong && onSentence ? 'shake' : ''}`}>
+              <TypedLine slots={state.sentence} size="sm" cursor={sentenceCursor} />
+            </div>
+          </div>
+        )}
+
+        {!done && (
+          <div className="hints">
+            {onSentence ? (
+              <>
+                <button className="hint" onClick={() => setState(revealWord)}>
+                  <EyeGlyph />
+                  Show a word
+                  <kbd>Tab</kbd>
+                </button>
+                {!showSentenceText && (
+                  <button className="hint" onClick={() => setSentenceShown(true)}>
+                    <EyeGlyph />
+                    Show the sentence
+                  </button>
+                )}
+                <button className="hint" onClick={() => setState(revealRest)}>
+                  <EyeGlyph />
+                  Fill it in
+                </button>
+              </>
+            ) : (
+              <button className="hint" onClick={() => setState(revealNext)}>
+                <EyeGlyph />
+                Show a letter
+                <kbd>Tab</kbd>
+              </button>
+            )}
+          </div>
+        )}
+
+        {!audioWorks && (
+          <div className="audio-help">
+            <p className="notice">{speechProblem()}</p>
+            <details>
+              <summary>How to turn it on</summary>
+              <ol>
+                {speechSteps().map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+            </details>
+            <button
+              className="hint"
+              onClick={() => {
+                // A retry is the only way to find out whether the setting took.
+                setAudioWorks(true)
+                speak(task.sentence || task.speech, 0.85)
+              }}
+            >
+              <SpeakerGlyph size={15} />
+              Try the sound again
+            </button>
+          </div>
+        )}
+
+        <input
+          ref={catcher}
+          className="typing-catcher"
+          aria-label={`Type the answer in ${askingFor}`}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          onChange={(event) => {
+            // Virtual keyboards often report key as "Unidentified", so the
+            // characters they insert here are the only signal we get.
+            for (const char of event.target.value) setState((current) => keyPress(current, char))
+            event.target.value = ''
+          }}
+        />
+      </div>
+
+      <div className="footer">
+        <div className="shell">
+          {done ? (
+            state.usedHelp ? (
+              <span className="verdict help">You will see this one again</span>
+            ) : (
+              <span className="verdict ok">
+                <CheckGlyph /> Correct!
+              </span>
+            )
+          ) : (
+            <span />
+          )}
+          <button
+            className={`cta ${done ? 'ready' : ''}`}
+            disabled={!done}
+            onClick={() => onContinue({ usedHelp: state.usedHelp })}
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
