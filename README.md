@@ -4,6 +4,9 @@ A vocabulary trainer where you learn each word by typing it, letter by letter,
 over a row of dashes — then type the example sentence the same way. Modelled on
 the Easy Vocabulary web app.
 
+Once an answer is right, the Spanish appears: the whole sentence underneath, and
+any single word by tapping it.
+
 You are never asked to guess. One side of the pair is always on screen and you
 produce the other. The example sentence is **dictation**: you hear it, replay it
 as often as you like, and type what you hear — with hints that give you one word
@@ -49,6 +52,21 @@ way in for a word you have never seen — uncover, keep typing, and spaced
 repetition brings it back sooner.
 
 Because it is pure, the whole interaction is tested without a DOM.
+
+**`src/data/translate.ts`** answers "what does this word mean?" for any word in
+any sentence. The vocabulary wins over the glossary, so a word studied as an
+entry shows the sense it was studied in, and regular inflections fall back to
+their base — which keeps `glossary.ts` down to the words that genuinely need an
+author rather than every plural and past tense.
+
+Multi-word entries deliberately contribute nothing per word. Splitting "hit the
+road" would teach that "road" means *ponerse en marcha*: a phrase's translation
+belongs to the phrase.
+
+**`src/data/sentences-es.ts`** holds the Spanish for all 800 example sentences,
+keyed by entry id and kept apart from the chapters so the English stays
+readable. A test checks the two sides match exactly — no untranslated sentence,
+no orphan translation.
 
 **`src/lib/speech.ts`** reads the English aloud, and the dictation depends on
 it. One rule governs the whole file: **`speak()` must be called synchronously

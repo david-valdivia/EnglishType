@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../data'
 import { createTypingState, keyPress, revealNext, revealRest, revealWord } from '../engine/typing'
 import { taskFor, type Direction } from '../engine/task'
+import { translateToken } from '../data/translate'
+import { SENTENCES_ES } from '../data/sentences-es'
 import { Icon } from '../components/Icon'
 import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
@@ -33,6 +35,8 @@ export function Exercise({
   const [audioWorks, setAudioWorks] = useState(true)
   /** Set when the learner gives up on hearing it and asks to read it instead. */
   const [sentenceShown, setSentenceShown] = useState(false)
+  /** The word the learner last asked the meaning of. */
+  const [asked, setAsked] = useState<{ word: string; meaning: string } | null>(null)
   const catcher = useRef<HTMLInputElement>(null)
   const dictated = useRef(false)
 
@@ -55,6 +59,8 @@ export function Exercise({
   // phone's on-screen keyboard appear.
   const focusCatcher = () => catcher.current?.focus({ preventScroll: true })
   useEffect(focusCatcher, [word])
+
+  useEffect(() => setAsked(null), [word])
 
   // Reading the sentence out the moment it becomes the task is the whole point
   // of dictation. The keystroke that finished the word is the gesture that
@@ -103,6 +109,12 @@ export function Exercise({
   const wordCursor = state.phase === 'word' ? cursorOf(state.word) : -1
   const sentenceCursor = state.phase === 'sentence' ? cursorOf(state.sentence) : -1
 
+  const askMeaning = (tapped: string) => {
+    // The tapped chunk carries its punctuation; the label should not.
+    const clean = tapped.replace(/^[^\p{Letter}\p{Number}]+|[^\p{Letter}\p{Number}]+$/gu, '')
+    setAsked({ word: clean || tapped, meaning: translateToken(tapped) ?? 'sin traducción' })
+  }
+
   const done = state.phase === 'done'
   const onSentence = state.phase === 'sentence'
   const progress = ((position - (done ? 0 : 1)) / total) * 100
@@ -142,7 +154,12 @@ export function Exercise({
           </button>
 
           <div className={`box word ${state.wrong && state.phase === 'word' ? 'shake' : ''}`}>
-            <TypedLine slots={state.word} size="lg" cursor={wordCursor} />
+            <TypedLine
+              slots={state.word}
+              size="lg"
+              cursor={wordCursor}
+              onWord={state.phase === 'word' ? undefined : askMeaning}
+            />
           </div>
 
           <button
@@ -171,8 +188,15 @@ export function Exercise({
             )}
 
             <div className={`box sentence ${state.wrong && onSentence ? 'shake' : ''}`}>
-              <TypedLine slots={state.sentence} size="sm" cursor={sentenceCursor} />
+              <TypedLine
+                slots={state.sentence}
+                size="sm"
+                cursor={sentenceCursor}
+                onWord={done ? askMeaning : undefined}
+              />
             </div>
+
+            {done && <p className="sentence-es">{SENTENCES_ES[word.id]}</p>}
           </div>
         )}
 
@@ -204,6 +228,18 @@ export function Exercise({
               </button>
             )}
           </div>
+        )}
+
+        {done && (
+          <p className="tap-hint">
+            {asked ? (
+              <>
+                <b>{asked.word}</b> — {asked.meaning}
+              </>
+            ) : (
+              'Tap any word to see what it means'
+            )}
+          </p>
         )}
 
         {!audioWorks && (

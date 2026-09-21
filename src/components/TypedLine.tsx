@@ -28,16 +28,31 @@ export function TypedLine({
   slots,
   size,
   cursor,
+  onWord,
 }: {
   slots: Slot[]
   size: 'lg' | 'sm'
   /** Index of the slot waiting for a key, or -1 when this line is not active. */
   cursor: number
+  /** When given, each finished word becomes a button that asks for its meaning. */
+  onWord?: (word: string) => void
 }) {
   return (
     <div className={`slots ${size}`}>
-      {toChunks(slots).map((chunk) => (
-        <span className="chunk" key={chunk.key}>
+      {toChunks(slots).map((chunk) => {
+        const text = chunk.slots
+          .map(({ slot }) => slot.char)
+          .join('')
+          .trim()
+        const askable = Boolean(onWord) && text.length > 0 && chunk.slots.every(({ slot }) => slot.filled)
+        const Tag = askable ? 'button' : 'span'
+
+        return (
+        <Tag
+          className={`chunk ${askable ? 'askable' : ''}`}
+          key={chunk.key}
+          {...(askable ? { onClick: () => onWord?.(text), title: `What does "${text}" mean?` } : {})}
+        >
           {chunk.slots.map(({ slot, index }) => {
             const isGap = slot.char === ' '
             const isPunct = !slot.typeable && !isGap
@@ -60,8 +75,9 @@ export function TypedLine({
               </span>
             )
           })}
-        </span>
-      ))}
+        </Tag>
+        )
+      })}
     </div>
   )
 }

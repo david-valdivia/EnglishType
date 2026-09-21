@@ -141,6 +141,23 @@ Typing Spanish brought accents with it, so letter comparison folds diacritics �
 `delfin` is accepted for `delfín`. `ñ` is excluded from the folding: it is a
 distinct letter in Spanish, not an accented `n`.
 
+## Seeing the meaning
+
+Answering correctly is not the same as understanding. A learner who types
+"Always log out afterwards." by ear may still not know what *afterwards* means,
+so once an answer is right the Spanish appears — the sentence as a whole, and
+any individual word on tap.
+
+Per-word translation needed a source for the 1,232 distinct words the sentences
+use. 812 were already vocabulary entries; the rest became `glossary.ts`, kept
+small by resolving regular inflections to their base at lookup time.
+
+One trap surfaced while wiring it up: mapping each part of a multi-word entry to
+that entry's translation taught nonsense — "road" meaning *ponerse en marcha*
+from "hit the road", "your" meaning *apretarse el cinturón* from "tighten your
+belt". Only single-word entries contribute per-word meanings now, and the
+glossary covers the rest.
+
 ## Speech
 
 Three real bugs, the third of my own making. The first two were found by

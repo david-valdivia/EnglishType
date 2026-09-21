@@ -483,6 +483,34 @@ button {
 
 .chunk { display: inline-flex; }
 
+button.chunk {
+  border-radius: 6px;
+  padding: 0;
+  transition: background 120ms ease;
+}
+
+button.chunk.askable { cursor: help; }
+button.chunk.askable:hover { background: #e7f4ec; }
+.box.sentence button.chunk.askable:hover { background: #ececf7; }
+
+.sentence-es {
+  margin: 10px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--indigo);
+  text-align: center;
+}
+
+.tap-hint {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-align: center;
+  min-height: 20px;
+}
+
+.tap-hint b { color: var(--ink); }
+
 .slot {
   display: inline-flex;
   flex-direction: column;
@@ -630,6 +658,13 @@ button {
   color: var(--ink-soft);
   margin-top: 6px;
   font-style: italic;
+}
+
+.word-card .example-es {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--indigo);
+  margin-top: 5px;
 }
 
 .word-card .say {

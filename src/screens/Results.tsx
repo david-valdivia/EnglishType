@@ -1,5 +1,6 @@
 import { displayForms, typingTarget, type Word } from '../data'
 import type { Direction } from '../engine/task'
+import { SENTENCES_ES } from '../data/sentences-es'
 import { Icon } from '../components/Icon'
 import { SpeakerGlyph } from '../components/Glyphs'
 import { say } from '../lib/speech'
@@ -45,6 +46,7 @@ export function Results({
               {word.meaning && <div className="gloss-sm">{word.meaning}</div>}
               {/* In this direction the example was never typed, so show it here. */}
               {direction === 'en-es' && <div className="example">{word.sentence}</div>}
+              <div className="example-es">{SENTENCES_ES[word.id]}</div>
             </div>
           ))}
         </div>
