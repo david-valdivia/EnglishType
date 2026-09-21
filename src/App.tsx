@@ -42,7 +42,7 @@ type View =
   | { name: 'home' }
   | { name: 'loading' }
   | { name: 'failed' }
-  | { name: 'exercise'; title: string; words: Word[]; index: number; helped: number }
+  | { name: 'exercise'; title: string; words: Word[]; index: number; helped: number; run: number }
   | { name: 'results'; title: string; words: Word[]; helped: number }
 
 export default function App() {
@@ -95,6 +95,7 @@ export default function App() {
         words: deckOrder(words, deck.keepOrder ?? false),
         index: 0,
         helped: 0,
+        run: Date.now(),
       })
     } catch {
       setView({ name: 'failed' })
@@ -137,7 +138,9 @@ export default function App() {
 
     return (
       <Exercise
-        key={`${view.title}-${view.index}-${direction}`}
+        // Keyed by the run, not the word: changing word must not remount this
+        // screen, or a phone closes the keyboard between every exercise.
+        key={`${view.run}-${direction}`}
         word={word}
         direction={direction}
         position={view.index + 1}
@@ -171,6 +174,7 @@ export default function App() {
           words: shuffle(view.words),
           index: 0,
           helped: 0,
+          run: Date.now(),
         })
       }
       onHome={goHome}

@@ -118,8 +118,8 @@ machine being used rather than a machine. A wrong key stays silent: the box
 already shakes, and sounding it too would be punishing the same mistake twice.
 
 It also marks the end of an exercise with a sound: a rising
-triad when the answer was found, one flat note when it was revealed, and a
-fuller fanfare on the results screen — the same triad run up an octave and held,
+triad when the answer was found, a smaller two-note rise when it was revealed,
+and a fuller fanfare on the results screen — the same triad run up an octave and held,
 so finishing a chapter is recognisably the little chime's big brother. It is
 synthesised with Web Audio rather than loaded, so there is no audio file to ship
 and nothing to fail on a slow connection — and it works in browsers where

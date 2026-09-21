@@ -152,6 +152,23 @@ The rest of the grammar section is patterns typed as phrases — `should have`,
 `going to rain`, `have not yet`. The engine already handled multi-word answers,
 so nothing there changed either.
 
+## The phone could not be typed on
+
+Two faults, both invisible on a laptop.
+
+The exercise screen was keyed by the word, so every "Continue" remounted the
+whole component — including the hidden input that holds the keyboard open. A
+phone closes its keyboard when the field being typed into disappears, and
+focusing a fresh node afterwards does not bring it back without a tap. The key
+is now the run rather than the word, and the per-word reset happens in place.
+
+And with the keyboard open a phone leaves about 380px of height, where the page
+needed 623. The sentence and the Continue button were simply below the fold.
+Short viewports now shed their decoration — the illustration goes first, since
+the prompt already names the word — and the footer is sticky, so Continue is
+never the thing pushed off screen. At 375x400 the page is exactly 400px with the
+word, the sentence and Continue all in view.
+
 ## Ten was a floor, not a ceiling
 
 A chapter of exactly ten can be exhausted in one sitting, and then reopening it
@@ -237,7 +254,7 @@ shipping an asset, and partly because Web Audio is demonstrably the more
 reliable of the two audio paths: in the browser this was developed against, an
 oscillator plays and `speechSynthesis` never makes a sound.
 
-A rising triad when the answer was found, one flat note when it was revealed —
+A rising triad when the answer was found, a smaller rise when it was revealed —
 the same distinction the verdict line already makes, in a form you do not have
 to read. Finishing a whole chapter gets the same triad run up an octave and
 held, so the reward for ten is audibly bigger than the reward for one without

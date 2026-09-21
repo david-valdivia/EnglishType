@@ -15,8 +15,15 @@ const SUCCESS: Note[] = [
   { hz: 880.0, at: 0.18, for: 0.22 }, // A5
 ]
 
-/** One flat note: finished, but the answer was given away. */
-const HELPED: Note[] = [{ hz: 392.0, at: 0, for: 0.18 }]
+/**
+ * Finished, but with help. Still a rise, just a smaller one: revealing a single
+ * letter of a long sentence should not be answered with a sound that reads as
+ * failure.
+ */
+const HELPED: Note[] = [
+  { hz: 493.88, at: 0, for: 0.12 }, // B4
+  { hz: 587.33, at: 0.08, for: 0.18 }, // D5
+]
 
 /**
  * The end of a whole chapter. A run up the same triad and then the octave held
@@ -119,7 +126,7 @@ export function playKey(): void {
 export const playSuccess = (): void => play(SUCCESS, 0.14)
 
 /** Finished, but the answer was revealed along the way. */
-export const playHelped = (): void => play(HELPED, 0.08)
+export const playHelped = (): void => play(HELPED, 0.1)
 
 /** A whole chapter finished. */
 export const playVictory = (): void => play(VICTORY, 0.12)

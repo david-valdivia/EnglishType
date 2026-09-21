@@ -47,6 +47,23 @@ export function Exercise({
    */
   const shiftAlone = useRef(false)
 
+  /**
+   * A new word resets the exercise here rather than by remounting the whole
+   * screen. Remounting destroyed the hidden input, and a phone closes its
+   * keyboard when the field it was typing into disappears — refocusing a fresh
+   * node does not bring it back without a tap.
+   */
+  const [shownWord, setShownWord] = useState(word.id)
+  if (shownWord !== word.id) {
+    setShownWord(word.id)
+    setState(createTypingState(task.answer, task.sentence))
+    setSentenceShown(false)
+    setAsked(null)
+    dictated.current = false
+    chimed.current = false
+  }
+
+
   /** What Shift replays: whichever line is being written. */
   const replayText =
     state.phase === 'sentence' && task.sentence ? task.sentence : task.speech
@@ -141,6 +158,15 @@ export function Exercise({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase, state.usedHelp, onContinue, replayText])
+
+  // A phone keyboard can cover the line being typed, so bring it back into
+  // view whenever the exercise moves from the word to the sentence.
+  useEffect(() => {
+    if (state.phase !== 'sentence') return
+    document
+      .querySelector('.box.sentence')
+      ?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }, [state.phase])
 
   // Clear the shake so the same wrong key can flash again.
   useEffect(() => {

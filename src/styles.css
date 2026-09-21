@@ -23,6 +23,12 @@
 
 html, body, #root { height: 100%; }
 
+/* Dynamic viewport units, so an open keyboard shortens the app rather than
+   pushing half of it out of reach. */
+@supports (height: 100dvh) {
+  #root { min-height: 100dvh; }
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -613,6 +619,10 @@ button.chunk.askable:hover { background: #e7f4ec; }
 .footer {
   border-top: 1px solid var(--line);
   background: #fbf9fc;
+  /* Continue must never be the thing an open keyboard pushes off screen. */
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
 }
 
 .footer .shell {
@@ -751,6 +761,46 @@ button.chunk.askable:hover { background: #e7f4ec; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/*
+ * An open phone keyboard leaves about 380px of height. Everything that is
+ * decoration at that size gets out of the way, so the line being typed and the
+ * Continue button both stay on screen.
+ */
+@media (max-height: 620px) {
+  .cue { width: 56px; height: 56px; }
+  .stage { gap: 8px; padding: 6px 0 4px; }
+  .prompt .given { font-size: 21px; }
+  .prompt .ask { font-size: 11px; }
+  .gloss { font-size: 13px; }
+  .box { min-height: 52px; padding: 8px 12px; }
+  .slots.lg { font-size: 22px; }
+  .slots.sm { font-size: 15px; }
+  .sentence-step .ask { margin-bottom: 2px; }
+  .sentence-step .box { margin-top: 6px; }
+  .play { padding: 6px 14px; font-size: 13px; }
+  .hint { padding: 6px 12px; font-size: 13px; }
+  .footer .shell { min-height: 52px; padding: 8px 0; }
+  .cta { padding: 9px 22px; }
+  .audio-help { display: none; }
+}
+
+/* Barely any height left: the illustration is the first thing to go, since the
+   prompt already says what the word is. */
+@media (max-height: 520px) {
+  .cue { display: none; }
+  .sentence-step .ask { display: none; }
+  .play { padding: 5px 12px; font-size: 12px; }
+  .topbar { padding: 8px 0 4px; }
+}
+
+/* No physical keyboard, so the shortcuts are noise. */
+@media (hover: none) and (pointer: coarse) {
+  .hint kbd,
+  .play kbd {
+    display: none;
+  }
 }
 
 @media (max-width: 560px) {
