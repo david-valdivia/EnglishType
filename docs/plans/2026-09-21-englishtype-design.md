@@ -181,6 +181,20 @@ from "hit the road", "your" meaning *apretarse el cinturón* from "tighten your
 belt". Only single-word entries contribute per-word meanings now, and the
 glossary covers the rest.
 
+## Illustrations that do not arrive
+
+A learner reported a broken-image box mid-exercise. An audit of all 522
+illustrations against production found every one serving correctly, so the file
+was never missing — the request was.
+
+Two causes, both mine. The home screen requested a hundred images at once, which
+is how a flaky connection drops a few; they load lazily now, which cut the
+requests on first paint from 100 to 61 on a laptop and far fewer on a phone. And
+a failed request produced the browser's broken-image box, which is uglier than
+nothing and says nothing. One retry against a different URL — the same URL
+serves the cached failure — then a quiet placeholder that keeps the card's shape
+and label.
+
 ## The completion sound
 
 Synthesised with Web Audio, not loaded from a file. That is partly to avoid

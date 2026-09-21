@@ -184,7 +184,7 @@ export function Exercise({
       </div>
 
       <div className="shell stage" onPointerDown={focusCatcher}>
-        <Icon name={word.icon} className="cue" />
+        <Icon name={word.icon} className="cue" priority />
 
         <div className="prompt">
           <p className="ask">{instruction}</p>

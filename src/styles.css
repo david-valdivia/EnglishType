@@ -262,7 +262,25 @@ button {
 .chapter:hover { border-color: var(--green-line); transform: translateY(-2px); }
 .chapter.complete { border-color: var(--green-line); }
 
-.chapter img { width: 62px; height: 62px; }
+.chapter img,
+.chapter .icon-missing {
+  width: 62px;
+  height: 62px;
+}
+
+/* Shown only when an illustration genuinely fails to arrive. Quiet on purpose:
+   better an empty frame than a broken-image box. */
+.icon-missing {
+  display: inline-block;
+  border-radius: 14px;
+  background: repeating-linear-gradient(
+    45deg,
+    #efecf3,
+    #efecf3 6px,
+    #e7e3ee 6px,
+    #e7e3ee 12px
+  );
+}
 .chapter .name { font-weight: 800; margin-top: 10px; }
 .chapter .meta { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
