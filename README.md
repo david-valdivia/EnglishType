@@ -13,7 +13,7 @@ as often as you like, and type what you hear — with hints that give you one wo
 at a time rather than the whole thing. When you have never met a word before,
 the hint uncovers it a letter at a time.
 
-**120 chapters, 1,200 entries**, grouped on the home screen: concrete vocabulary
+**120 chapters, 1,370 entries**, grouped on the home screen: concrete vocabulary
 (food, animals, the body, the world, everyday life), then **adjectives**,
 **verbs**, **phrasal verbs**, **idioms**, and a section for working in English —
 meetings, chat and email, presentations, and the language of software
@@ -70,10 +70,10 @@ them against the chapters, so a stale file fails the test run rather than
 quietly serving the wrong thing.
 
 ```
-initial          273 kB   (86 kB gzipped)
-each chapter    3-13 kB   on demand
-translations     39 kB    with the first exercise
-lexicon          24 kB    with the first exercise
+initial          275 kB   (87 kB gzipped)
+each chapter    3-16 kB   on demand
+translations     57 kB    with the first exercise
+lexicon          31 kB    with the first exercise
 ```
 
 ## How it works

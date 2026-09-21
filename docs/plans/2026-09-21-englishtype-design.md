@@ -16,7 +16,7 @@ row of dashes, then types the example sentence the same way.
 | Storage | `localStorage` | No accounts in scope, so a backend would buy nothing. |
 | Native language | Spanish | The user is the first learner. |
 | Artwork | Microsoft Fluent Emoji (MIT) | Colourful flat illustrations, permissive licence, no per-icon attribution. Noto Emoji (Apache 2.0) is the fallback. |
-| Content | 120 chapters x 10 words | Enough for the app to feel real without a long content pass before anything is testable. |
+| Content | 120 chapters, 1,370 words | Enough for the app to feel real without a long content pass before anything is testable. |
 
 ### Artwork: what was rejected and why
 
@@ -151,6 +151,17 @@ adjective and base/past/participle for a verb.
 The rest of the grammar section is patterns typed as phrases — `should have`,
 `going to rain`, `have not yet`. The engine already handled multi-word answers,
 so nothing there changed either.
+
+## Ten was a floor, not a ceiling
+
+A chapter of exactly ten can be exhausted in one sitting, and then reopening it
+shows the same ten in the same order. Shuffling fixed the order; it could not
+fix the depth.
+
+The concrete chapters people actually reach for — kitchen, rooms, bathroom,
+tools, the five food chapters, the five animal chapters, the body, clothes,
+accessories — are twenty words each now, and the test that demanded exactly ten
+asks for at least ten instead.
 
 ## Spaces are typed
 

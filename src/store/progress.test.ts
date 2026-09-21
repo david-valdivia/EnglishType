@@ -88,6 +88,9 @@ describe('chapterProgress', () => {
     p = recordAnswer(p, 'cup', { usedHelp: false }, now)
     p = recordAnswer(p, 'spoon', { usedHelp: false }, now)
     p = recordAnswer(p, 'dog', { usedHelp: false }, now) // another chapter
-    expect(chapterProgress(p, kitchen.words.map((w) => w.id))).toEqual({ done: 2, total: 10 })
+    expect(chapterProgress(p, kitchen.words.map((w) => w.id))).toEqual({
+      done: 2,
+      total: kitchen.words.length,
+    })
   })
 })
