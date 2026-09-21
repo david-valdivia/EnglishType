@@ -204,7 +204,9 @@ oscillator plays and `speechSynthesis` never makes a sound.
 
 A rising triad when the answer was found, one flat note when it was revealed —
 the same distinction the verdict line already makes, in a form you do not have
-to read.
+to read. Finishing a whole chapter gets the same triad run up an octave and
+held, so the reward for ten is audibly bigger than the reward for one without
+being a different sound.
 
 ## Speech
 

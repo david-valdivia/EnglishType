@@ -88,7 +88,9 @@ readable. A test checks the two sides match exactly — no untranslated sentence
 no orphan translation.
 
 **`src/lib/chime.ts`** marks the end of an exercise with a sound: a rising
-triad when the answer was found, one flat note when it was revealed. It is
+triad when the answer was found, one flat note when it was revealed, and a
+fuller fanfare on the results screen — the same triad run up an octave and held,
+so finishing a chapter is recognisably the little chime's big brother. It is
 synthesised with Web Audio rather than loaded, so there is no audio file to ship
 and nothing to fail on a slow connection — and it works in browsers where
 `speechSynthesis` silently does not, which is the more common failure of the

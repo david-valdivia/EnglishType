@@ -1,9 +1,11 @@
+import { useEffect, useRef } from 'react'
 import { displayForms, typingTarget, type Word } from '../data'
 import type { Direction } from '../engine/task'
 import { SENTENCES_ES } from '../data/sentences-es'
 import { Icon } from '../components/Icon'
 import { SpeakerGlyph } from '../components/Glyphs'
 import { say } from '../lib/speech'
+import { playVictory } from '../lib/chime'
 
 export function Results({
   words,
@@ -18,6 +20,15 @@ export function Results({
   onRetry: () => void
   onHome: () => void
 }) {
+  // Guarded, because React mounts effects twice in development and one
+  // fanfare is plenty.
+  const sounded = useRef(false)
+  useEffect(() => {
+    if (sounded.current) return
+    sounded.current = true
+    playVictory()
+  }, [])
+
   return (
     <div className="app">
       <div className="shell topbar">
