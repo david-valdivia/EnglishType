@@ -181,6 +181,17 @@ from "hit the road", "your" meaning *apretarse el cinturón* from "tighten your
 belt". Only single-word entries contribute per-word meanings now, and the
 glossary covers the rest.
 
+## The completion sound
+
+Synthesised with Web Audio, not loaded from a file. That is partly to avoid
+shipping an asset, and partly because Web Audio is demonstrably the more
+reliable of the two audio paths: in the browser this was developed against, an
+oscillator plays and `speechSynthesis` never makes a sound.
+
+A rising triad when the answer was found, one flat note when it was revealed —
+the same distinction the verdict line already makes, in a form you do not have
+to read.
+
 ## Speech
 
 Three real bugs, the third of my own making. The first two were found by

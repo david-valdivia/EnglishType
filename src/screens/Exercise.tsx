@@ -8,6 +8,7 @@ import { Icon } from '../components/Icon'
 import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
+import { playHelped, playSuccess } from '../lib/chime'
 
 const cursorOf = (slots: { filled: boolean }[]) => slots.findIndex((slot) => !slot.filled)
 
@@ -39,6 +40,7 @@ export function Exercise({
   const [asked, setAsked] = useState<{ word: string; meaning: string } | null>(null)
   const catcher = useRef<HTMLInputElement>(null)
   const dictated = useRef(false)
+  const chimed = useRef(false)
   /**
    * Shift on its own replays the line being written. It is tracked across
    * keydown and keyup because Shift is also held to type a capital — firing on
@@ -71,6 +73,15 @@ export function Exercise({
   useEffect(focusCatcher, [word])
 
   useEffect(() => setAsked(null), [word])
+
+  // Mark the end of the exercise with a sound. Guarded, because React mounts
+  // effects twice in development and one chime is plenty.
+  useEffect(() => {
+    if (state.phase !== 'done' || chimed.current) return
+    chimed.current = true
+    if (state.usedHelp) playHelped()
+    else playSuccess()
+  }, [state.phase, state.usedHelp])
 
   // Reading the sentence out the moment it becomes the task is the whole point
   // of dictation. The keystroke that finished the word is the gesture that
