@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { CHAPTER_GROUPS, type Word } from '../data'
+import { CHAPTER_INDEX } from '../data/manifest'
+import type { ChapterSummary } from '../data/summary'
 import { Icon } from '../components/Icon'
 import { chapterProgress, type Progress } from '../store/progress'
 import { DIRECTIONS, type Direction } from '../engine/task'
@@ -8,7 +9,18 @@ import { useSpeechOutlook } from '../lib/useSpeechOutlook'
 
 const DISMISSED = 'englishtype:audio-notice-dismissed:v1'
 
-export type Deck = { title: string; words: Word[] }
+/** Chapters under each heading, in the order the headings should appear. */
+function groupChapters(chapters: ChapterSummary[]) {
+  const groups: { group: string; chapters: ChapterSummary[] }[] = []
+  for (const chapter of chapters) {
+    const last = groups.at(-1)
+    if (last?.group === chapter.group) last.chapters.push(chapter)
+    else groups.push({ group: chapter.group, chapters: [chapter] })
+  }
+  return groups
+}
+
+export type Deck = { title: string; wordIds: string[] }
 
 export function Home({
   progress,
@@ -90,55 +102,55 @@ export function Home({
         <div className="deck-row">
           <button
             className="deck review"
-            disabled={review.words.length === 0}
+            disabled={review.wordIds.length === 0}
             onClick={() => onStart(review)}
           >
             <Icon name="counterclockwise-arrows-button" className="glyph" />
             <span className="name">Review</span>
             <span className="meta">
-              {review.words.length === 0 ? 'Nothing due today' : `${review.words.length} due today`}
+              {review.wordIds.length === 0 ? 'Nothing due today' : `${review.wordIds.length} due today`}
             </span>
           </button>
 
           <button
             className="deck marked"
-            disabled={marked.words.length === 0}
+            disabled={marked.wordIds.length === 0}
             onClick={() => onStart(marked)}
           >
             <Icon name="star" className="glyph" />
             <span className="name">Marked words</span>
             <span className="meta">
-              {marked.words.length === 0 ? 'Star a word to add it' : `${marked.words.length} saved`}
+              {marked.wordIds.length === 0 ? 'Star a word to add it' : `${marked.wordIds.length} saved`}
             </span>
           </button>
 
           <button className="deck random" onClick={() => onStart(random)}>
             <Icon name="game-die" className="glyph" />
             <span className="name">Random words</span>
-            <span className="meta">from all {all.words.length} words</span>
+            <span className="meta">from all {all.wordIds.length} words</span>
           </button>
 
           <button className="deck every" onClick={() => onStart(all)}>
             <Icon name="shuffle-tracks-button" className="glyph" />
             <span className="name">All words</span>
             <span className="meta">
-              {learnedTotal} / {all.words.length}
+              {learnedTotal} / {all.wordIds.length}
             </span>
           </button>
         </div>
 
-        {CHAPTER_GROUPS.map(({ group, chapters }) => (
+        {groupChapters(CHAPTER_INDEX).map(({ group, chapters }) => (
           <section className="group" key={group}>
             <h2 className="section-title">{group}</h2>
             <div className="chapter-grid">
               {chapters.map((chapter) => {
-                const { done, total } = chapterProgress(progress, chapter)
+                const { done, total } = chapterProgress(progress, chapter.wordIds)
                 const complete = done === total
                 return (
                   <button
                     key={chapter.id}
                     className={`chapter ${complete ? 'complete' : ''}`}
-                    onClick={() => onStart({ title: chapter.title, words: chapter.words })}
+                    onClick={() => onStart({ title: chapter.title, wordIds: chapter.wordIds })}
                   >
                     {complete && <span className="badge">✓</span>}
                     <Icon name={chapter.icon} />

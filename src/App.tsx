@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
-import { ALL_WORDS, WORDS_BY_ID, type Word } from './data'
+import type { Word } from './data/types'
+import { CHAPTER_INDEX } from './data/manifest'
+import { loadExerciseText, loadWords } from './data/load'
 import { dueWords } from './engine/srs'
 import {
   loadProgress,
@@ -33,10 +35,14 @@ const saveDirection = (direction: Direction): void => {
   }
 }
 
+const ALL_IDS = CHAPTER_INDEX.flatMap((chapter) => chapter.wordIds)
+
 type View =
   | { name: 'home' }
-  | { name: 'exercise'; deck: Deck; index: number; helped: number }
-  | { name: 'results'; deck: Deck; helped: number }
+  | { name: 'loading' }
+  | { name: 'failed' }
+  | { name: 'exercise'; title: string; words: Word[]; index: number; helped: number }
+  | { name: 'results'; title: string; words: Word[]; helped: number }
 
 const shuffle = <T,>(items: T[]): T[] => {
   const out = [...items]
@@ -70,27 +76,46 @@ export default function App() {
     setProgress(next)
   }, [])
 
-  const decks = useMemo(() => {
-    const due = dueWords(progress.reviews, now)
-      .map((id) => WORDS_BY_ID.get(id))
-      .filter((word): word is Word => Boolean(word))
+  const decks = useMemo(
+    () => ({
+      review: { title: 'Review', wordIds: dueWords(progress.reviews, now).slice(0, 10) },
+      marked: { title: 'Marked words', wordIds: progress.marked },
+      random: { title: 'Random words', wordIds: shuffle(ALL_IDS).slice(0, 10) },
+      all: { title: 'All words', wordIds: ALL_IDS },
+    }),
+    [progress, now],
+  )
 
-    return {
-      review: { title: 'Review', words: due.slice(0, 10) },
-      marked: {
-        title: 'Marked words',
-        words: progress.marked
-          .map((id) => WORDS_BY_ID.get(id))
-          .filter((word): word is Word => Boolean(word)),
-      },
-      random: { title: 'Random words', words: shuffle(ALL_WORDS).slice(0, 10) },
-      all: { title: 'All words', words: ALL_WORDS },
+  /** Fetches a deck's words, and the text an exercise needs, before starting. */
+  const start = useCallback(async (deck: Deck) => {
+    if (deck.wordIds.length === 0) return
+    setView({ name: 'loading' })
+    try {
+      const [words] = await Promise.all([loadWords(deck.wordIds), loadExerciseText()])
+      if (words.length === 0) return setView({ name: 'failed' })
+      setView({ name: 'exercise', title: deck.title, words, index: 0, helped: 0 })
+    } catch {
+      setView({ name: 'failed' })
     }
-  }, [progress, now])
+  }, [])
 
-  const start = (deck: Deck) => {
-    if (deck.words.length === 0) return
-    setView({ name: 'exercise', deck, index: 0, helped: 0 })
+  if (view.name === 'loading') {
+    return (
+      <div className="app centred">
+        <p className="waiting">Loading…</p>
+      </div>
+    )
+  }
+
+  if (view.name === 'failed') {
+    return (
+      <div className="app centred">
+        <p className="waiting">That chapter could not be loaded. Check your connection.</p>
+        <button className="btn ghost" onClick={goHome}>
+          All chapters
+        </button>
+      </div>
+    )
   }
 
   if (view.name === 'home') {
@@ -100,21 +125,21 @@ export default function App() {
         decks={decks}
         direction={direction}
         onChooseDirection={chooseDirection}
-        onStart={start}
+        onStart={(deck) => void start(deck)}
       />
     )
   }
 
   if (view.name === 'exercise') {
-    const word = view.deck.words[view.index]
+    const word = view.words[view.index]
 
     return (
       <Exercise
-        key={`${view.deck.title}-${view.index}-${direction}`}
+        key={`${view.title}-${view.index}-${direction}`}
         word={word}
         direction={direction}
         position={view.index + 1}
-        total={view.deck.words.length}
+        total={view.words.length}
         marked={isMarked(progress, word.id)}
         onToggleMark={() => update(toggleMark(progress, word.id))}
         onQuit={goHome}
@@ -123,9 +148,9 @@ export default function App() {
           const helped = view.helped + (usedHelp ? 1 : 0)
           const next = view.index + 1
           setView(
-            next < view.deck.words.length
+            next < view.words.length
               ? { ...view, index: next, helped }
-              : { name: 'results', deck: view.deck, helped },
+              : { name: 'results', title: view.title, words: view.words, helped },
           )
         }}
       />
@@ -134,10 +159,12 @@ export default function App() {
 
   return (
     <Results
-      words={view.deck.words}
+      words={view.words}
       direction={direction}
-      withoutHelp={view.deck.words.length - view.helped}
-      onRetry={() => setView({ name: 'exercise', deck: view.deck, index: 0, helped: 0 })}
+      withoutHelp={view.words.length - view.helped}
+      onRetry={() =>
+        setView({ name: 'exercise', title: view.title, words: view.words, index: 0, helped: 0 })
+      }
       onHome={goHome}
     />
   )

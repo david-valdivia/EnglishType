@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { displayForms, typingTarget, type Word } from '../data'
+import { displayForms, typingTarget, type Word } from '../data/types'
 import type { Direction } from '../engine/task'
-import { SENTENCES_ES } from '../data/sentences-es'
+import { sentenceEs } from '../data/load'
 import { Icon } from '../components/Icon'
 import { SpeakerGlyph } from '../components/Glyphs'
 import { say } from '../lib/speech'
@@ -57,7 +57,7 @@ export function Results({
               {word.meaning && <div className="gloss-sm">{word.meaning}</div>}
               {/* In this direction the example was never typed, so show it here. */}
               {direction === 'en-es' && <div className="example">{word.sentence}</div>}
-              <div className="example-es">{SENTENCES_ES[word.id]}</div>
+              <div className="example-es">{sentenceEs(word.id)}</div>
             </div>
           ))}
         </div>

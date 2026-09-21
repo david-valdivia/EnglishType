@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Word } from '../data'
+import type { Word } from '../data/types'
 import { createTypingState, keyPress, revealNext, revealRest, revealWord } from '../engine/typing'
 import { taskFor, type Direction } from '../engine/task'
-import { translateToken } from '../data/translate'
-import { SENTENCES_ES } from '../data/sentences-es'
+import { sentenceEs, translateToken } from '../data/load'
 import { Icon } from '../components/Icon'
 import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
@@ -257,7 +256,7 @@ export function Exercise({
               />
             </div>
 
-            {done && <p className="sentence-es">{SENTENCES_ES[word.id]}</p>}
+            {done && <p className="sentence-es">{sentenceEs(word.id)}</p>}
           </div>
         )}
 

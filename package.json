@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "icons": "node scripts/fetch-icons.mjs"
+    "icons": "node scripts/fetch-icons.mjs",
+    "index": "vite-node scripts/build-index.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

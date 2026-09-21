@@ -181,6 +181,29 @@ from "hit the road", "your" meaning *apretarse el cinturón* from "tighten your
 belt". Only single-word entries contribute per-word meanings now, and the
 glossary covers the rest.
 
+## Splitting the data out of the bundle
+
+At 960 entries the data was 226 kB of the 278 kB of source — four times the
+code. Everything shipped up front, including 960 sentence translations for the
+one chapter a learner was about to open.
+
+A generated manifest now carries what the home screen needs — titles, icons,
+groups, word ids — and nothing else. Progress counts work from it directly,
+because they only ever needed ids. Chapters are fetched per module on demand,
+and the sentence translations and lexicon arrive with the first exercise.
+
+The manifest and lexicon are generated rather than maintained, so they cannot
+disagree with the chapters by accident, and a test compares both against the
+source of truth in case the generator is not re-run.
+
+```
+before   419 kB  (132 kB gzipped), everything
+after    266 kB   (84 kB gzipped), plus 3-13 kB per chapter
+```
+
+The remaining 266 kB is mostly React. Further content now costs a chunk nobody
+downloads until they ask for it.
+
 ## Illustrations that do not arrive
 
 A learner reported a broken-image box mid-exercise. An audit of all 522

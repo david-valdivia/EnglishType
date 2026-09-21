@@ -6,7 +6,6 @@
  * against an in-memory stand-in for localStorage.
  */
 
-import type { Chapter } from '../data/types'
 import { initialReview, reviewAfter, type Reviews } from '../engine/srs'
 
 const KEY = 'englishtype:progress:v1'
@@ -84,8 +83,8 @@ export function toggleMark(progress: Progress, wordId: string): Progress {
 
 export function chapterProgress(
   progress: Progress,
-  chapter: Chapter,
+  wordIds: string[],
 ): { done: number; total: number } {
-  const done = chapter.words.filter((word) => progress.learned.includes(word.id)).length
-  return { done, total: chapter.words.length }
+  const done = wordIds.filter((id) => progress.learned.includes(id)).length
+  return { done, total: wordIds.length }
 }

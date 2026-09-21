@@ -38,6 +38,7 @@ npm run dev
 | `npm run build` | Type-check and build to `dist/` |
 | `npm test` | Run the unit tests |
 | `npm run icons` | Re-download the illustrations |
+| `npm run index` | Regenerate the manifest and lexicon from the chapters |
 
 ## Keys
 
@@ -51,6 +52,28 @@ npm run dev
 
 `Shift` fires on release, and only when nothing else was pressed in between —
 otherwise it would speak every time you held it to type a capital.
+
+## How it loads
+
+The data is four times the size of the code, and a learner opening one chapter
+has no use for the other ninety-five, so the chapters are fetched on demand.
+
+What ships up front is `src/data/manifest.ts`: chapter titles, icons, groups and
+word ids, which is everything the home screen needs — including progress counts,
+since those are just ids. Opening a chapter fetches the one module that holds
+it, plus the sentence translations and the lexicon an exercise needs. Nothing
+else.
+
+Both generated files come from `npm run index`, and `manifest.test.ts` compares
+them against the chapters, so a stale file fails the test run rather than
+quietly serving the wrong thing.
+
+```
+initial          266 kB   (84 kB gzipped)
+each chapter    3-13 kB   on demand
+translations     39 kB    with the first exercise
+lexicon          24 kB    with the first exercise
+```
 
 ## How it works
 
