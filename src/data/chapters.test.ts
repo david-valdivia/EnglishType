@@ -58,9 +58,11 @@ describe('vocabulary data', () => {
     expect(ALL_WORDS.filter((word) => !word.translation.trim()).map((w) => w.id)).toEqual([])
   })
 
-  it('keeps every chapter to ten words', () => {
-    const wrong = CHAPTERS.filter((chapter) => chapter.words.length !== 10)
-    expect(wrong.map((chapter) => `${chapter.id}: ${chapter.words.length}`)).toEqual([])
+  it('gives every chapter at least ten words', () => {
+    // Ten is the floor, not the ceiling: a chapter you can exhaust in one
+    // sitting stops being worth reopening.
+    const thin = CHAPTERS.filter((chapter) => chapter.words.length < 10)
+    expect(thin.map((chapter) => `${chapter.id}: ${chapter.words.length}`)).toEqual([])
   })
 
   it('keeps what the learner types free of stray whitespace', () => {

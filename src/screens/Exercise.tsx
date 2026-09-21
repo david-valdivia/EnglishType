@@ -7,7 +7,7 @@ import { Icon } from '../components/Icon'
 import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
-import { playHelped, playSuccess } from '../lib/chime'
+import { playHelped, playKey, playSuccess } from '../lib/chime'
 
 const cursorOf = (slots: { filled: boolean }[]) => slots.findIndex((slot) => !slot.filled)
 
@@ -119,7 +119,12 @@ export function Exercise({
 
       if ([...event.key].length !== 1) return
       event.preventDefault()
-      setState((current) => keyPress(current, event.key))
+      setState((current) => {
+        const next = keyPress(current, event.key)
+        // Only a letter that landed makes a sound; a wrong key already shakes.
+        if (!next.wrong && next !== current) playKey()
+        return next
+      })
     }
 
     const onKeyUp = (event: KeyboardEvent) => {

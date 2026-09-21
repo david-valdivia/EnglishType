@@ -33,6 +33,8 @@ const VICTORY: Note[] = [
 ]
 
 let context: AudioContext | null = null
+/** One short burst of noise, reused for every keystroke. */
+let noise: AudioBuffer | null = null
 
 function audio(): AudioContext | null {
   if (typeof window === 'undefined') return null
@@ -70,6 +72,47 @@ function play(notes: Note[], volume: number): void {
     oscillator.start(from)
     oscillator.stop(to + 0.02)
   }
+}
+
+/**
+ * The click of a key striking paper.
+ *
+ * A typewriter is mostly noise, not a tone, so this is a short burst of it
+ * through a narrow filter. The pitch moves a little each time, because a run of
+ * identical clicks sounds like a machine rather than a machine being used.
+ *
+ * It fires on every correct letter, so it has to be cheap: the noise is
+ * generated once and replayed.
+ */
+export function playKey(): void {
+  const ctx = audio()
+  if (!ctx) return
+
+  if (!noise) {
+    const frames = Math.floor(ctx.sampleRate * 0.03)
+    noise = ctx.createBuffer(1, frames, ctx.sampleRate)
+    const data = noise.getChannelData(0)
+    for (let i = 0; i < frames; i++) data[i] = Math.random() * 2 - 1
+  }
+
+  const source = ctx.createBufferSource()
+  source.buffer = noise
+
+  const filter = ctx.createBiquadFilter()
+  filter.type = 'bandpass'
+  filter.frequency.value = 2200 + Math.random() * 900
+  filter.Q.value = 1.4
+
+  const gain = ctx.createGain()
+  const start = ctx.currentTime
+  gain.gain.setValueAtTime(0.06, start)
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.028)
+
+  source.connect(filter)
+  filter.connect(gain)
+  gain.connect(ctx.destination)
+  source.start(start)
+  source.stop(start + 0.03)
 }
 
 /** Answered without giving up. */

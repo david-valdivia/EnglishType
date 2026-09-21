@@ -111,7 +111,13 @@ keyed by entry id and kept apart from the chapters so the English stays
 readable. A test checks the two sides match exactly — no untranslated sentence,
 no orphan translation.
 
-**`src/lib/chime.ts`** marks the end of an exercise with a sound: a rising
+**`src/lib/chime.ts`** clicks like a typewriter on every letter that lands — a
+short burst of filtered noise, because a typewriter is mostly noise rather than
+a tone, with the pitch moved slightly each time so a run of them sounds like a
+machine being used rather than a machine. A wrong key stays silent: the box
+already shakes, and sounding it too would be punishing the same mistake twice.
+
+It also marks the end of an exercise with a sound: a rising
 triad when the answer was found, one flat note when it was revealed, and a
 fuller fanfare on the results screen — the same triad run up an octave and held,
 so finishing a chapter is recognisably the little chime's big brother. It is
