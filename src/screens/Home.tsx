@@ -1,7 +1,12 @@
+import { useState } from 'react'
 import { CHAPTER_GROUPS, type Word } from '../data'
 import { Icon } from '../components/Icon'
 import { chapterProgress, type Progress } from '../store/progress'
 import { DIRECTIONS, type Direction } from '../engine/task'
+import { speechProblem, speechSteps } from '../lib/speech'
+import { useSpeechOutlook } from '../lib/useSpeechOutlook'
+
+const DISMISSED = 'englishtype:audio-notice-dismissed:v1'
 
 export type Deck = { title: string; words: Word[] }
 
@@ -20,9 +25,48 @@ export function Home({
 }) {
   const { review, marked, random, all } = decks
   const learnedTotal = progress.learned.length
+  const outlook = useSpeechOutlook()
+  const [noticeDismissed, setNoticeDismissed] = useState(() => {
+    try {
+      return window.localStorage.getItem(DISMISSED) === 'yes'
+    } catch {
+      return false
+    }
+  })
+
+  const dismissNotice = () => {
+    setNoticeDismissed(true)
+    try {
+      window.localStorage.setItem(DISMISSED, 'yes')
+    } catch {
+      // Private browsing: it will come back next visit, which is harmless.
+    }
+  }
 
   return (
     <div className="app">
+      {outlook === 'blocked' && !noticeDismissed && (
+        <div className="shell">
+          <aside className="browser-card">
+            <span className="browser-card-icon" aria-hidden>
+              🔊
+            </span>
+            <div>
+              <p className="browser-card-title">The sentences are read aloud — in Chrome</p>
+              <p className="browser-card-body">{speechProblem()}</p>
+              <ul className="browser-card-steps">
+                {speechSteps().map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ul>
+            </div>
+            <button className="browser-card-close" onClick={dismissNotice} aria-label="Dismiss">
+              ✕
+            </button>
+          </aside>
+        </div>
+      )}
+
       <div className="shell home-head">
         <h1>EnglishType</h1>
         <p>Type each word letter by letter. You remember what your hands have written.</p>

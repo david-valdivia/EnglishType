@@ -22,21 +22,43 @@ let voices: SpeechSynthesisVoice[] = []
  */
 let isBrave = false
 const brave = (navigator as Navigator & { brave?: { isBrave(): Promise<boolean> } }).brave
-void brave?.isBrave().then((yes) => {
-  isBrave = yes
-}).catch(() => {})
+void brave
+  ?.isBrave()
+  .then((yes) => {
+    isBrave = yes
+    for (const listener of listeners) listener()
+  })
+  .catch(() => {})
 
 const synth = (): SpeechSynthesis | undefined =>
   typeof window !== 'undefined' && 'speechSynthesis' in window ? window.speechSynthesis : undefined
 
+const listeners = new Set<() => void>()
+
 function refreshVoices(): void {
   voices = synth()?.getVoices() ?? []
+  for (const listener of listeners) listener()
 }
+
+/** Notifies when what we know about the speech engine changes. */
+export function onSpeechChange(listener: () => void): () => void {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+/** False until the voice list has had a fair chance to arrive. */
+let settled = false
 
 const speech = synth()
 if (speech) {
   refreshVoices()
   speech.addEventListener('voiceschanged', refreshVoices)
+  setTimeout(() => {
+    settled = true
+    for (const listener of listeners) listener()
+  }, 1200)
+} else {
+  settled = true
 }
 
 const pickVoice = (): SpeechSynthesisVoice | undefined =>
@@ -61,6 +83,19 @@ export type SpeechOutcome = 'spoken' | 'superseded' | 'unavailable'
  * the dictation away.
  */
 const START_TIMEOUT = 3500
+
+/**
+ * Whether this browser is expected to read the dictation aloud.
+ *
+ * 'unknown' covers the moment before the voice list has arrived — it is
+ * asynchronous — so the interface can stay quiet rather than flash a warning at
+ * a browser that turns out to be fine.
+ */
+export function speechOutlook(): 'good' | 'blocked' | 'unknown' {
+  if (isBrave) return 'blocked'
+  if (voices.length) return 'good'
+  return settled ? 'blocked' : 'unknown'
+}
 
 /**
  * The steps that actually fix it, for the browser we are on.
