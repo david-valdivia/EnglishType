@@ -179,9 +179,14 @@ export function Exercise({
   const sentenceCursor = state.phase === 'sentence' ? cursorOf(state.sentence) : -1
 
   const askMeaning = (tapped: string) => {
-    // The tapped chunk carries its punctuation; the label should not.
+    // The tapped chunk carries its punctuation; neither the label nor the voice
+    // should.
     const clean = tapped.replace(/^[^\p{Letter}\p{Number}]+|[^\p{Letter}\p{Number}]+$/gu, '')
-    setAsked({ word: clean || tapped, meaning: translateToken(tapped) ?? 'sin traducción' })
+    const word = clean || tapped
+    setAsked({ word, meaning: translateToken(tapped) ?? 'sin traducción' })
+    // Spoken from inside the tap, so the gesture still counts and the word is
+    // heard as well as read.
+    speak(word)
   }
 
   const done = state.phase === 'done'
@@ -325,10 +330,17 @@ export function Exercise({
           <p className="tap-hint">
             {asked ? (
               <>
+                <button
+                  className="say-word"
+                  onClick={() => speak(asked.word)}
+                  aria-label={`Listen to ${asked.word} again`}
+                >
+                  <SpeakerGlyph size={14} />
+                </button>
                 <b>{asked.word}</b> — {asked.meaning}
               </>
             ) : (
-              'Tap any word to see what it means'
+              'Tap any word to hear it and see what it means'
             )}
           </p>
         )}

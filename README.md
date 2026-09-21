@@ -5,7 +5,8 @@ over a row of dashes — then type the example sentence the same way. Modelled o
 the Easy Vocabulary web app.
 
 Once an answer is right, the Spanish appears: the whole sentence underneath, and
-any single word by tapping it.
+any single word by tapping it — which also reads that word aloud, with a button
+to hear it again.
 
 You are never asked to guess. One side of the pair is always on screen and you
 produce the other. The example sentence is **dictation**: you hear it, replay it

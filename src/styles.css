@@ -561,6 +561,20 @@ button.chunk.askable:hover { background: #e7f4ec; }
 
 .tap-hint b { color: var(--ink); }
 
+.say-word {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  vertical-align: -6px;
+  border-radius: var(--radius-pill);
+  background: #ecebf4;
+  color: var(--indigo);
+}
+
+.say-word:hover { background: var(--indigo); color: #fff; }
+
 .slot {
   display: inline-flex;
   flex-direction: column;
