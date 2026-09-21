@@ -82,7 +82,7 @@ export const GLOSSARY: Record<string, string> = {
   name: 'nombre', names: 'nombres', word: 'palabra', story: 'historia',
   stories: 'historias', poem: 'poema', joke: 'chiste', music: 'música',
   scene: 'escena', concert: 'concierto', match: 'partido, cerilla',
-  race: 'carrera', exam: 'examen', test: 'prueba', results: 'resultados',
+  race: 'carrera', exam: 'examen', results: 'resultados',
   dictionary: 'diccionario', details: 'detalles', directions: 'indicaciones',
   address: 'dirección', rules: 'reglas', case: 'caso', chances: 'oportunidades',
   profit: 'beneficio', euros: 'euros', gold: 'oro', wallet: 'cartera',
@@ -163,6 +163,19 @@ export const GLOSSARY: Record<string, string> = {
   disguise: 'disfraz', blessing: 'bendición', tip: 'punta', actions: 'obras',
   extinguisher: 'extintor', teddy: 'peluche', lie: 'dejar en paz, tumbarse',
   rip: 'timo', burner_back: 'en segundo plano',
+
+  // at work
+  assign: 'asignar', clone: 'clonar', create: 'crear', clear: 'vaciar, claro',
+  post: 'publicar', reach: 'alcanzar, llegar', loop: 'incluir, bucle',
+  scaled: 'escalamos', pushed: 'presionó, puso reparos', ramp: 'acelerar',
+  joined: 'se unieron', expired: 'ha caducado', doubled: 'se duplicó',
+  shows: 'muestra', launch: 'lanzamiento', growth: 'crecimiento',
+  quarter: 'trimestre', client: 'cliente', design: 'diseño', data: 'datos',
+  module: 'módulo', title: 'título', board: 'tablero', circle: 'retomar',
+  base: 'base', needle: 'aguja', ballpark: 'aproximado', figure: 'cifra',
+  offline: 'aparte, sin conexión', dive: 'inmersión', deep: 'profundo',
+  low: 'bajo', real: 'de verdad', simple: 'sencillo', useful: 'útil',
+  tomorrow: 'mañana', if: 'si', friday: 'viernes', thursday: 'jueves',
 
   // courtesy and connectives
   please: 'por favor', excuse: 'disculpa', without: 'sin', skiing: 'esquiando',

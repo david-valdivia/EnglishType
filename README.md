@@ -13,9 +13,11 @@ as often as you like, and type what you hear — with hints that give you one wo
 at a time rather than the whole thing. When you have never met a word before,
 the hint uncovers it a letter at a time.
 
-**80 chapters, 800 entries**, grouped on the home screen: concrete vocabulary
+**88 chapters, 880 entries**, grouped on the home screen: concrete vocabulary
 (food, animals, the body, the world, everyday life), then **adjectives**,
-**verbs**, **phrasal verbs** and **idioms**.
+**verbs**, **phrasal verbs**, **idioms**, and a section for working in English —
+meetings, chat and email, presentations, and the language of software
+engineering: code, systems, and shipping.
 
 Everything runs in the browser. There is no backend and no account: progress
 lives in `localStorage`.
