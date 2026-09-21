@@ -1,17 +1,79 @@
 <!doctype html>
+<!--
+  lang is "en" because that is what a screen reader meets: the interface chrome
+  is English. The Spanish prompts carry their own lang attribute where they are
+  rendered. The metadata below is Spanish because that is who should find this —
+  search engines read the language of the text itself, not only this attribute.
+-->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <title>EnglishType — Aprende inglés escribiendo cada palabra</title>
+    <meta
+      name="description"
+      content="Aprende vocabulario en inglés escribiendo cada palabra letra a letra. 1.370 palabras y frases con traducción al español, dictado por voz, verbos irregulares, phrasal verbs, idioms y repaso espaciado. Gratis y sin registro."
+    />
+    <link rel="canonical" href="https://englishtype.dvaldivia.com/" />
+    <meta name="author" content="David Valdivia" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#4b4b9e" />
+
+    <!-- How the link looks when someone shares it. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EnglishType" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:url" content="https://englishtype.dvaldivia.com/" />
+    <meta property="og:title" content="EnglishType — Aprende inglés escribiendo cada palabra" />
+    <meta
+      property="og:description"
+      content="Lo que escriben tus manos se queda. 1.370 palabras, frases al dictado y repaso espaciado. Gratis y sin registro."
+    />
+    <meta property="og:image" content="https://englishtype.dvaldivia.com/social-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="EnglishType: la palabra taza escrita letra a letra como c u p" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EnglishType — Aprende inglés escribiendo cada palabra" />
+    <meta
+      name="twitter:description"
+      content="Lo que escriben tus manos se queda. 1.370 palabras, frases al dictado y repaso espaciado."
+    />
+    <meta name="twitter:image" content="https://englishtype.dvaldivia.com/social-card.png" />
+
+    <!-- Installable on a phone home screen. -->
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icons/keyboard.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Learn English vocabulary by typing every word letter by letter." />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="EnglishType" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400..900&display=swap"
       rel="stylesheet"
     />
-    <title>EnglishType</title>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "EnglishType",
+        "url": "https://englishtype.dvaldivia.com/",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "inLanguage": ["es", "en"],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "description": "Aprende vocabulario en inglés escribiendo cada palabra letra a letra, con frases al dictado, verbos irregulares, phrasal verbs, idioms y repaso espaciado.",
+        "author": { "@type": "Person", "name": "David Valdivia" }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
