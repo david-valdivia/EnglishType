@@ -16,7 +16,7 @@ row of dashes, then types the example sentence the same way.
 | Storage | `localStorage` | No accounts in scope, so a backend would buy nothing. |
 | Native language | Spanish | The user is the first learner. |
 | Artwork | Microsoft Fluent Emoji (MIT) | Colourful flat illustrations, permissive licence, no per-icon attribution. Noto Emoji (Apache 2.0) is the fallback. |
-| Content | 120 chapters, 1,370 words | Enough for the app to feel real without a long content pass before anything is testable. |
+| Content | 167 chapters, 1,840 words | Enough for the app to feel real without a long content pass before anything is testable. |
 
 ### Artwork: what was rejected and why
 

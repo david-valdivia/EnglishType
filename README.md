@@ -14,11 +14,14 @@ as often as you like, and type what you hear — with hints that give you one wo
 at a time rather than the whole thing. When you have never met a word before,
 the hint uncovers it a letter at a time.
 
-**120 chapters, 1,370 entries**, grouped on the home screen: concrete vocabulary
+**167 chapters, 1,840 entries**, grouped on the home screen: concrete vocabulary
 (food, animals, the body, the world, everyday life), then **adjectives**,
 **verbs**, **phrasal verbs**, **idioms**, and a section for working in English —
 meetings, chat and email, presentations, and the language of software
-engineering: code, systems, and shipping. A **grammar** section covers the
+engineering. **At Work** is the largest section: five chapters each on
+meetings, chat and email, presentations, writing code, systems, shipping,
+workplace phrasal verbs, workplace idioms, interviews and career, customer
+support, and data and security. A **grammar** section covers the
 patterns rather than the words: intensifiers, both futures, `should have` and
 its relatives, the present perfect, comparatives, the -ing form, conditionals,
 question forms, quantifiers, both sets of prepositions, the passive, and the
@@ -71,10 +74,10 @@ them against the chapters, so a stale file fails the test run rather than
 quietly serving the wrong thing.
 
 ```
-initial          275 kB   (87 kB gzipped)
+initial          289 kB   (91 kB gzipped)
 each chapter    3-16 kB   on demand
-translations     57 kB    with the first exercise
-lexicon          31 kB    with the first exercise
+translations     82 kB    with the first exercise
+lexicon          41 kB    with the first exercise
 ```
 
 ## How it works

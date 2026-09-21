@@ -35,6 +35,15 @@ const MODULES: Record<string, () => Promise<{ [key: string]: Omit<import('./type
   'phrasal-verbs-2': () => import('./chapters/phrasal-verbs-2'),
   'regular-verbs': () => import('./chapters/regular-verbs'),
   work: () => import('./chapters/work'),
+  'work-meetings': () => import('./chapters/work-meetings'),
+  'work-comms': () => import('./chapters/work-comms'),
+  'work-code': () => import('./chapters/work-code'),
+  'work-process': () => import('./chapters/work-process'),
+  'work-lang': () => import('./chapters/work-lang'),
+  'work-career': () => import('./chapters/work-career'),
+  'work-support': () => import('./chapters/work-support'),
+  'work-data': () => import('./chapters/work-data'),
+  'money-study': () => import('./chapters/money-study'),
   world: () => import('./chapters/world'),
 }
 

@@ -15,6 +15,15 @@ import { PHRASAL_VERB_CHAPTERS_2 } from './chapters/phrasal-verbs-2'
 import { IDIOM_CHAPTERS } from './chapters/idioms'
 import { IDIOM_CHAPTERS_2 } from './chapters/idioms-2'
 import { WORK_CHAPTERS } from './chapters/work'
+import { WORK_MEETING_CHAPTERS } from './chapters/work-meetings'
+import { WORK_COMMS_CHAPTERS } from './chapters/work-comms'
+import { WORK_CODE_CHAPTERS } from './chapters/work-code'
+import { WORK_PROCESS_CHAPTERS } from './chapters/work-process'
+import { WORK_LANG_CHAPTERS } from './chapters/work-lang'
+import { WORK_CAREER_CHAPTERS } from './chapters/work-career'
+import { WORK_SUPPORT_CHAPTERS } from './chapters/work-support'
+import { WORK_DATA_CHAPTERS } from './chapters/work-data'
+import { MONEY_STUDY_CHAPTERS } from './chapters/money-study'
 import { GRAMMAR_CHAPTERS } from './chapters/grammar'
 import { GRAMMAR_CHAPTERS_2 } from './chapters/grammar-2'
 import { PEOPLE_CHAPTERS } from './chapters/people'
@@ -46,6 +55,7 @@ export const CHAPTERS: Chapter[] = [
   ...inGroup('The World', WORLD_CHAPTERS_2),
   ...inGroup('Everyday Life', LIFE_CHAPTERS),
   ...inGroup('Everyday Life', LIFE_CHAPTERS_2),
+  ...inGroup('Everyday Life', MONEY_STUDY_CHAPTERS),
   ...inGroup('Basics', BASICS_CHAPTERS),
   ...inGroup('Adjectives', ADJECTIVE_CHAPTERS),
   ...inGroup('Adjectives', ADJECTIVE_CHAPTERS_2),
@@ -57,6 +67,14 @@ export const CHAPTERS: Chapter[] = [
   ...inGroup('Grammar', GRAMMAR_CHAPTERS),
   ...inGroup('Grammar', GRAMMAR_CHAPTERS_2),
   ...inGroup('At Work', WORK_CHAPTERS),
+  ...inGroup('At Work', WORK_MEETING_CHAPTERS),
+  ...inGroup('At Work', WORK_COMMS_CHAPTERS),
+  ...inGroup('At Work', WORK_CODE_CHAPTERS),
+  ...inGroup('At Work', WORK_PROCESS_CHAPTERS),
+  ...inGroup('At Work', WORK_LANG_CHAPTERS),
+  ...inGroup('At Work', WORK_CAREER_CHAPTERS),
+  ...inGroup('At Work', WORK_SUPPORT_CHAPTERS),
+  ...inGroup('At Work', WORK_DATA_CHAPTERS),
   ...inGroup('At Work', WORK_CHAPTERS_2),
   ...inGroup('Idioms', IDIOM_CHAPTERS),
   ...inGroup('Idioms', IDIOM_CHAPTERS_2),
