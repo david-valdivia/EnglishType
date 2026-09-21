@@ -12,6 +12,7 @@ import {
   type Progress,
 } from './store/progress'
 import { DIRECTIONS, type Direction } from './engine/task'
+import { deckOrder, shuffle } from './engine/deck'
 import { Home, type Deck } from './screens/Home'
 import { Exercise } from './screens/Exercise'
 import { Results } from './screens/Results'
@@ -44,15 +45,6 @@ type View =
   | { name: 'exercise'; title: string; words: Word[]; index: number; helped: number }
   | { name: 'results'; title: string; words: Word[]; helped: number }
 
-const shuffle = <T,>(items: T[]): T[] => {
-  const out = [...items]
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[out[i], out[j]] = [out[j], out[i]]
-  }
-  return out
-}
-
 export default function App() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress(window.localStorage))
   const [direction, setDirection] = useState<Direction>(() => loadDirection())
@@ -78,7 +70,11 @@ export default function App() {
 
   const decks = useMemo(
     () => ({
-      review: { title: 'Review', wordIds: dueWords(progress.reviews, now).slice(0, 10) },
+      review: {
+        title: 'Review',
+        wordIds: dueWords(progress.reviews, now).slice(0, 10),
+        keepOrder: true,
+      },
       marked: { title: 'Marked words', wordIds: progress.marked },
       random: { title: 'Random words', wordIds: shuffle(ALL_IDS).slice(0, 10) },
       all: { title: 'All words', wordIds: ALL_IDS },
@@ -93,7 +89,13 @@ export default function App() {
     try {
       const [words] = await Promise.all([loadWords(deck.wordIds), loadExerciseText()])
       if (words.length === 0) return setView({ name: 'failed' })
-      setView({ name: 'exercise', title: deck.title, words, index: 0, helped: 0 })
+      setView({
+        name: 'exercise',
+        title: deck.title,
+        words: deckOrder(words, deck.keepOrder ?? false),
+        index: 0,
+        helped: 0,
+      })
     } catch {
       setView({ name: 'failed' })
     }
@@ -163,7 +165,13 @@ export default function App() {
       direction={direction}
       withoutHelp={view.words.length - view.helped}
       onRetry={() =>
-        setView({ name: 'exercise', title: view.title, words: view.words, index: 0, helped: 0 })
+        setView({
+          name: 'exercise',
+          title: view.title,
+          words: shuffle(view.words),
+          index: 0,
+          helped: 0,
+        })
       }
       onHome={goHome}
     />

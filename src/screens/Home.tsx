@@ -20,7 +20,12 @@ function groupChapters(chapters: ChapterSummary[]) {
   return groups
 }
 
-export type Deck = { title: string; wordIds: string[] }
+export type Deck = {
+  title: string
+  wordIds: string[]
+  /** Review is already sorted by how overdue each word is; leave it alone. */
+  keepOrder?: boolean
+}
 
 export function Home({
   progress,

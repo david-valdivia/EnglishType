@@ -140,6 +140,11 @@ it. An empty voice list points at the system instead, and anything else points
 at the browser. Each comes with a retry, because changing the setting is the
 only way to find out whether it took.
 
+**`src/engine/deck.ts`** shuffles a deck each time it is opened. Chapters are
+written in a sensible reading order, which makes them predictable — Kitchen
+always opened on `pot`. Review is the exception: it is already sorted by how
+overdue each word is, and that order is the point of it.
+
 **`src/engine/task.ts`** decides what is shown and what is typed.
 `Spanish → English` shows the translation and asks for the English word, then
 the example sentence. `English → Spanish` shows the English and asks for the
