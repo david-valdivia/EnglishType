@@ -99,6 +99,67 @@ button {
   margin-inline: auto;
 }
 
+.centred {
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.waiting { color: var(--ink-soft); margin: 0; }
+
+/* Laid over the screen that is still there, rather than in place of it. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(6px);
+  animation: overlay-in 160ms ease-out;
+}
+
+.overlay-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 40px #2a2a3320;
+}
+
+.overlay-card p {
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  border: 3px solid #e4e0ea;
+  border-top-color: var(--indigo);
+  animation: icon-spin 700ms linear infinite;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* With animation off the ring would sit frozen at a tilt, which reads as
+   broken. A full ring reads as waiting. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner { border-top-color: #e4e0ea; border-left-color: var(--indigo); }
+}
+
 /* ---------- top bar ---------- */
 
 .topbar {
@@ -304,10 +365,64 @@ button {
 .chapter:hover { border-color: var(--green-line); transform: translateY(-2px); }
 .chapter.complete { border-color: var(--green-line); }
 
-.chapter img,
-.chapter .icon-missing {
+.chapter .icon {
   width: 62px;
   height: 62px;
+}
+
+/* The frame an illustration sits in. It holds its size before the picture
+   arrives, so nothing on the screen moves when it does. */
+.icon {
+  position: relative;
+  display: inline-block;
+  flex: none;
+}
+
+.icon > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* A quarter of a second of nothing, then the frame admits it is waiting. Most
+   illustrations land well inside that, and those never flash anything. */
+.icon-waiting::before,
+.icon-waiting::after {
+  content: '';
+  position: absolute;
+  opacity: 0;
+  animation-delay: 250ms;
+  animation-iteration-count: infinite;
+}
+
+.icon-waiting::before {
+  inset: 0;
+  border-radius: 16px;
+  background: #efecf3;
+  animation-name: icon-wait;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in-out;
+}
+
+.icon-waiting::after {
+  inset: 32%;
+  border-radius: 50%;
+  border: 2px solid #ddd8e6;
+  border-top-color: var(--indigo);
+  animation-name: icon-wait, icon-spin;
+  animation-duration: 1.5s, 700ms;
+  animation-timing-function: ease-in-out, linear;
+}
+
+@keyframes icon-wait {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  65% { opacity: 0.55; }
+  100% { opacity: 1; }
+}
+
+@keyframes icon-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Shown only when an illustration genuinely fails to arrive. Quiet on purpose:
@@ -790,7 +905,7 @@ button.chunk.askable:hover { background: #e7f4ec; }
   text-align: center;
 }
 
-.results img.mark { width: 74px; height: 74px; }
+.results .mark { width: 74px; height: 74px; }
 
 .results h2 {
   margin: 10px 0 0;
@@ -818,7 +933,7 @@ button.chunk.askable:hover { background: #e7f4ec; }
   padding: 16px 10px 12px;
 }
 
-.word-card img { width: 52px; height: 52px; }
+.word-card .icon { width: 52px; height: 52px; }
 .word-card .en { font-weight: 800; margin-top: 8px; }
 .word-card .es { font-size: 14px; color: var(--ink-soft); }
 

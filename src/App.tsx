@@ -115,14 +115,6 @@ export default function App() {
     [direction],
   )
 
-  if (view.name === 'loading') {
-    return (
-      <div className="app centred">
-        <p className="waiting">Loading…</p>
-      </div>
-    )
-  }
-
   if (view.name === 'failed') {
     return (
       <div className="app centred">
@@ -134,16 +126,29 @@ export default function App() {
     )
   }
 
-  if (view.name === 'home') {
+  // The chapter list stays where it was while its words are fetched, with the
+  // waiting laid over it. Replacing the screen with the word "Loading" threw
+  // away everything the learner was looking at to say less than nothing.
+  if (view.name === 'home' || view.name === 'loading') {
     return (
-      <Home
-        progress={progress}
-        decks={decks}
-        direction={direction}
-        onChooseDirection={chooseDirection}
-        onStart={(deck) => void start(deck)}
-        restoreScroll={homeScroll}
-      />
+      <>
+        <Home
+          progress={progress}
+          decks={decks}
+          direction={direction}
+          onChooseDirection={chooseDirection}
+          onStart={(deck) => void start(deck)}
+          restoreScroll={homeScroll}
+        />
+        {view.name === 'loading' && (
+          <div className="overlay" role="status" aria-live="polite">
+            <div className="overlay-card">
+              <span className="spinner" aria-hidden />
+              <p>Getting the words ready…</p>
+            </div>
+          </div>
+        )}
+      </>
     )
   }
 
@@ -156,6 +161,7 @@ export default function App() {
         // screen, or a phone closes the keyboard between every exercise.
         key={`${view.run}-${direction}`}
         word={word}
+        nextIcon={view.words[view.index + 1]?.icon}
         direction={direction}
         position={view.index + 1}
         total={view.words.length}

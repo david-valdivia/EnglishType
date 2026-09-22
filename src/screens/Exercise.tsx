@@ -4,6 +4,7 @@ import { createTypingState, keyPress, revealNext, revealRest, revealWord } from 
 import { taskFor, type Direction } from '../engine/task'
 import { sentenceEs, translateToken } from '../data/load'
 import { Icon } from '../components/Icon'
+import { preloadIcon } from '../lib/icons'
 import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
@@ -45,6 +46,7 @@ function AskableWords({ text, onWord }: { text: string; onWord: (word: string) =
 
 export function Exercise({
   word,
+  nextIcon,
   direction,
   position,
   total,
@@ -54,6 +56,8 @@ export function Exercise({
   onQuit,
 }: {
   word: Word
+  /** The illustration after this one, fetched while this one is being typed. */
+  nextIcon?: string
   direction: Direction
   position: number
   total: number
@@ -223,6 +227,12 @@ export function Exercise({
 
   const wordCursor = state.phase === 'word' ? cursorOf(state.word) : -1
   const sentenceCursor = state.phase === 'sentence' ? cursorOf(state.sentence) : -1
+
+  // Fetched a whole exercise early, so the next illustration is already in the
+  // cache by the time it is asked for.
+  useEffect(() => {
+    if (nextIcon) preloadIcon(nextIcon)
+  }, [nextIcon])
 
   useEffect(() => {
     let alive = true
