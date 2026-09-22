@@ -297,4 +297,11 @@ export const GLOSSARY: Record<string, string> = {
 
   // courtesy and connectives
   please: 'por favor', excuse: 'disculpa', without: 'sin', skiing: 'esquiando',
+  aside: 'a un lado',
+  great: 'genial',
+  law: 'ley',
+  list: 'lista',
+  show: 'espectáculo',
+  tent: 'tienda de campaña',
+  trouble: 'problemas',
 }

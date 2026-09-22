@@ -34,6 +34,7 @@ const MODULES: Record<string, () => Promise<{ [key: string]: Omit<import('./type
   life: () => import('./chapters/life'),
   'phrasal-verbs': () => import('./chapters/phrasal-verbs'),
   'phrasal-verbs-2': () => import('./chapters/phrasal-verbs-2'),
+  'phrasal-verbs-3': () => import('./chapters/phrasal-verbs-3'),
   'regular-verbs': () => import('./chapters/regular-verbs'),
   work: () => import('./chapters/work'),
   'work-meetings': () => import('./chapters/work-meetings'),

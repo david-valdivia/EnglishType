@@ -12,6 +12,7 @@ import { IRREGULAR_VERB_CHAPTERS } from './chapters/irregular-verbs'
 import { IRREGULAR_VERB_CHAPTERS_2 } from './chapters/irregular-verbs-2'
 import { PHRASAL_VERB_CHAPTERS } from './chapters/phrasal-verbs'
 import { PHRASAL_VERB_CHAPTERS_2 } from './chapters/phrasal-verbs-2'
+import { PHRASAL_VERB_CHAPTERS_3 } from './chapters/phrasal-verbs-3'
 import { IDIOM_CHAPTERS } from './chapters/idioms'
 import { IDIOM_CHAPTERS_2 } from './chapters/idioms-2'
 import { WORK_CHAPTERS } from './chapters/work'
@@ -65,6 +66,7 @@ export const CHAPTERS: Chapter[] = [
   ...inGroup('Verbs', IRREGULAR_VERB_CHAPTERS_2),
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS),
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS_2),
+  ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS_3),
   ...inGroup('Grammar', GRAMMAR_CHAPTERS),
   ...inGroup('Grammar', GRAMMAR_CHAPTERS_2),
   ...inGroup('Grammar', PREPOSITION_CHAPTERS),
