@@ -5,6 +5,7 @@ import { Icon } from '../components/Icon'
 import { SettingsGlyph } from '../components/Glyphs'
 import { chapterProgress, type Progress } from '../store/progress'
 import { DIRECTIONS, type Direction } from '../engine/task'
+import { shuffle } from '../engine/deck'
 import { speechProblem, speechSteps } from '../lib/speech'
 import { useSpeechOutlook } from '../lib/useSpeechOutlook'
 
@@ -78,6 +79,7 @@ export function Home({
   const [query, setQuery] = useState('')
   const searching = query.trim().length > 0
   const found = search(CHAPTER_INDEX, query)
+  const foundWords = found.flatMap((chapter) => chapter.wordIds)
   const learnedTotal = progress.learned.length
   const outlook = useSpeechOutlook()
   const [noticeDismissed, setNoticeDismissed] = useState(() => {
@@ -164,8 +166,23 @@ export function Home({
             <span className="search-count">
               {found.length === 0
                 ? 'nothing found'
-                : `${found.length} ${found.length === 1 ? 'chapter' : 'chapters'}`}
+                : `${found.length} ${found.length === 1 ? 'chapter' : 'chapters'} · ${foundWords.length} words`}
             </span>
+          )}
+
+          {/* A search is a set worth practising, not only a list worth reading. */}
+          {searching && foundWords.length > 0 && (
+            <button
+              className="btn primary small"
+              onClick={() =>
+                onStart({
+                  title: `Random: ${query.trim()}`,
+                  wordIds: shuffle(foundWords).slice(0, 10),
+                })
+              }
+            >
+              Random 10
+            </button>
           )}
         </div>
 

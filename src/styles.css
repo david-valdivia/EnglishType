@@ -1088,9 +1088,12 @@ button.chunk.askable:hover { background: #e7f4ec; }
   position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
 }
+
+.search .btn.small { flex: none; padding: 9px 16px; }
 
 .search-field {
   flex: 1;
@@ -1462,6 +1465,10 @@ button.chunk.askable:hover { background: #e7f4ec; }
 }
 
 @media (max-width: 560px) {
+  /* The field takes a row of its own, and the count and its button share the
+     next one. */
+  .search-field { flex-basis: 100%; }
+
   .settings-overlay { padding: 0; }
   .sheet { border-radius: 0; height: 100dvh; max-height: none; }
   .sheet.onboarding .voice-list { grid-template-columns: 1fr; }
