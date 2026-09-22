@@ -19,6 +19,7 @@ const MODULES: Record<string, () => Promise<{ [key: string]: Omit<import('./type
   food: () => import('./chapters/food'),
   grammar: () => import('./chapters/grammar'),
   'grammar-2': () => import('./chapters/grammar-2'),
+  prepositions: () => import('./chapters/prepositions'),
   house: () => import('./chapters/house'),
   'life-2': () => import('./chapters/life-2'),
   people: () => import('./chapters/people'),

@@ -26,6 +26,7 @@ import { WORK_DATA_CHAPTERS } from './chapters/work-data'
 import { MONEY_STUDY_CHAPTERS } from './chapters/money-study'
 import { GRAMMAR_CHAPTERS } from './chapters/grammar'
 import { GRAMMAR_CHAPTERS_2 } from './chapters/grammar-2'
+import { PREPOSITION_CHAPTERS } from './chapters/prepositions'
 import { PEOPLE_CHAPTERS } from './chapters/people'
 import { WORLD_CHAPTERS_2 } from './chapters/world-2'
 import { HOUSE_CHAPTERS } from './chapters/house'
@@ -66,6 +67,7 @@ export const CHAPTERS: Chapter[] = [
   ...inGroup('Phrasal Verbs', PHRASAL_VERB_CHAPTERS_2),
   ...inGroup('Grammar', GRAMMAR_CHAPTERS),
   ...inGroup('Grammar', GRAMMAR_CHAPTERS_2),
+  ...inGroup('Grammar', PREPOSITION_CHAPTERS),
   ...inGroup('At Work', WORK_CHAPTERS),
   ...inGroup('At Work', WORK_MEETING_CHAPTERS),
   ...inGroup('At Work', WORK_COMMS_CHAPTERS),

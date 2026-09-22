@@ -14,7 +14,7 @@ as often as you like, and type what you hear — with hints that give you one wo
 at a time rather than the whole thing. When you have never met a word before,
 the hint uncovers it a letter at a time.
 
-**167 chapters, 1,840 entries**, grouped on the home screen: concrete vocabulary
+**175 chapters, 1,920 entries**, grouped on the home screen: concrete vocabulary
 (food, animals, the body, the world, everyday life), then **adjectives**,
 **verbs**, **phrasal verbs**, **idioms**, and a section for working in English —
 meetings, chat and email, presentations, and the language of software
@@ -24,7 +24,9 @@ workplace phrasal verbs, workplace idioms, interviews and career, customer
 support, and data and security. A **grammar** section covers the
 patterns rather than the words: intensifiers, both futures, `should have` and
 its relatives, the present perfect, comparatives, the -ing form, conditionals,
-question forms, quantifiers, both sets of prepositions, the passive, and the
+question forms, quantifiers, ten chapters of prepositions — including the
+pairings that are never guessable, like `afraid of`, `responsible for` and
+`the difference between` — the passive, and the
 contractions English actually gets spoken in.
 
 Everything runs in the browser. There is no backend and no account: progress

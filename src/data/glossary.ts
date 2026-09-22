@@ -281,6 +281,20 @@ export const GLOSSARY: Record<string, string> = {
   within: 'dentro de', 'work-life': 'trabajo y vida', wrap: 'cerrar',
   yesterday: 'ayer',
 
+  // added with the prepositions
+  account: 'cuenta', advance: 'antelación', afraid: 'con miedo',
+  against: 'contra', ago: 'hace', alternative: 'alternativa', among: 'entre',
+  below: 'debajo de', beside: 'junto a', beyond: 'más allá de',
+  bottom: 'fondo', complained: 'se quejó', consists: 'consta',
+  demand: 'demanda', detail: 'detalle', effect: 'efecto', fact: 'hecho',
+  faster: 'más rápido', general: 'general', heights: 'las alturas',
+  increase: 'aumento', insisted: 'insistió', keen: 'entusiasmado',
+  lack: 'falta', lean: 'apoya', lift: 'ascensor', market: 'mercado',
+  moment: 'momento', own: 'propio', purpose: 'propósito',
+  reminds: 'recuerda', responsible: 'responsable', result: 'resultado',
+  similar: 'parecido', succeeded: 'lograron', throughout: 'a lo largo de',
+  towards: 'hacia', tunnel: 'túnel', village: 'pueblo',
+
   // courtesy and connectives
   please: 'por favor', excuse: 'disculpa', without: 'sin', skiing: 'esquiando',
 }
