@@ -53,6 +53,19 @@ describe('coverage', () => {
     expect([...unknown].sort()).toEqual([])
   })
 
+  it('translates every word used in every gloss', () => {
+    // The glosses are tappable too, so they need the same cover as the
+    // sentences — a word without one simply cannot be asked about.
+    const unknown = new Set<string>()
+    for (const word of ALL_WORDS) {
+      for (const token of (word.meaning ?? '').split(/\s+/)) {
+        const clean = token.replace(/[^\p{Letter}\p{Number}'-]/gu, '')
+        if (clean && !translateToken(clean)) unknown.add(clean.toLowerCase())
+      }
+    }
+    expect([...unknown].sort()).toEqual([])
+  })
+
   it('has no glossary entry that duplicates a vocabulary word', async () => {
     const { GLOSSARY } = await import('./glossary')
     // Harmless, but it means two sources of truth for the same word.
