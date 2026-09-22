@@ -23,6 +23,10 @@
 
 html, body, #root { height: 100%; }
 
+/* No rubber-band: dragging past the end of the chapter list should not peel
+   the whole page away from the top of the screen. */
+html, body { overscroll-behavior: none; }
+
 /* Dynamic viewport units, so an open keyboard shortens the app rather than
    pushing half of it out of reach. */
 @supports (height: 100dvh) {
@@ -36,6 +40,8 @@ body {
   font-family: Nunito, ui-rounded, 'Segoe UI Rounded', system-ui, -apple-system, sans-serif;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
+  /* A double tap on a phone should repeat a letter, not zoom the page. */
+  touch-action: manipulation;
 }
 
 button {
@@ -56,6 +62,36 @@ button {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/*
+ * The exercise is the viewport, and the page behind it never scrolls. On a
+ * phone a scrolling document means the address bar grows and shrinks under
+ * your thumb while you type, and every focus of the hidden input drags the
+ * line you are writing out from under you. Only the middle scrolls, and only
+ * when it genuinely cannot fit.
+ */
+.app.locked {
+  height: 100svh;
+  /* --app-h is the measured visible height; the viewport units are the
+     fallback for a browser that does not report one. */
+  height: var(--app-h, 100dvh);
+  /* .app sets min-height: 100%, which would otherwise hold the screen open at
+     the full page height while the keyboard covers the bottom of it. */
+  min-height: 0;
+  overflow: hidden;
+  /* Its own height is what the compact rules below ask about, so they answer
+     to the keyboard on every phone rather than only where CSS sees it. */
+  container-type: size;
+}
+
+.app.locked .stage {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Centred while it fits; scrolled from the top once it does not, instead of
+     hiding the prompt above the first scroll position. */
+  justify-content: safe center;
 }
 
 .shell {
@@ -762,10 +798,15 @@ button.chunk.askable:hover { background: #e7f4ec; }
 .btn.ghost { background: var(--surface); border-color: var(--line); }
 .btn.ghost:hover { border-color: var(--indigo); }
 
+/*
+ * Offscreen but not tiny: Safari zooms the page into any field under 16px, and
+ * that zoom is what makes a phone lurch every time the keyboard opens.
+ */
 .typing-catcher {
   position: fixed;
   bottom: 0;
   left: 0;
+  font-size: 16px;
   width: 1px;
   height: 1px;
   padding: 0;
@@ -782,7 +823,7 @@ button.chunk.askable:hover { background: #e7f4ec; }
  * decoration at that size gets out of the way, so the line being typed and the
  * Continue button both stay on screen.
  */
-@media (max-height: 620px) {
+@container (max-height: 620px) {
   .cue { width: 56px; height: 56px; }
   .stage { gap: 8px; padding: 6px 0 4px; }
   .prompt .given { font-size: 21px; }
@@ -802,11 +843,17 @@ button.chunk.askable:hover { background: #e7f4ec; }
 
 /* Barely any height left: the illustration is the first thing to go, since the
    prompt already says what the word is. */
-@media (max-height: 520px) {
+@container (max-height: 520px) {
   .cue { display: none; }
   .sentence-step .ask { display: none; }
   .play { padding: 5px 12px; font-size: 12px; }
   .topbar { padding: 8px 0 4px; }
+  /* The last twenty pixels, so a 400px screen holds the whole exercise and the
+     middle never has to scroll at all. */
+  .stage { gap: 6px; padding: 2px 0 0; }
+  .answer-row .box { min-height: 46px; }
+  .hint { padding: 5px 11px; }
+  .footer .shell { min-height: 46px; padding: 6px 0; }
 }
 
 /* No physical keyboard, so the shortcuts are noise. */

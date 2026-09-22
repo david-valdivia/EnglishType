@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { CHAPTER_INDEX } from '../data/manifest'
 import type { ChapterSummary } from '../data/summary'
 import { Icon } from '../components/Icon'
@@ -33,13 +33,22 @@ export function Home({
   direction,
   onChooseDirection,
   onStart,
+  restoreScroll,
 }: {
   progress: Progress
   decks: { review: Deck; marked: Deck; random: Deck; all: Deck }
   direction: Direction
   onChooseDirection: (direction: Direction) => void
   onStart: (deck: Deck) => void
+  /** Where the list stood when the last chapter was opened. */
+  restoreScroll: number
 }) {
+  // Finishing a chapter should put you back beside it, not at the top of a
+  // list nearly two hundred chapters long.
+  useLayoutEffect(() => {
+    window.scrollTo(0, restoreScroll)
+  }, [restoreScroll])
+
   const { review, marked, random, all } = decks
   const learnedTotal = progress.learned.length
   const outlook = useSpeechOutlook()

@@ -205,7 +205,7 @@ export function Exercise({
   const showSentenceText = sentenceShown || !audioWorks || done
 
   return (
-    <div className="app">
+    <div className="app locked">
       <div className="shell topbar">
         <button className="iconbtn" onClick={onQuit} aria-label="Back to chapters">
           <BackGlyph />

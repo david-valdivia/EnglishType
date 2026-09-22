@@ -52,6 +52,8 @@ export default function App() {
   // Captured rather than read during render, so the decks stay stable between
   // renders. Returning home takes a fresh reading.
   const [now, setNow] = useState(() => Date.now())
+  // Where the chapter list stood when the current run was started.
+  const [homeScroll, setHomeScroll] = useState(0)
 
   const goHome = useCallback(() => {
     setNow(Date.now())
@@ -85,6 +87,7 @@ export default function App() {
   /** Fetches a deck's words, and the text an exercise needs, before starting. */
   const start = useCallback(async (deck: Deck) => {
     if (deck.wordIds.length === 0) return
+    setHomeScroll(window.scrollY)
     setView({ name: 'loading' })
     try {
       const [words] = await Promise.all([loadWords(deck.wordIds), loadExerciseText()])
@@ -129,6 +132,7 @@ export default function App() {
         direction={direction}
         onChooseDirection={chooseDirection}
         onStart={(deck) => void start(deck)}
+        restoreScroll={homeScroll}
       />
     )
   }
