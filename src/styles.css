@@ -467,6 +467,13 @@ button {
   padding: 20px 0 8px;
 }
 
+.prompt-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
 .cue { width: 112px; height: 112px; }
 
 .prompt {
@@ -1012,7 +1019,9 @@ button.chunk.askable:hover { background: #e7f4ec; }
  * Continue button both stay on screen.
  */
 @container (max-height: 620px) {
-  .cue { width: 56px; height: 56px; }
+  /* Scoped past the width rules below, which come later and would otherwise
+     win on a phone — where height is exactly what is short. */
+  .prompt-row .cue { width: 56px; height: 56px; }
   .stage { gap: 8px; padding: 6px 0 4px; }
   .prompt .given { font-size: 21px; }
   .prompt .ask { font-size: 11px; }
@@ -1032,7 +1041,12 @@ button.chunk.askable:hover { background: #e7f4ec; }
 /* Barely any height left: the illustration is the first thing to go, since the
    prompt already says what the word is. */
 @container (max-height: 520px) {
-  .cue { display: none; }
+  /* The picture is half of how a word is remembered, so it steps beside the
+     prompt rather than leaving: at this size the text is taller than it is,
+     and it costs no height at all. */
+  .prompt-row { flex-direction: row; gap: 12px; }
+  .prompt-row .cue { width: 40px; height: 40px; }
+  .prompt { text-align: left; margin: 0; }
   .sentence-step .ask { display: none; }
   .play { padding: 5px 12px; font-size: 12px; }
   .topbar { padding: 8px 0 4px; }

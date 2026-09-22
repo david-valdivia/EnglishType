@@ -6,7 +6,14 @@ import { sentenceEs, translateToken } from '../data/load'
 import { Icon } from '../components/Icon'
 import { preloadIcon } from '../lib/icons'
 import { TypedLine } from '../components/TypedLine'
-import { BackGlyph, CheckGlyph, EyeGlyph, GearGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
+import {
+  BackGlyph,
+  CheckGlyph,
+  EyeGlyph,
+  GearGlyph,
+  SpeakerGlyph,
+  StarGlyph,
+} from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
 import { useSpeechBusy } from '../lib/useSpeechBusy'
 import { playHelped, playKey, playSuccess } from '../lib/chime'
@@ -119,10 +126,8 @@ export function Exercise({
     chimed.current = false
   }
 
-
   /** What Shift replays: whichever line is being written. */
-  const replayText =
-    state.phase === 'sentence' && task.sentence ? task.sentence : task.speech
+  const replayText = state.phase === 'sentence' && task.sentence ? task.sentence : task.speech
 
   /**
    * Only a press decides whether audio works. Autoplay policy can refuse a
@@ -219,9 +224,7 @@ export function Exercise({
   // view whenever the exercise moves from the word to the sentence.
   useEffect(() => {
     if (state.phase !== 'sentence') return
-    document
-      .querySelector('.box.sentence')
-      ?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    document.querySelector('.box.sentence')?.scrollIntoView({ block: 'center', behavior: 'smooth' })
   }, [state.phase])
 
   // Clear the shake so the same wrong key can flash again.
@@ -233,6 +236,29 @@ export function Exercise({
 
   const wordCursor = state.phase === 'word' ? cursorOf(state.word) : -1
   const sentenceCursor = state.phase === 'sentence' ? cursorOf(state.sentence) : -1
+
+  /**
+   * Letters are taken before they are inserted, and the insertion is stopped.
+   *
+   * The field is never allowed to hold anything at all. A phone keyboard builds
+   * its predictions from what is in the box it is typing into, so a box that
+   * quietly accumulated the whole exercise offered the lot back as one enormous
+   * word. Emptying it after the fact was not enough: the keyboard had already
+   * seen it.
+   */
+  useEffect(() => {
+    const input = catcher.current
+    if (!input) return
+
+    const take = (event: InputEvent) => {
+      if (!event.data || !event.inputType.startsWith('insert')) return
+      event.preventDefault()
+      for (const char of event.data) setState((current) => keyPress(current, char))
+    }
+
+    input.addEventListener('beforeinput', take)
+    return () => input.removeEventListener('beforeinput', take)
+  }, [])
 
   // Fetched a whole exercise early, so the next illustration is already in the
   // cache by the time it is asked for.
@@ -326,7 +352,13 @@ export function Exercise({
         <button className="iconbtn" onClick={onQuit} aria-label="Back to chapters">
           <BackGlyph />
         </button>
-        <div className="track" role="progressbar" aria-valuenow={position} aria-valuemin={1} aria-valuemax={total}>
+        <div
+          className="track"
+          role="progressbar"
+          aria-valuenow={position}
+          aria-valuemin={1}
+          aria-valuemax={total}
+        >
           <i style={{ width: `${progress}%` }} />
         </div>
         <span className="count">
@@ -338,25 +370,29 @@ export function Exercise({
       </div>
 
       <div className="shell stage" onPointerDown={focusCatcher}>
-        <Icon name={word.icon} className="cue" priority />
+        {/* One block, so that when the screen is short the picture can step
+            beside the prompt instead of disappearing from above it. */}
+        <div className="prompt-row">
+          <Icon name={word.icon} className="cue" priority />
 
-        <div className="prompt">
-          <p className="ask">{instruction}</p>
-          <p className={`given ${task.promptLanguage}`} lang={task.promptLanguage}>
-            {/* Tappable only when the prompt is the English side: the Spanish
+          <div className="prompt">
+            <p className="ask">{instruction}</p>
+            <p className={`given ${task.promptLanguage}`} lang={task.promptLanguage}>
+              {/* Tappable only when the prompt is the English side: the Spanish
                 one has nothing to look up, and the English answer is not on
                 screen yet. */}
-            {task.promptLanguage === 'en' ? (
-              <AskableWords text={task.prompt} onWord={askMeaning} />
-            ) : (
-              task.prompt
-            )}
-          </p>
-          {task.meaning && (
-            <p className="gloss">
-              <AskableWords text={task.meaning} onWord={askMeaning} />
+              {task.promptLanguage === 'en' ? (
+                <AskableWords text={task.prompt} onWord={askMeaning} />
+              ) : (
+                task.prompt
+              )}
             </p>
-          )}
+            {task.meaning && (
+              <p className="gloss">
+                <AskableWords text={task.meaning} onWord={askMeaning} />
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="answer-row">
@@ -534,7 +570,10 @@ export function Exercise({
                 .
               </p>
             ) : more.text ? (
-              more.text.split('\n').filter(Boolean).map((line, index) => <p key={index}>{line}</p>)
+              more.text
+                .split('\n')
+                .filter(Boolean)
+                .map((line, index) => <p key={index}>{line}</p>)
             ) : (
               <p className="waiting">Pensando…</p>
             )}
@@ -570,13 +609,20 @@ export function Exercise({
           ref={catcher}
           className="typing-catcher"
           aria-label={`Type the answer in ${askingFor}`}
+          // A name it has never seen before: Chrome offers its saved values
+          // over autoComplete="off" alone, and a dropdown over the exercise is
+          // the last thing anyone needs.
+          name="englishtype-letters"
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="none"
           spellCheck={false}
+          data-gramm="false"
+          enterKeyHint="done"
           onChange={(event) => {
-            // Virtual keyboards often report key as "Unidentified", so the
-            // characters they insert here are the only signal we get.
+            // Reached only by a keyboard whose insertion could not be stopped —
+            // composition on some phones. The characters it left behind are
+            // the signal, and the field is emptied again.
             for (const char of event.target.value) setState((current) => keyPress(current, char))
             event.target.value = ''
           }}
