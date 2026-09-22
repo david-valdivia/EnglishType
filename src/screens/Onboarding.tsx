@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { CheckGlyph, GearGlyph, SpeakerGlyph } from '../components/Glyphs'
+import { CheckGlyph, SettingsGlyph, SpeakerGlyph } from '../components/Glyphs'
 import { KOKORO_VOICES, VOICE_SAMPLE } from '../lib/kokoroVoices'
 import {
   cancelKokoroLoad,
@@ -282,7 +282,7 @@ export function Onboarding({
 
             <p className="where">
               <span className="iconbtn gear fake">
-                <GearGlyph />
+                <SettingsGlyph />
                 <span>Voices</span>
               </span>
             </p>

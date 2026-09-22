@@ -10,7 +10,7 @@ import {
   BackGlyph,
   CheckGlyph,
   EyeGlyph,
-  GearGlyph,
+  SettingsGlyph,
   SpeakerGlyph,
   StarGlyph,
 } from '../components/Glyphs'
@@ -365,7 +365,7 @@ export function Exercise({
           {position} / {total}
         </span>
         <button className="iconbtn" onClick={onOpenVoices} aria-label="Voices" title="Voices">
-          <GearGlyph size={17} />
+          <SettingsGlyph size={17} />
         </button>
       </div>
 

@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from 'react'
 import { CHAPTER_INDEX } from '../data/manifest'
 import type { ChapterSummary } from '../data/summary'
 import { Icon } from '../components/Icon'
-import { GearGlyph } from '../components/Glyphs'
+import { SettingsGlyph } from '../components/Glyphs'
 import { chapterProgress, type Progress } from '../store/progress'
 import { DIRECTIONS, type Direction } from '../engine/task'
 import { speechProblem, speechSteps } from '../lib/speech'
@@ -103,7 +103,7 @@ export function Home({
         <div className="head-row">
           <h1>EnglishType</h1>
           <button className={`iconbtn gear ${pointAtVoices ? 'pointed' : ''}`} onClick={onOpenVoices}>
-            <GearGlyph />
+            <SettingsGlyph />
             <span>Voices</span>
           </button>
         </div>

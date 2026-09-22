@@ -1397,8 +1397,9 @@ button.chunk.askable:hover { background: #e7f4ec; }
   margin: 0 0 20px;
 }
 
+/* Shown, not pressed — and it follows every rule the real one follows, so
+   what the learner is told to look for is what they will actually see. */
 .iconbtn.gear.fake { pointer-events: none; }
-.iconbtn.gear.fake span { display: inline; }
 
 /* Where the answer lives, said once and then left alone. */
 .iconbtn.gear.pointed {
