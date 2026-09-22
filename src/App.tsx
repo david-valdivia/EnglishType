@@ -12,6 +12,7 @@ import {
   type Progress,
 } from './store/progress'
 import { DIRECTIONS, type Direction } from './engine/task'
+import { track } from './lib/analytics'
 import { deckOrder, shuffle } from './engine/deck'
 import { Home, type Deck } from './screens/Home'
 import { Exercise } from './screens/Exercise'
@@ -60,10 +61,15 @@ export default function App() {
     setView({ name: 'home' })
   }, [])
 
-  const chooseDirection = useCallback((next: Direction) => {
-    saveDirection(next)
-    setDirection(next)
-  }, [])
+  const chooseDirection = useCallback(
+    (next: Direction) => {
+      saveDirection(next)
+      setDirection(next)
+      // Only a real change; tapping the side you are already on is not news.
+      if (next !== direction) track('direction_change', { direction: next })
+    },
+    [direction],
+  )
 
   const update = useCallback((next: Progress) => {
     saveProgress(window.localStorage, next)
@@ -85,25 +91,29 @@ export default function App() {
   )
 
   /** Fetches a deck's words, and the text an exercise needs, before starting. */
-  const start = useCallback(async (deck: Deck) => {
-    if (deck.wordIds.length === 0) return
-    setHomeScroll(window.scrollY)
-    setView({ name: 'loading' })
-    try {
-      const [words] = await Promise.all([loadWords(deck.wordIds), loadExerciseText()])
-      if (words.length === 0) return setView({ name: 'failed' })
-      setView({
-        name: 'exercise',
-        title: deck.title,
-        words: deckOrder(words, deck.keepOrder ?? false),
-        index: 0,
-        helped: 0,
-        run: Date.now(),
-      })
-    } catch {
-      setView({ name: 'failed' })
-    }
-  }, [])
+  const start = useCallback(
+    async (deck: Deck) => {
+      if (deck.wordIds.length === 0) return
+      setHomeScroll(window.scrollY)
+      track('deck_start', { deck: deck.title, direction, words: deck.wordIds.length })
+      setView({ name: 'loading' })
+      try {
+        const [words] = await Promise.all([loadWords(deck.wordIds), loadExerciseText()])
+        if (words.length === 0) return setView({ name: 'failed' })
+        setView({
+          name: 'exercise',
+          title: deck.title,
+          words: deckOrder(words, deck.keepOrder ?? false),
+          index: 0,
+          helped: 0,
+          run: Date.now(),
+        })
+      } catch {
+        setView({ name: 'failed' })
+      }
+    },
+    [direction],
+  )
 
   if (view.name === 'loading') {
     return (
@@ -156,11 +166,15 @@ export default function App() {
           update(recordAnswer(progress, word.id, { usedHelp }, Date.now()))
           const helped = view.helped + (usedHelp ? 1 : 0)
           const next = view.index + 1
-          setView(
-            next < view.words.length
-              ? { ...view, index: next, helped }
-              : { name: 'results', title: view.title, words: view.words, helped },
-          )
+          if (next < view.words.length) return setView({ ...view, index: next, helped })
+
+          track('deck_finish', {
+            deck: view.title,
+            direction,
+            words: view.words.length,
+            without_help: view.words.length - helped,
+          })
+          setView({ name: 'results', title: view.title, words: view.words, helped })
         }}
       />
     )
