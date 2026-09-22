@@ -6,8 +6,9 @@ import { sentenceEs, translateToken } from '../data/load'
 import { Icon } from '../components/Icon'
 import { preloadIcon } from '../lib/icons'
 import { TypedLine } from '../components/TypedLine'
-import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
+import { BackGlyph, CheckGlyph, EyeGlyph, GearGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
+import { useSpeechBusy } from '../lib/useSpeechBusy'
 import { playHelped, playKey, playSuccess } from '../lib/chime'
 import { explainLocally, localAvailability, searchUrl, type Availability } from '../lib/explain'
 
@@ -54,6 +55,7 @@ export function Exercise({
   onToggleMark,
   onContinue,
   onQuit,
+  onOpenVoices,
 }: {
   word: Word
   /** The illustration after this one, fetched while this one is being typed. */
@@ -65,8 +67,12 @@ export function Exercise({
   onToggleMark: () => void
   onContinue: (outcome: { usedHelp: boolean }) => void
   onQuit: () => void
+  onOpenVoices: () => void
 }) {
   const task = useMemo(() => taskFor(word, direction), [word, direction])
+  // A voice made on this machine takes a second or two. Every button that asks
+  // for one says so, and none of them accept a second press meanwhile.
+  const busy = useSpeechBusy()
   const [state, setState] = useState(() => createTypingState(task.answer, task.sentence))
   const [audioWorks, setAudioWorks] = useState(true)
   /** Set when the learner gives up on hearing it and asks to read it instead. */
@@ -326,6 +332,9 @@ export function Exercise({
         <span className="count">
           {position} / {total}
         </span>
+        <button className="iconbtn" onClick={onOpenVoices} aria-label="Voices" title="Voices">
+          <GearGlyph size={17} />
+        </button>
       </div>
 
       <div className="shell stage" onPointerDown={focusCatcher}>
@@ -354,10 +363,11 @@ export function Exercise({
           <button
             className="side"
             onClick={() => speak(task.speech)}
+            disabled={busy}
             title="Listen — Shift"
             aria-label={`Listen to ${task.speech}, shortcut Shift`}
           >
-            <SpeakerGlyph />
+            {busy ? <span className="spinner small" aria-hidden /> : <SpeakerGlyph />}
           </button>
 
           <div className={`box word ${state.wrong && state.phase === 'word' ? 'shake' : ''}`}>
@@ -392,7 +402,7 @@ export function Exercise({
           <div className="sentence-step">
             <p className="ask">{onSentence ? 'Type what you hear' : 'Then a sentence, by ear'}</p>
 
-            <button className="play" onClick={() => speak(task.sentence, 0.85)}>
+            <button className="play" onClick={() => speak(task.sentence, 0.85)} disabled={busy}>
               <SpeakerGlyph size={16} />
               Play the sentence
               <kbd>Shift</kbd>

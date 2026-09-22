@@ -6,6 +6,8 @@
  * Web Audio works in browsers where `speechSynthesis` silently does not.
  */
 
+import { audioContext } from './audio'
+
 type Note = { hz: number; at: number; for: number }
 
 /** A rising major triad — the ordinary "that was right" shape. */
@@ -39,21 +41,10 @@ const VICTORY: Note[] = [
   { hz: 587.33, at: 0.34, for: 0.5 }, // D5 held under it
 ]
 
-let context: AudioContext | null = null
 /** One short burst of noise, reused for every keystroke. */
 let noise: AudioBuffer | null = null
 
-function audio(): AudioContext | null {
-  if (typeof window === 'undefined') return null
-  const Ctor = window.AudioContext ?? (window as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
-  if (!Ctor) return null
-
-  context ??= new Ctor()
-  // Browsers start the context suspended until a gesture; a keystroke finished
-  // the exercise, so this resume is allowed.
-  if (context.state === 'suspended') void context.resume()
-  return context
-}
+const audio = audioContext
 
 function play(notes: Note[], volume: number): void {
   const ctx = audio()

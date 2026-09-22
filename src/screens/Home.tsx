@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'react'
 import { CHAPTER_INDEX } from '../data/manifest'
 import type { ChapterSummary } from '../data/summary'
 import { Icon } from '../components/Icon'
+import { GearGlyph } from '../components/Glyphs'
 import { chapterProgress, type Progress } from '../store/progress'
 import { DIRECTIONS, type Direction } from '../engine/task'
 import { speechProblem, speechSteps } from '../lib/speech'
@@ -33,6 +34,8 @@ export function Home({
   direction,
   onChooseDirection,
   onStart,
+  onOpenVoices,
+  pointAtVoices,
   restoreScroll,
 }: {
   progress: Progress
@@ -40,6 +43,9 @@ export function Home({
   direction: Direction
   onChooseDirection: (direction: Direction) => void
   onStart: (deck: Deck) => void
+  onOpenVoices: () => void
+  /** True for a few seconds after the first visit, to say "it is here".*/
+  pointAtVoices: boolean
   /** Where the list stood when the last chapter was opened. */
   restoreScroll: number
 }) {
@@ -94,7 +100,13 @@ export function Home({
       )}
 
       <div className="shell home-head">
-        <h1>EnglishType</h1>
+        <div className="head-row">
+          <h1>EnglishType</h1>
+          <button className={`iconbtn gear ${pointAtVoices ? 'pointed' : ''}`} onClick={onOpenVoices}>
+            <GearGlyph />
+            <span>Voices</span>
+          </button>
+        </div>
         <p>Type each word letter by letter. You remember what your hands have written.</p>
 
         <div className="switcher" role="group" aria-label="Exercise direction">

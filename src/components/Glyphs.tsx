@@ -44,3 +44,27 @@ export const BackGlyph = ({ size = 20 }: Props) => (
     <path d="M14.5 5 8 12l6.5 7" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+
+export const GearGlyph = ({ size = 19 }: Props) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+    <circle cx="12" cy="12" r="3.1" stroke="currentColor" strokeWidth="1.6" />
+    <path
+      d="M12 2.8h0a1.4 1.4 0 0 1 1.4 1.4v.6a1.4 1.4 0 0 0 .85 1.28 1.4 1.4 0 0 0 1.53-.28l.42-.42a1.4 1.4 0 0 1 1.98 0l.71.71a1.4 1.4 0 0 1 0 1.98l-.42.42a1.4 1.4 0 0 0-.28 1.53 1.4 1.4 0 0 0 1.28.85h.6a1.4 1.4 0 0 1 1.4 1.4v1a1.4 1.4 0 0 1-1.4 1.4h-.6a1.4 1.4 0 0 0-1.28.85 1.4 1.4 0 0 0 .28 1.53l.42.42a1.4 1.4 0 0 1 0 1.98l-.71.71a1.4 1.4 0 0 1-1.98 0l-.42-.42a1.4 1.4 0 0 0-1.53-.28 1.4 1.4 0 0 0-.85 1.28v.6a1.4 1.4 0 0 1-1.4 1.4h-1a1.4 1.4 0 0 1-1.4-1.4v-.6a1.4 1.4 0 0 0-.85-1.28 1.4 1.4 0 0 0-1.53.28l-.42.42a1.4 1.4 0 0 1-1.98 0l-.71-.71a1.4 1.4 0 0 1 0-1.98l.42-.42a1.4 1.4 0 0 0 .28-1.53 1.4 1.4 0 0 0-1.28-.85h-.6a1.4 1.4 0 0 1-1.4-1.4v-1a1.4 1.4 0 0 1 1.4-1.4h.6a1.4 1.4 0 0 0 1.28-.85 1.4 1.4 0 0 0-.28-1.53l-.42-.42a1.4 1.4 0 0 1 0-1.98l.71-.71a1.4 1.4 0 0 1 1.98 0l.42.42a1.4 1.4 0 0 0 1.53.28 1.4 1.4 0 0 0 .85-1.28v-.6A1.4 1.4 0 0 1 12 2.8Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const TrashGlyph = ({ size = 16 }: Props) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+    <path d="M4.5 6.5h15M9.5 6.5V4.8h5v1.7M7 6.5l.9 12.2h8.2L17 6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+export const CloseGlyph = ({ size = 18 }: Props) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+    <path d="m6.5 6.5 11 11m0-11-11 11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+)
