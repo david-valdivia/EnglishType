@@ -8,8 +8,12 @@ import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
 import { playHelped, playKey, playSuccess } from '../lib/chime'
+import { explainLocally, localAvailability, searchUrl } from '../lib/explain'
 
 const cursorOf = (slots: { filled: boolean }[]) => slots.findIndex((slot) => !slot.filled)
+
+/** Shown when a tapped word is not in the vocabulary — a Spanish one never is. */
+const UNTRANSLATED = 'sin traducción'
 
 export function Exercise({
   word,
@@ -37,6 +41,18 @@ export function Exercise({
   const [sentenceShown, setSentenceShown] = useState(false)
   /** The word the learner last asked the meaning of. */
   const [asked, setAsked] = useState<{ word: string; meaning: string } | null>(null)
+  /** The longer answer, once it has been asked for. */
+  const [more, setMore] = useState<{
+    word: string
+    meaning: string
+    text: string
+    state: 'writing' | 'done' | 'failed'
+  } | null>(null)
+  /**
+   * Whether this machine can answer on its own. Read once, because asking is
+   * slow and the answer cannot change mid-exercise.
+   */
+  const localAi = useRef(false)
   const catcher = useRef<HTMLInputElement>(null)
   const dictated = useRef(false)
   const chimed = useRef(false)
@@ -58,6 +74,7 @@ export function Exercise({
     setShownWord(word.id)
     setState(createTypingState(task.answer, task.sentence))
     setSentenceShown(false)
+    setMore(null)
     setAsked(null)
     dictated.current = false
     chimed.current = false
@@ -178,12 +195,47 @@ export function Exercise({
   const wordCursor = state.phase === 'word' ? cursorOf(state.word) : -1
   const sentenceCursor = state.phase === 'sentence' ? cursorOf(state.sentence) : -1
 
+  useEffect(() => {
+    let alive = true
+    void localAvailability().then((availability) => {
+      if (alive) localAi.current = availability === 'available'
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  /**
+   * The machine's own model when it has one, and Google when it does not —
+   * which is every phone. Opening the tab is the click itself, never a later
+   * callback, or the browser takes it for a pop-up.
+   */
+  const knowMore = () => {
+    if (!asked) return
+    // Only an English word we know is worth asking about by itself. Writing
+    // English to Spanish the box holds Spanish, and a Spanish word has no
+    // translation here — then the entry being learnt is the thing to explain.
+    const target =
+      asked.meaning === UNTRANSLATED ? { word: word.word, meaning: word.translation } : asked
+    if (!localAi.current) {
+      window.open(searchUrl(target.word, target.meaning), '_blank', 'noopener,noreferrer')
+      return
+    }
+
+    setMore({ ...target, text: '', state: 'writing' })
+    const write = (text: string) => setMore({ ...target, text, state: 'writing' })
+    void explainLocally(target.word, target.meaning, write)
+      .then(() => setMore((current) => (current ? { ...current, state: 'done' } : current)))
+      .catch(() => setMore({ ...target, text: '', state: 'failed' }))
+  }
+
   const askMeaning = (tapped: string) => {
     // The tapped chunk carries its punctuation; neither the label nor the voice
     // should.
     const clean = tapped.replace(/^[^\p{Letter}\p{Number}]+|[^\p{Letter}\p{Number}]+$/gu, '')
     const word = clean || tapped
-    setAsked({ word, meaning: translateToken(tapped) ?? 'sin traducción' })
+    setAsked({ word, meaning: translateToken(tapped) ?? UNTRANSLATED })
+    setMore(null)
     // Spoken from inside the tap, so the gesture still counts and the word is
     // heard as well as read.
     speak(word)
@@ -338,11 +390,35 @@ export function Exercise({
                   <SpeakerGlyph size={14} />
                 </button>
                 <b>{asked.word}</b> — {asked.meaning}
+                <button className="know-more" onClick={knowMore}>
+                  I want to know more
+                </button>
               </>
             ) : (
               'Tap any word to hear it and see what it means'
             )}
           </p>
+        )}
+
+        {more && (
+          <div className="explain">
+            <button className="explain-close" onClick={() => setMore(null)} aria-label="Close">
+              ✕
+            </button>
+            {more.state === 'failed' ? (
+              <p>
+                No pude responder aquí.{' '}
+                <a href={searchUrl(more.word, more.meaning)} target="_blank" rel="noreferrer">
+                  Búscalo en Google
+                </a>
+                .
+              </p>
+            ) : more.text ? (
+              more.text.split('\n').filter(Boolean).map((line, index) => <p key={index}>{line}</p>)
+            ) : (
+              <p className="waiting">Pensando…</p>
+            )}
+          </div>
         )}
 
         {!audioWorks && (

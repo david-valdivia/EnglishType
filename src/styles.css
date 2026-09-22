@@ -611,6 +611,54 @@ button.chunk.askable:hover { background: #e7f4ec; }
 
 .say-word:hover { background: var(--indigo); color: #fff; }
 
+.know-more {
+  margin-left: 10px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--indigo);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.know-more:hover { border-color: var(--indigo); background: var(--indigo); color: #fff; }
+
+/* The longer answer. Capped and scrolled: it must never be the thing that
+   pushes Continue off a phone. */
+.explain {
+  position: relative;
+  width: min(100%, 560px);
+  max-height: 34vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px 34px 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.explain p { margin: 0 0 8px; }
+.explain p:last-child { margin-bottom: 0; }
+.explain a { color: var(--indigo); }
+
+.explain-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.explain-close:hover { background: #ecebf4; color: var(--ink); }
+
 .slot {
   display: inline-flex;
   flex-direction: column;
