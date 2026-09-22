@@ -10,6 +10,25 @@ import { useSpeechOutlook } from '../lib/useSpeechOutlook'
 
 const DISMISSED = 'englishtype:audio-notice-dismissed:v1'
 
+/** Lower case, and accents folded, so "travesía" is found by typing "travesia". */
+const fold = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+
+/**
+ * Chapters whose title or heading contains what was typed. The heading counts
+ * too, so "phrasal" finds all seventeen of them at once.
+ */
+function search(chapters: ChapterSummary[], query: string) {
+  const needle = fold(query.trim())
+  if (!needle) return chapters
+  return chapters.filter(
+    (chapter) => fold(chapter.title).includes(needle) || fold(chapter.group).includes(needle),
+  )
+}
+
 /** Chapters under each heading, in the order the headings should appear. */
 function groupChapters(chapters: ChapterSummary[]) {
   const groups: { group: string; chapters: ChapterSummary[] }[] = []
@@ -56,6 +75,9 @@ export function Home({
   }, [restoreScroll])
 
   const { review, marked, random, all } = decks
+  const [query, setQuery] = useState('')
+  const searching = query.trim().length > 0
+  const found = search(CHAPTER_INDEX, query)
   const learnedTotal = progress.learned.length
   const outlook = useSpeechOutlook()
   const [noticeDismissed, setNoticeDismissed] = useState(() => {
@@ -102,7 +124,10 @@ export function Home({
       <div className="shell home-head">
         <div className="head-row">
           <h1>EnglishType</h1>
-          <button className={`iconbtn gear ${pointAtVoices ? 'pointed' : ''}`} onClick={onOpenVoices}>
+          <button
+            className={`iconbtn gear ${pointAtVoices ? 'pointed' : ''}`}
+            onClick={onOpenVoices}
+          >
             <SettingsGlyph />
             <span>Voices</span>
           </button>
@@ -125,47 +150,84 @@ export function Home({
       </div>
 
       <div className="shell">
-        <div className="deck-row">
-          <button
-            className="deck review"
-            disabled={review.wordIds.length === 0}
-            onClick={() => onStart(review)}
-          >
-            <Icon name="counterclockwise-arrows-button" className="glyph" />
-            <span className="name">Review</span>
-            <span className="meta">
-              {review.wordIds.length === 0 ? 'Nothing due today' : `${review.wordIds.length} due today`}
+        <div className="search">
+          <input
+            type="search"
+            className="search-field"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={`Search ${CHAPTER_INDEX.length} chapters`}
+            aria-label="Search chapters"
+            autoComplete="off"
+          />
+          {searching && (
+            <span className="search-count">
+              {found.length === 0
+                ? 'nothing found'
+                : `${found.length} ${found.length === 1 ? 'chapter' : 'chapters'}`}
             </span>
-          </button>
-
-          <button
-            className="deck marked"
-            disabled={marked.wordIds.length === 0}
-            onClick={() => onStart(marked)}
-          >
-            <Icon name="star" className="glyph" />
-            <span className="name">Marked words</span>
-            <span className="meta">
-              {marked.wordIds.length === 0 ? 'Star a word to add it' : `${marked.wordIds.length} saved`}
-            </span>
-          </button>
-
-          <button className="deck random" onClick={() => onStart(random)}>
-            <Icon name="game-die" className="glyph" />
-            <span className="name">Random words</span>
-            <span className="meta">from all {all.wordIds.length} words</span>
-          </button>
-
-          <button className="deck every" onClick={() => onStart(all)}>
-            <Icon name="shuffle-tracks-button" className="glyph" />
-            <span className="name">All words</span>
-            <span className="meta">
-              {learnedTotal} / {all.wordIds.length}
-            </span>
-          </button>
+          )}
         </div>
 
-        {groupChapters(CHAPTER_INDEX).map(({ group, chapters }) => (
+        {/* The decks are not chapters, so they step aside while looking for one.
+            Taken out rather than hidden: the `hidden` attribute loses to the
+            display this class sets, and the row stayed on screen. */}
+        {!searching && (
+          <div className="deck-row">
+            <button
+              className="deck review"
+              disabled={review.wordIds.length === 0}
+              onClick={() => onStart(review)}
+            >
+              <Icon name="counterclockwise-arrows-button" className="glyph" />
+              <span className="name">Review</span>
+              <span className="meta">
+                {review.wordIds.length === 0
+                  ? 'Nothing due today'
+                  : `${review.wordIds.length} due today`}
+              </span>
+            </button>
+
+            <button
+              className="deck marked"
+              disabled={marked.wordIds.length === 0}
+              onClick={() => onStart(marked)}
+            >
+              <Icon name="star" className="glyph" />
+              <span className="name">Marked words</span>
+              <span className="meta">
+                {marked.wordIds.length === 0
+                  ? 'Star a word to add it'
+                  : `${marked.wordIds.length} saved`}
+              </span>
+            </button>
+
+            <button className="deck random" onClick={() => onStart(random)}>
+              <Icon name="game-die" className="glyph" />
+              <span className="name">Random words</span>
+              <span className="meta">from all {all.wordIds.length} words</span>
+            </button>
+
+            <button className="deck every" onClick={() => onStart(all)}>
+              <Icon name="shuffle-tracks-button" className="glyph" />
+              <span className="name">All words</span>
+              <span className="meta">
+                {learnedTotal} / {all.wordIds.length}
+              </span>
+            </button>
+          </div>
+        )}
+
+        {searching && found.length === 0 && (
+          <p className="nothing-found">
+            No chapter is called “{query.trim()}”. Try a word from its name, or the name of a
+            section — “phrasal”, “work”, “food”.
+          </p>
+        )}
+
+        {/* Grouped even while searching: a chapter called "Time 2" means nothing
+            without the heading that says which Time it is. */}
+        {groupChapters(found).map(({ group, chapters }) => (
           <section className="group" key={group}>
             <h2 className="section-title">{group}</h2>
             <div className="chapter-grid">

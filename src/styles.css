@@ -1069,10 +1069,57 @@ button.chunk.askable:hover { background: #e7f4ec; }
 }
 
 @media (max-width: 560px) {
+  /* Two options side by side and filling the width, instead of wrapping into a
+     stack that left a ragged third of the box empty. The hints go: at this
+     width they wrap to three lines each to say what the arrow already says. */
+  .switcher { display: flex; width: 100%; }
+  .swap { flex: 1; min-width: 0; text-align: center; padding: 10px 8px; }
+  .swap-hint { display: none; }
+
   .cue { width: 96px; height: 96px; }
   .slots.lg { font-size: 24px; }
   .slots.sm { font-size: 16px; }
   .results h2 { font-size: 27px; }
+}
+
+/* ---------- searching the chapters ---------- */
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 16px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font: inherit;
+  /* Never under 16px, or Safari zooms the page when it is tapped. */
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.search-field::placeholder { color: var(--ink-soft); }
+.search-field:focus { outline: none; border-color: var(--indigo); }
+
+.search-count {
+  flex: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.nothing-found {
+  margin: 8px 0 32px;
+  color: var(--ink-soft);
+  line-height: 1.5;
 }
 
 /* ---------- configurations ---------- */
