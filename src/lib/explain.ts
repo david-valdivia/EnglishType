@@ -7,7 +7,7 @@
  * that includes every iPhone, the question is handed to Google instead.
  */
 
-type Availability = 'unavailable' | 'downloadable' | 'downloading' | 'available'
+export type Availability = 'unavailable' | 'downloadable' | 'downloading' | 'available'
 
 type Session = {
   promptStreaming: (input: string) => AsyncIterable<string>

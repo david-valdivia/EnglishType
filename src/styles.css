@@ -612,6 +612,9 @@ button.chunk.askable:hover { background: #e7f4ec; }
 .say-word:hover { background: var(--indigo); color: #fff; }
 
 .know-more {
+  display: inline-block;
+  text-decoration: none;
+  vertical-align: 1px;
   margin-left: 10px;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
@@ -624,6 +627,28 @@ button.chunk.askable:hover { background: #e7f4ec; }
 }
 
 .know-more:hover { border-color: var(--indigo); background: var(--indigo); color: #fff; }
+
+.know-more.quiet {
+  margin-left: 6px;
+  border-color: transparent;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.know-more.quiet:hover { background: #ecebf4; border-color: transparent; color: var(--ink); }
+
+/* Words already on screen, tappable for their meaning. They must read as plain
+   text until you go looking. */
+.ask-word {
+  padding: 0;
+  border-radius: 4px;
+  text-align: inherit;
+}
+
+.ask-word:hover {
+  background: #ecebf4;
+  box-shadow: 0 0 0 2px #ecebf4;
+}
 
 /* The longer answer. Capped and scrolled: it must never be the thing that
    pushes Continue off a phone. */
@@ -899,6 +924,8 @@ button.chunk.askable:hover { background: #e7f4ec; }
   /* The last twenty pixels, so a 400px screen holds the whole exercise and the
      middle never has to scroll at all. */
   .stage { gap: 6px; padding: 2px 0 0; }
+  /* Nothing asked yet: do not hold a line open for it at this height. */
+  .tap-hint:empty { display: none; }
   .answer-row .box { min-height: 46px; }
   .hint { padding: 5px 11px; }
   .footer .shell { min-height: 46px; padding: 6px 0; }

@@ -8,12 +8,40 @@ import { TypedLine } from '../components/TypedLine'
 import { BackGlyph, CheckGlyph, EyeGlyph, SpeakerGlyph, StarGlyph } from '../components/Glyphs'
 import { say, speechProblem, speechSteps } from '../lib/speech'
 import { playHelped, playKey, playSuccess } from '../lib/chime'
-import { explainLocally, localAvailability, searchUrl } from '../lib/explain'
+import { explainLocally, localAvailability, searchUrl, type Availability } from '../lib/explain'
 
 const cursorOf = (slots: { filled: boolean }[]) => slots.findIndex((slot) => !slot.filled)
 
 /** Shown when a tapped word is not in the vocabulary — a Spanish one never is. */
 const UNTRANSLATED = 'sin traducción'
+
+/**
+ * Splits text that is already on screen into words you can tap. Only what is
+ * visible anyway is ever wrapped in these, so nothing here gives an answer
+ * away.
+ */
+function AskableWords({ text, onWord }: { text: string; onWord: (word: string) => void }) {
+  return (
+    <>
+      {text.split(/(\s+)/).map((part, index) =>
+        // A word the dictionary does not carry stays plain text, rather than
+        // inviting a tap that answers "sin traducción".
+        /\S/.test(part) && translateToken(part) ? (
+          <button
+            className="ask-word"
+            key={index}
+            onClick={() => onWord(part)}
+            title={`What does "${part}" mean?`}
+          >
+            {part}
+          </button>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  )
+}
 
 export function Exercise({
   word,
@@ -46,13 +74,14 @@ export function Exercise({
     word: string
     meaning: string
     text: string
-    state: 'writing' | 'done' | 'failed'
+    state: 'offer' | 'downloading' | 'writing' | 'done' | 'failed'
+    progress?: number
   } | null>(null)
   /**
    * Whether this machine can answer on its own. Read once, because asking is
    * slow and the answer cannot change mid-exercise.
    */
-  const localAi = useRef(false)
+  const [localAi, setLocalAi] = useState<Availability>('unavailable')
   const catcher = useRef<HTMLInputElement>(null)
   const dictated = useRef(false)
   const chimed = useRef(false)
@@ -198,7 +227,7 @@ export function Exercise({
   useEffect(() => {
     let alive = true
     void localAvailability().then((availability) => {
-      if (alive) localAi.current = availability === 'available'
+      if (alive) setLocalAi(availability)
     })
     return () => {
       alive = false
@@ -210,22 +239,42 @@ export function Exercise({
    * which is every phone. Opening the tab is the click itself, never a later
    * callback, or the browser takes it for a pop-up.
    */
-  const knowMore = () => {
-    if (!asked) return
-    // Only an English word we know is worth asking about by itself. Writing
-    // English to Spanish the box holds Spanish, and a Spanish word has no
-    // translation here — then the entry being learnt is the thing to explain.
-    const target =
-      asked.meaning === UNTRANSLATED ? { word: word.word, meaning: word.translation } : asked
-    if (!localAi.current) {
-      window.open(searchUrl(target.word, target.meaning), '_blank', 'noopener,noreferrer')
-      return
-    }
+  const done = state.phase === 'done'
+
+  /**
+   * Only an English word we know is worth asking about by itself. Writing
+   * English to Spanish the box holds Spanish, and a Spanish word has no
+   * translation here — then the entry being learnt is the thing to explain.
+   */
+  const moreAbout = !asked
+    ? null
+    : asked.meaning !== UNTRANSLATED
+      ? asked
+      : // The entry itself is the English word here — only offer it once it has
+        // been written, or the link would hand over the answer.
+        done
+        ? { word: word.word, meaning: word.translation }
+        : null
+
+  /** Answers in the page, from the model on this machine. */
+  const answerHere = () => {
+    const target = moreAbout
+    if (!target) return
 
     setMore({ ...target, text: '', state: 'writing' })
-    const write = (text: string) => setMore({ ...target, text, state: 'writing' })
-    void explainLocally(target.word, target.meaning, write)
-      .then(() => setMore((current) => (current ? { ...current, state: 'done' } : current)))
+    void explainLocally(
+      target.word,
+      target.meaning,
+      (text) => setMore({ ...target, text, state: 'writing' }),
+      (progress) =>
+        setMore((current) =>
+          current && !current.text ? { ...current, state: 'downloading', progress } : current,
+        ),
+    )
+      .then(() => {
+        setLocalAi('available')
+        setMore((current) => (current ? { ...current, state: 'done' } : current))
+      })
       .catch(() => setMore({ ...target, text: '', state: 'failed' }))
   }
 
@@ -241,7 +290,6 @@ export function Exercise({
     speak(word)
   }
 
-  const done = state.phase === 'done'
   const onSentence = state.phase === 'sentence'
   /** How many of a verb's parts are already written, to mark the current one. */
   const filledParts = task.threeForms
@@ -276,9 +324,20 @@ export function Exercise({
         <div className="prompt">
           <p className="ask">{instruction}</p>
           <p className={`given ${task.promptLanguage}`} lang={task.promptLanguage}>
-            {task.prompt}
+            {/* Tappable only when the prompt is the English side: the Spanish
+                one has nothing to look up, and the English answer is not on
+                screen yet. */}
+            {task.promptLanguage === 'en' ? (
+              <AskableWords text={task.prompt} onWord={askMeaning} />
+            ) : (
+              task.prompt
+            )}
           </p>
-          {task.meaning && <p className="gloss">{task.meaning}</p>}
+          {task.meaning && (
+            <p className="gloss">
+              <AskableWords text={task.meaning} onWord={askMeaning} />
+            </p>
+          )}
         </div>
 
         <div className="answer-row">
@@ -378,7 +437,9 @@ export function Exercise({
           </div>
         )}
 
-        {done && (
+        {/* From the start, not only at the end: a word you cannot place is worth
+            asking about while you are still stuck on it. */}
+        {(done || asked) && (
           <p className="tap-hint">
             {asked ? (
               <>
@@ -390,9 +451,34 @@ export function Exercise({
                   <SpeakerGlyph size={14} />
                 </button>
                 <b>{asked.word}</b> — {asked.meaning}
-                <button className="know-more" onClick={knowMore}>
-                  I want to know more
-                </button>
+                {/* A real link where the answer is elsewhere: a pop-up opened
+                    from script is blocked often enough, and a link can also be
+                    held to open in the background. */}
+                {moreAbout &&
+                  (localAi === 'available' ? (
+                    <button className="know-more" onClick={answerHere}>
+                      I want to know more
+                    </button>
+                  ) : (
+                    <>
+                      <a
+                        className="know-more"
+                        href={searchUrl(moreAbout.word, moreAbout.meaning)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        I want to know more
+                      </a>
+                      {(localAi === 'downloadable' || localAi === 'downloading') && (
+                        <button
+                          className="know-more quiet"
+                          onClick={() => setMore({ ...moreAbout, text: '', state: 'offer' })}
+                        >
+                          without leaving
+                        </button>
+                      )}
+                    </>
+                  ))}
               </>
             ) : (
               'Tap any word to hear it and see what it means'
@@ -405,7 +491,21 @@ export function Exercise({
             <button className="explain-close" onClick={() => setMore(null)} aria-label="Close">
               ✕
             </button>
-            {more.state === 'failed' ? (
+            {more.state === 'offer' ? (
+              <>
+                <p>
+                  Chrome puede responder aquí mismo, sin conexión y sin salir de la app. Para eso
+                  tiene que descargar su modelo una sola vez, y son varios gigas.
+                </p>
+                <button className="know-more" onClick={answerHere}>
+                  Descargar y responder
+                </button>
+              </>
+            ) : more.state === 'downloading' ? (
+              <p className="waiting">
+                Descargando el modelo… {Math.round((more.progress ?? 0) * 100)}%
+              </p>
+            ) : more.state === 'failed' ? (
               <p>
                 No pude responder aquí.{' '}
                 <a href={searchUrl(more.word, more.meaning)} target="_blank" rel="noreferrer">
